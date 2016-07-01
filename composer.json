@@ -1,5 +1,5 @@
 {
-    "name": "yoka/security-token-bundle",
+    "name": "yokai/security-token-bundle",
     "description": "Handle security token creation in a Symfony application",
     "license": "MIT",
     "authors": [

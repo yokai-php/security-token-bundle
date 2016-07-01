@@ -7,7 +7,7 @@ Installation
 ### Add the bundle as dependency with Composer
 
 ``` bash
-$ php composer.phar require yokai-php/security-token-bundle
+$ php composer.phar require yokai/security-token-bundle
 ```
 
 ### Enable the bundle in the kernel
