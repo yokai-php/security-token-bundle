@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="yokai_security_token.configuration_registry"
+                 class="Yokai\SecurityTokenBundle\Configuration\TokenConfigurationRegistry"
+                 public="false">
+            <argument/><!--to be replaced by compiler pass-->
+        </service>
+
+        <service id="yokai_security_token.token_repository"
+                 class="Yokai\SecurityTokenBundle\Repository\TokenRepository"
+                 public="false">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
+            <argument>Yokai\SecurityTokenBundle\Entity\Token</argument>
+        </service>
+
+        <service id="yokai_security_token.open_ssl_token_generator"
+                 class="Yokai\SecurityTokenBundle\Generator\OpenSslTokenGenerator"
+                 public="false"/>
+
+        <service id="yokai_security_token.information_guesser"
+                 class="Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser"
+                 public="false">
+            <argument type="service" id="request_stack"/>
+        </service>
+
+        <service id="yokai_security_token.token_factory"
+                 class="Yokai\SecurityTokenBundle\Factory\TokenFactory"
+                 public="false">
+            <argument type="service" id="yokai_security_token.configuration_registry"/>
+            <argument type="service" id="yokai_security_token.resolved.information_guesser"/>
+        </service>
+
+        <service id="yokai_security_token.token_manager"
+                 class="Yokai\SecurityTokenBundle\Manager\TokenManager">
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="yokai_security_token.resolved.factory"/>
+            <argument type="service" id="yokai_security_token.resolved.repository"/>
+            <argument type="service" id="yokai_security_token.resolved.information_guesser"/>
+        </service>
+
+        <service id="yokai_security_token.delete_archivist"
+                 class="Yokai\SecurityTokenBundle\Archive\DeleteArchivist">
+            <argument type="service" id="yokai_security_token.resolved.repository"/>
+        </service>
+
+        <service id="yokai_security_token.archive_token_command"
+                 class="Yokai\SecurityTokenBundle\Command\ArchiveTokenCommand">
+            <argument type="service" id="yokai_security_token.delete_archivist"/>
+            <tag name="console.command"/>
+        </service>
+
+    </services>
+
+</container>

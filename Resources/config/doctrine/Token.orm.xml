@@ -1,0 +1,24 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="Yokai\SecurityTokenBundle\Entity\Token"
+            table="yokai_security_token"
+            repository-class="Yokai\SecurityTokenBundle\Repository\TokenRepository">
+        <id name="id" type="integer">
+            <generator strategy="IDENTITY"/>
+        </id>
+
+        <field name="value"              type="string"     nullable="false" length="255"/>
+        <field name="purpose"            type="string"     nullable="false" length="255"/>
+        <field name="createdAt"          type="datetime"   nullable="false"             />
+        <field name="createdInformation" type="json_array" nullable="false"             />
+        <field name="expiresAt"          type="datetime"   nullable="false"             />
+        <field name="usedAt"             type="datetime"   nullable="true"              />
+        <field name="usedInformation"    type="json_array" nullable="true"              />
+
+        <many-to-one field="user" target-entity="Symfony\Component\Security\Core\User\UserInterface"/>
+    </entity>
+
+</doctrine-mapping>

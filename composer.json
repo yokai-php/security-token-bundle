@@ -1,0 +1,21 @@
+{
+    "name": "yoka/security-token-bundle",
+    "description": "Handle security token creation in a Symfony application",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yann Eugoné",
+            "email": "yann.eugone@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "symfony/framework-bundle": "~2.7|~3.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": { "Yokai\\SecurityTokenBundle\\": "" }
+    },
+    "minimum-stability": "stable"
+}
