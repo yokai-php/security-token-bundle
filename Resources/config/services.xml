@@ -51,7 +51,7 @@
 
         <service id="yokai_security_token.archive_token_command"
                  class="Yokai\SecurityTokenBundle\Command\ArchiveTokenCommand">
-            <argument type="service" id="yokai_security_token.delete_archivist"/>
+            <argument type="service" id="service_container"/>
             <tag name="console.command"/>
         </service>
 

@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 
 /**
@@ -17,16 +18,16 @@ use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 class ArchiveTokenCommand extends Command
 {
     /**
-     * @var ArchivistInterface
+     * @var ContainerInterface
      */
-    private $archivist;
+    private $container;
 
     /**
-     * @param ArchivistInterface $archivist
+     * @param ContainerInterface $container
      */
-    public function __construct(ArchivistInterface $archivist)
+    public function __construct(ContainerInterface $container)
     {
-        $this->archivist = $archivist;
+        $this->container = $container;
 
         parent::__construct('yokai:security-token:archive');
     }
@@ -69,7 +70,10 @@ class ArchiveTokenCommand extends Command
             $beforeDate = (new DateTime())->modify('-'.$before);
         }
 
-        $count = $this->archivist->archive($purpose, $beforeDate);
+        /** @var $archivist ArchivistInterface */
+        $archivist = $this->container->get('yokai_security_token.resolved.archivist');
+
+        $count = $archivist->archive($purpose, $beforeDate);
 
         $output->writeln(
             sprintf('<info>Successfully archived <comment>%d</comment> security token(s).</info>', $count)

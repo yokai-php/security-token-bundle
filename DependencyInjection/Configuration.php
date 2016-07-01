@@ -91,6 +91,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('manager')
                     ->defaultValue('yokai_security_token.token_manager')
                 ->end()
+                ->scalarNode('archivist')
+                    ->defaultValue('yokai_security_token.delete_archivist')
+                ->end()
             ->end()
         ;
 
