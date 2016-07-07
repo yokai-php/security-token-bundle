@@ -5,6 +5,9 @@ namespace Yokai\SecurityTokenBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\InvalidTokenException;
+use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
+use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
+use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
 
 /**
  * @author Yann Eugoné <yann.eugone@gmail.com>
@@ -24,13 +27,13 @@ class TokenRepository extends EntityRepository implements TokenRepositoryInterfa
         );
 
         if (!$token instanceof Token) {
-            throw InvalidTokenException::notFound($value, $purpose);
+            throw TokenNotFoundException::create($value, $purpose);
         }
         if ($token->isExpired()) {
-            throw InvalidTokenException::expired($value, $purpose, $token->getExpiresAt());
+            throw TokenExpiredException::create($value, $purpose, $token->getExpiresAt());
         }
         if ($token->isUsed()) {
-            throw InvalidTokenException::used($value, $purpose, $token->getUsedAt());
+            throw TokenUsedException::create($value, $purpose, $token->getUsedAt());
         }
 
         return $token;

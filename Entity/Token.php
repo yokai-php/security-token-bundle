@@ -173,6 +173,6 @@ class Token
      */
     public function isUsed()
     {
-        return null === $this->usedAt;
+        return null !== $this->usedAt;
     }
 }

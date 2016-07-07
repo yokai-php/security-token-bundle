@@ -16,7 +16,7 @@ class TokenExpiredException extends InvalidTokenException
      *
      * @return TokenExpiredException
      */
-    public static function TokenExpiredException($value, $purpose, DateTime $date)
+    public static function create($value, $purpose, DateTime $date)
     {
         return new self(
             sprintf(
