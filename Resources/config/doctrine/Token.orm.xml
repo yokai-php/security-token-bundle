@@ -18,7 +18,9 @@
         <field name="usedAt"             type="datetime"   nullable="true"              />
         <field name="usedInformation"    type="json_array" nullable="true"              />
 
-        <many-to-one field="user" target-entity="Symfony\Component\Security\Core\User\UserInterface"/>
+        <many-to-one field="user" target-entity="Symfony\Component\Security\Core\User\UserInterface">
+            <join-column on-delete="CASCADE"/>
+        </many-to-one>
     </entity>
 
 </doctrine-mapping>
