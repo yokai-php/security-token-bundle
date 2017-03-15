@@ -3,41 +3,26 @@
 namespace Yokai\SecurityTokenBundle\Command;
 
 use DateTime;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 
 /**
  * @author Yann Eugoné <yann.eugone@gmail.com>
  */
-class ArchiveTokenCommand extends Command
+class ArchiveTokenCommand extends ContainerAwareCommand
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-
-        parent::__construct('yokai:security-token:archive');
-    }
-
     /**
      * @inheritDoc
      */
     protected function configure()
     {
         $this
+            ->setName('yokai:security-token:archive')
             ->addOption('purpose', null, InputOption::VALUE_OPTIONAL, 'Filter tokens to archive on purpose.')
             ->addOption('before',  null, InputOption::VALUE_OPTIONAL, 'Filter tokens to archive on created date.')
         ;
@@ -71,7 +56,7 @@ class ArchiveTokenCommand extends Command
         }
 
         /** @var $archivist ArchivistInterface */
-        $archivist = $this->container->get('yokai_security_token.archivist');
+        $archivist = $this->getContainer()->get('yokai_security_token.archivist');
 
         $count = $archivist->archive($purpose, $beforeDate);
 
