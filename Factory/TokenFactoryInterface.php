@@ -2,7 +2,6 @@
 
 namespace Yokai\SecurityTokenBundle\Factory;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
@@ -11,10 +10,10 @@ use Yokai\SecurityTokenBundle\Entity\Token;
 interface TokenFactoryInterface
 {
     /**
-     * @param UserInterface $user
-     * @param string        $purpose
+     * @param mixed  $user
+     * @param string $purpose
      *
      * @return Token
      */
-    public function create(UserInterface $user, $purpose);
+    public function create($user, $purpose);
 }

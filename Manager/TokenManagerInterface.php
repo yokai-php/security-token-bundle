@@ -3,7 +3,6 @@
 namespace Yokai\SecurityTokenBundle\Manager;
 
 use DateTime;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
@@ -12,16 +11,31 @@ use Yokai\SecurityTokenBundle\Entity\Token;
 interface TokenManagerInterface
 {
     /**
-     * @param string        $purpose
-     * @param UserInterface $user
+     * @param string $purpose
+     * @param string $value
      *
      * @return Token
      */
-    public function create($purpose, UserInterface $user = null);
+    public function get($purpose, $value);
+
+    /**
+     * @param string $purpose
+     * @param mixed  $user
+     *
+     * @return Token
+     */
+    public function create($purpose, $user);
 
     /**
      * @param Token         $token
      * @param DateTime|null $at
      */
     public function setUsed(Token $token, DateTime $at = null);
+
+    /**
+     * @param Token $token
+     *
+     * @return mixed
+     */
+    public function getUser(Token $token);
 }

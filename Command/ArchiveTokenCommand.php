@@ -71,7 +71,7 @@ class ArchiveTokenCommand extends Command
         }
 
         /** @var $archivist ArchivistInterface */
-        $archivist = $this->container->get('yokai_security_token.resolved.archivist');
+        $archivist = $this->container->get('yokai_security_token.archivist');
 
         $count = $archivist->archive($purpose, $beforeDate);
 

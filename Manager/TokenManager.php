@@ -3,8 +3,6 @@
 namespace Yokai\SecurityTokenBundle\Manager;
 
 use DateTime;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
@@ -15,11 +13,6 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  */
 class TokenManager implements TokenManagerInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
     /**
      * @var TokenFactoryInterface
      */
@@ -36,30 +29,41 @@ class TokenManager implements TokenManagerInterface
     private $informationGuesser;
 
     /**
-     * @param TokenStorageInterface       $tokenStorage
+     * @var UserManagerInterface
+     */
+    private $userManager;
+
+    /**
      * @param TokenFactoryInterface       $factory
      * @param TokenRepositoryInterface    $repository
      * @param InformationGuesserInterface $informationGuesser
+     * @param UserManagerInterface        $userManager
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
         TokenFactoryInterface $factory,
         TokenRepositoryInterface $repository,
-        InformationGuesserInterface $informationGuesser
+        InformationGuesserInterface $informationGuesser,
+        UserManagerInterface $userManager
     ) {
-        $this->tokenStorage = $tokenStorage;
         $this->factory = $factory;
         $this->repository = $repository;
         $this->informationGuesser = $informationGuesser;
+        $this->userManager = $userManager;
     }
 
     /**
      * @inheritdoc
      */
-    public function create($purpose, UserInterface $user = null)
+    public function get($purpose, $value)
     {
-        $user = $this->getUser($user);
+        return $this->repository->get($value, $purpose);
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public function create($purpose, $user)
+    {
         do {
             $token = $this->factory->create($user, $purpose);
         } while ($this->repository->exists($token->getValue(), $purpose));
@@ -81,26 +85,10 @@ class TokenManager implements TokenManagerInterface
     }
 
     /**
-     * @param UserInterface|null $user
-     *
-     * @return UserInterface
+     * @inheritdoc
      */
-    private function getUser(UserInterface $user = null)
+    public function getUser(Token $token)
     {
-        if ($user instanceof UserInterface) {
-            return $user;
-        }
-
-        $token = $this->tokenStorage->getToken();
-        if (!$token) {
-            throw new \RuntimeException();//todo
-        }
-
-        $user = $token->getUser();
-        if (!$user instanceof UserInterface) {
-            throw new \RuntimeException();//todo
-        }
-
-        return $user;
+        return $this->userManager->get($token->getUserClass(), $token->getUserId());
     }
 }

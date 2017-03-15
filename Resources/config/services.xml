@@ -12,7 +12,7 @@
             <argument/><!--to be replaced by compiler pass-->
         </service>
 
-        <service id="yokai_security_token.token_repository"
+        <service id="yokai_security_token.default_token_repository"
                  class="Yokai\SecurityTokenBundle\Repository\TokenRepository"
                  public="false">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
@@ -23,36 +23,36 @@
                  class="Yokai\SecurityTokenBundle\Generator\OpenSslTokenGenerator"
                  public="false"/>
 
-        <service id="yokai_security_token.information_guesser"
+        <service id="yokai_security_token.default_information_guesser"
                  class="Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser"
                  public="false">
             <argument type="service" id="request_stack"/>
         </service>
 
-        <service id="yokai_security_token.token_factory"
+        <service id="yokai_security_token.default_token_factory"
                  class="Yokai\SecurityTokenBundle\Factory\TokenFactory"
                  public="false">
             <argument type="service" id="yokai_security_token.configuration_registry"/>
-            <argument type="service" id="yokai_security_token.resolved.information_guesser"/>
+            <argument type="service" id="yokai_security_token.information_guesser"/>
+            <argument type="service" id="yokai_security_token.user_manager"/>
         </service>
 
-        <service id="yokai_security_token.token_manager"
+        <service id="yokai_security_token.default_token_manager"
                  class="Yokai\SecurityTokenBundle\Manager\TokenManager">
-            <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="yokai_security_token.resolved.factory"/>
-            <argument type="service" id="yokai_security_token.resolved.repository"/>
-            <argument type="service" id="yokai_security_token.resolved.information_guesser"/>
+            <argument type="service" id="yokai_security_token.token_factory"/>
+            <argument type="service" id="yokai_security_token.token_repository"/>
+            <argument type="service" id="yokai_security_token.information_guesser"/>
+            <argument type="service" id="yokai_security_token.user_manager"/>
+        </service>
+
+        <service id="yokai_security_token.default_user_manager"
+                 class="Yokai\SecurityTokenBundle\Manager\UserManager">
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
         </service>
 
         <service id="yokai_security_token.delete_archivist"
                  class="Yokai\SecurityTokenBundle\Archive\DeleteArchivist">
-            <argument type="service" id="yokai_security_token.resolved.repository"/>
-        </service>
-
-        <service id="yokai_security_token.archive_token_command"
-                 class="Yokai\SecurityTokenBundle\Command\ArchiveTokenCommand">
-            <argument type="service" id="service_container"/>
-            <tag name="console.command"/>
+            <argument type="service" id="yokai_security_token.token_repository"/>
         </service>
 
     </services>
