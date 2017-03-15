@@ -3,7 +3,6 @@
 namespace Yokai\SecurityTokenBundle\Entity;
 
 use DateTime;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Yann Eugoné <yann.eugone@gmail.com>
@@ -16,9 +15,14 @@ class Token
     private $id;
 
     /**
-     * @var UserInterface
+     * @var string
      */
-    private $user;
+    private $userClass;
+
+    /**
+     * @var string
+     */
+    private $userId;
 
     /**
      * @var string
@@ -56,15 +60,17 @@ class Token
     private $usedInformation;
 
     /**
-     * @param UserInterface $user
-     * @param string        $value
-     * @param string        $purpose
-     * @param string        $duration
-     * @param array         $information
+     * @param string $userClass
+     * @param string $userId
+     * @param string $value
+     * @param string $purpose
+     * @param string $duration
+     * @param array  $information
      */
-    public function __construct(UserInterface $user, $value, $purpose, $duration, array $information)
+    public function __construct($userClass, $userId, $value, $purpose, $duration, array $information)
     {
-        $this->user = $user;
+        $this->userClass = $userClass;
+        $this->userId = $userId;
         $this->value = $value;
         $this->purpose = $purpose;
         $this->createdAt = new DateTime();
@@ -81,11 +87,19 @@ class Token
     }
 
     /**
-     * @return UserInterface
+     * @return string
      */
-    public function getUser()
+    public function getUserClass()
     {
-        return $this->user;
+        return $this->userClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserId()
+    {
+        return $this->userId;
     }
 
     /**

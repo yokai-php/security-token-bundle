@@ -6,21 +6,30 @@
     <entity name="Yokai\SecurityTokenBundle\Entity\Token"
             table="yokai_security_token"
             repository-class="Yokai\SecurityTokenBundle\Repository\TokenRepository">
+        <indexes>
+            <index columns="user_class,user_id"/>
+            <index columns="created_at"/>
+            <index columns="expires_at"/>
+            <index columns="used_at"/>
+        </indexes>
+
+        <unique-constraints>
+            <unique-constraint columns="value,purpose"/>
+        </unique-constraints>
+
         <id name="id" type="integer">
             <generator strategy="IDENTITY"/>
         </id>
 
-        <field name="value"              type="string"     nullable="false" length="255"/>
-        <field name="purpose"            type="string"     nullable="false" length="255"/>
-        <field name="createdAt"          type="datetime"   nullable="false"             />
-        <field name="createdInformation" type="json_array" nullable="false"             />
-        <field name="expiresAt"          type="datetime"   nullable="false"             />
-        <field name="usedAt"             type="datetime"   nullable="true"              />
-        <field name="usedInformation"    type="json_array" nullable="true"              />
-
-        <many-to-one field="user" target-entity="Symfony\Component\Security\Core\User\UserInterface">
-            <join-column on-delete="CASCADE"/>
-        </many-to-one>
+        <field name="userClass"          column="user_class"          type="string"     nullable="false" length="255"/>
+        <field name="userId"             column="user_id"             type="string"     nullable="false" length="255"/>
+        <field name="value"              column="value"               type="string"     nullable="false" length="255"/>
+        <field name="purpose"            column="purpose"             type="string"     nullable="false" length="255"/>
+        <field name="createdAt"          column="created_at"          type="datetime"   nullable="false"             />
+        <field name="createdInformation" column="created_information" type="json_array" nullable="false"             />
+        <field name="expiresAt"          column="expires_at"          type="datetime"   nullable="false"             />
+        <field name="usedAt"             column="used_at"             type="datetime"   nullable="true"              />
+        <field name="usedInformation"    column="used_information"    type="json_array" nullable="true"              />
     </entity>
 
 </doctrine-mapping>

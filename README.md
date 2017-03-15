@@ -31,13 +31,6 @@ public function registerBundles()
 ``` yaml
 # app/config/config.yml
 
-doctrine:
-    # ...
-    orm:
-        # ...
-        resolve_target_entities:
-            Symfony\Component\Security\Core\User\UserInterface: Your\User\Entity\Class\Name
-
 yokai_security_token:
     tokens:
         reset_password: ~
@@ -55,7 +48,7 @@ Each token can have following options :
 Default values fallback to :
 
 - `generator` : [`yokai_security_token.open_ssl_token_generator`](Generator/OpenSslTokenGenerator)
-- `duration` : ``+2 days`
+- `duration` : `+2 days`
 
 
 Usage
@@ -68,11 +61,13 @@ namespace AppBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
+use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
+use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
 use Yokai\SecurityTokenBundle\Manager\TokenManagerInterface;
-use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 class SecurityController extends Controller
 {
@@ -80,12 +75,12 @@ class SecurityController extends Controller
     {
         $user = $this->getUserRepository()->findOneByUsername($request->request->get('username'));
         if (!$user) {
-            return /* up to you */;
+            throw $this->createNotFoundException(); // or whatever you want
         }
 
         $this->getTokenManager()->create('reset_password', $user);
 
-        return /* up to you */;
+        return new Response(); // or whatever you want
     }
 
     public function doResetPasswordAction(Request $request)
@@ -102,17 +97,17 @@ class SecurityController extends Controller
         }
 
         if (!$token) {
-            return /* up to you */;
+            throw $this->createNotFoundException(); // or whatever you want
         }
 
-        $user = $token->getUser();
-        $user->setPassword($request->request->get('password'));
+        $user = $this->getTokenManager()->getUser($token);
 
+        $user->setPassword($request->request->get('password'));
         $this->getUserManager()->flush($user);
 
         $this->getTokenManager()->setUsed($token);
 
-        return /* up to you */;
+        return new Response(); // or whatever you want
     }
 
     /**
@@ -120,15 +115,7 @@ class SecurityController extends Controller
      */
     private function getTokenManager()
     {
-        return $this->get('yokai_security_token.resolved.manager');
-    }
-
-    /**
-     * @return TokenRepositoryInterface
-     */
-    private function getTokenRepository()
-    {
-        return $this->get('yokai_security_token.resolved.repository');
+        return $this->get('yokai_security_token.token_manager');
     }
 
     /**
@@ -136,7 +123,7 @@ class SecurityController extends Controller
      */
     private function getUserRepository()
     {
-        return /* up to you */;
+        return $this->getDoctrine()->getRepository('AppBundle:User');
     }
 
     /**
@@ -144,7 +131,7 @@ class SecurityController extends Controller
      */
     private function getUserManager()
     {
-        return /* up to you */;
+        return $this->getDoctrine()->getManager();
     }
 }
 ```
@@ -157,7 +144,7 @@ according to what you have configured for the purpose you asked.
 
 **doResetPasswordAction** :
 
-The `Token Repository` service will handle retrieving security token for you,
+The `Token Manager` service will handle retrieving security token for you,
 returning it when succeed, and throwing exceptions if something wrong :
 
 - Token not found
