@@ -87,7 +87,7 @@ class SecurityController extends Controller
     {
         $token = null;
         try {
-            $token = $this->getTokenRepository()->get($request->query->get('token'), 'reset_password');
+            $token = $this->getTokenManager()->get('reset_password', $request->query->get('token'));
         } catch(TokenNotFoundException $e) {
             /* there is no token with the asked value */
         } catch(TokenExpiredException $e) {
