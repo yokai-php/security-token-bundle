@@ -1,6 +1,16 @@
 YokaiSecurityTokenBundle
 ========================
 
+[![Latest Stable Version](https://poser.pugx.org/yokai/security-token-bundle/v/stable)](https://packagist.org/packages/yokai/security-token-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/yokai/security-token-bundle/v/unstable)](https://packagist.org/packages/yokai/security-token-bundle)
+[![Total Downloads](https://poser.pugx.org/yokai/security-token-bundle/downloads)](https://packagist.org/packages/yokai/security-token-bundle)
+[![License](https://poser.pugx.org/yokai/security-token-bundle/license)](https://packagist.org/packages/yokai/security-token-bundle)
+
+[![Build Status](https://api.travis-ci.org/yokai-php/security-token-bundle.png?branch=master)](https://travis-ci.org/yokai-php/security-token-bundle)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/596d2076-90ee-49d9-a8b2-e3bcbd390874/mini.png)](https://insight.sensiolabs.com/projects/596d2076-90ee-49d9-a8b2-e3bcbd390874)
+
 Installation
 ------------
 

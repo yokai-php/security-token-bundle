@@ -6,13 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
-use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 use Yokai\SecurityTokenBundle\DependencyInjection\Factory\TokenConfigurationFactory;
-use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
-use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
-use Yokai\SecurityTokenBundle\Manager\TokenManagerInterface;
-use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
-use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>

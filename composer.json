@@ -5,12 +5,12 @@
     "authors": [
         {
             "name": "Yann Eugoné",
-            "email": "yann.eugone@gmail.com"
+            "email": "eugone.yann@gmail.com"
         }
     ],
     "require": {
         "php": ">=7.0",
-        "symfony/framework-bundle": "~2.7|~3.0",
+        "symfony/symfony": "~2.7|~3.0",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "yokai/dependency-injection": "~1.0"
