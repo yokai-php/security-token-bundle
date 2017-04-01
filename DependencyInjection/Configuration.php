@@ -5,12 +5,6 @@ namespace Yokai\SecurityTokenBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Yokai\SecurityTokenBundle\Archive\DeleteArchivist;
-use Yokai\SecurityTokenBundle\Factory\TokenFactory;
-use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser;
-use Yokai\SecurityTokenBundle\Manager\TokenManager;
-use Yokai\SecurityTokenBundle\Manager\UserManager;
-use Yokai\SecurityTokenBundle\Repository\TokenRepository;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
