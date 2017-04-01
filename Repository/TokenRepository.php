@@ -74,6 +74,6 @@ class TokenRepository extends EntityRepository implements TokenRepositoryInterfa
             )
         ;
 
-        return $builder->getQuery()->getSingleScalarResult() > 0;
+        return intval($builder->getQuery()->getSingleScalarResult()) > 0;
     }
 }

@@ -1,0 +1,50 @@
+<?php
+
+namespace Yokai\SecurityTokenBundle\Tests\InformationGuesser;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser;
+
+/**
+ * @author Yann Eugoné <eugone.yann@gmail.com>
+ */
+class InformationGuesserTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @param RequestStack $requestStack
+     *
+     * @return InformationGuesser
+     */
+    protected function guesser(RequestStack $requestStack)
+    {
+        return new InformationGuesser($requestStack);
+    }
+
+    /**
+     * @test
+     */
+    public function it_return_empty_array_if_no_master_request()
+    {
+        $requestStack = new RequestStack();
+
+        $info = $this->guesser($requestStack)->get();
+
+        self::assertSame([], $info);
+    }
+
+    /**
+     * @test
+     */
+    public function it_return_array_with_ip_from_master_request()
+    {
+        $requestStack = new RequestStack();
+        $requestStack->push(new Request([], [], [], [], [], ['REMOTE_ADDR' => '88.88.88.88']));
+
+        $info = $this->guesser($requestStack)->get();
+
+        self::assertArrayHasKey('ip', $info);
+        self::assertSame('88.88.88.88', $info['ip']);
+        self::assertArrayHasKey('host', $info);
+    }
+}
