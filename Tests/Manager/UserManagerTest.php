@@ -7,6 +7,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\UserManager;
 
+/**
+ * @author Yann Eugoné <eugone.yann@gmail.com>
+ */
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
