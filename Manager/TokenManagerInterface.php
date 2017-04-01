@@ -6,7 +6,7 @@ use DateTime;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 interface TokenManagerInterface
 {

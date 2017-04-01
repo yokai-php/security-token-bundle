@@ -6,7 +6,7 @@ use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class DeleteArchivist implements ArchivistInterface
 {

@@ -9,7 +9,7 @@ use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenManager implements TokenManagerInterface
 {

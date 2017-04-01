@@ -5,7 +5,7 @@ namespace Yokai\SecurityTokenBundle\Factory;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 interface TokenFactoryInterface
 {

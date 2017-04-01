@@ -5,6 +5,9 @@ namespace Yokai\SecurityTokenBundle\Manager;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @author Yann Eugoné <eugone.yann@gmail.com>
+ */
 class UserManager implements UserManagerInterface
 {
     /**

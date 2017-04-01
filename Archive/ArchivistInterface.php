@@ -5,7 +5,7 @@ namespace Yokai\SecurityTokenBundle\Archive;
 use DateTime;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 interface ArchivistInterface
 {

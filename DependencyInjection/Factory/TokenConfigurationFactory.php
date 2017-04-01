@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenConfigurationFactory
 {

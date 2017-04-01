@@ -5,7 +5,7 @@ namespace Yokai\SecurityTokenBundle\InformationGuesser;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class InformationGuesser implements InformationGuesserInterface
 {

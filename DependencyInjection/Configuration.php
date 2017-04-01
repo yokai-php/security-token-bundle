@@ -13,7 +13,7 @@ use Yokai\SecurityTokenBundle\Manager\UserManager;
 use Yokai\SecurityTokenBundle\Repository\TokenRepository;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class Configuration implements ConfigurationInterface
 {

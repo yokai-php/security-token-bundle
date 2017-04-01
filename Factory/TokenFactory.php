@@ -8,7 +8,7 @@ use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenFactory implements TokenFactoryInterface
 {

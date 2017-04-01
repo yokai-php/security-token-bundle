@@ -12,7 +12,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class ArchiveTokenCommand extends ContainerAwareCommand
 {

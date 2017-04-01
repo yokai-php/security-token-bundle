@@ -9,7 +9,7 @@ use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenRepository extends EntityRepository implements TokenRepositoryInterface
 {

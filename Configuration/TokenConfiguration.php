@@ -5,7 +5,7 @@ namespace Yokai\SecurityTokenBundle\Configuration;
 use Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenConfiguration
 {

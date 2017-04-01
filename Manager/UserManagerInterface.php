@@ -2,6 +2,9 @@
 
 namespace Yokai\SecurityTokenBundle\Manager;
 
+/**
+ * @author Yann Eugoné <eugone.yann@gmail.com>
+ */
 interface UserManagerInterface
 {
     /**

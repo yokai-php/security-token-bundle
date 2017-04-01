@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Yokai\DependencyInjection\CompilerPass\ArgumentRegisterTaggedServicesCompilerPass;
 
 /**
- * @author Yann Eugoné <yann.eugone@gmail.com>
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class YokaiSecurityTokenBundle extends Bundle
 {
