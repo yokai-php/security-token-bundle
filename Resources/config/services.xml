@@ -59,7 +59,7 @@
 
         <service id="yokai_security_token.delete_archivist"
                  class="Yokai\SecurityTokenBundle\Archive\DeleteArchivist">
-            <argument type="service" id="yokai_security_token.token_repository"/>
+            <argument type="service" id="yokai_security_token.token_entity_repository"/>
         </service>
 
     </services>

@@ -18,11 +18,8 @@ class DeleteArchivist implements ArchivistInterface
     /**
      * @param EntityRepository $repository
      */
-    public function __construct($repository)
+    public function __construct(EntityRepository $repository)
     {
-        if (!$repository instanceof EntityRepository) {
-            throw new \RuntimeException();//todo
-        }
         $this->repository = $repository;
     }
 

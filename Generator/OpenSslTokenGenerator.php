@@ -2,6 +2,8 @@
 
 namespace Yokai\SecurityTokenBundle\Generator;
 
+use LogicException;
+
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
@@ -20,7 +22,7 @@ class OpenSslTokenGenerator implements TokenGeneratorInterface
     public function __construct($length = self::DEFAULT_LENGTH)
     {
         if (!function_exists('openssl_random_pseudo_bytes')) {
-            throw new \RuntimeException;//todo
+            throw new LogicException('The extension "openssl" is required to use "open ssl" token generator.');
         }
 
         $this->length = $length;
