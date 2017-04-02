@@ -12,6 +12,10 @@
          bootstrap="Tests/bootstrap.php"
         >
 
+    <php>
+        <server name="KERNEL_DIR" value="Tests/app/"/>
+    </php>
+
     <testsuites>
         <testsuite name="YokaiSecurityTokenBundle Test Suite">
             <directory>./Tests</directory>
