@@ -1,0 +1,5 @@
+
+yokai_security_token:
+    tokens:
+        security_password_init: ~
+        security_password_reset: ~

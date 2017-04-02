@@ -19,8 +19,8 @@ class Configuration implements ConfigurationInterface
         $builder = new TreeBuilder();
         $root = $builder->root('yokai_security_token');
 
+        $root->addDefaultsIfNotSet();
         $root
-            ->addDefaultsIfNotSet()
             ->children()
                 ->append($this->getTokensNode())
                 ->append($this->getServicesNode())
@@ -63,8 +63,8 @@ class Configuration implements ConfigurationInterface
         $builder = new TreeBuilder();
         $node = $builder->root('services');
 
+        $node->addDefaultsIfNotSet();
         $node
-            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('information_guesser')
                     ->defaultValue('yokai_security_token.default_information_guesser')
