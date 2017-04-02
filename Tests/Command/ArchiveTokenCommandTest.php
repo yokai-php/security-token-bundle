@@ -48,7 +48,7 @@ class ArchiveTokenCommandTest extends KernelTestCase
 
     protected function command()
     {
-        return $this->application->find('yokai:security-token:archive');
+        return $this->application->get('yokai:security-token:archive');
     }
 
     protected function runCommand(Command $command, array $options = [])
