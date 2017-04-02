@@ -9,7 +9,7 @@ YokaiSecurityTokenBundle
 [![Build Status](https://api.travis-ci.org/yokai-php/security-token-bundle.png?branch=master)](https://travis-ci.org/yokai-php/security-token-bundle)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/?branch=master)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/596d2076-90ee-49d9-a8b2-e3bcbd390874/mini.png)](https://insight.sensiolabs.com/projects/596d2076-90ee-49d9-a8b2-e3bcbd390874)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/77506b7f-27a5-4513-9e7a-716335e600c5/mini.png)](https://insight.sensiolabs.com/projects/77506b7f-27a5-4513-9e7a-716335e600c5)
 
 Installation
 ------------
