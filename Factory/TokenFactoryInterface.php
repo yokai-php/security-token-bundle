@@ -12,8 +12,9 @@ interface TokenFactoryInterface
     /**
      * @param mixed  $user
      * @param string $purpose
+     * @param array  $payload
      *
      * @return Token
      */
-    public function create($user, $purpose);
+    public function create($user, $purpose, array $payload = []);
 }

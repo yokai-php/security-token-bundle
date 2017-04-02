@@ -45,7 +45,7 @@ class TokenFactory implements TokenFactoryInterface
     /**
      * @inheritdoc
      */
-    public function create($user, $purpose)
+    public function create($user, $purpose, array $payload = [])
     {
         $configuration = $this->registry->get($purpose);
 
@@ -55,6 +55,7 @@ class TokenFactory implements TokenFactoryInterface
             $configuration->getGenerator()->generate(),
             $purpose,
             $configuration->getDuration(),
+            $payload,
             $this->informationGuesser->get()
         );
     }

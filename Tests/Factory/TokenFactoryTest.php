@@ -99,19 +99,21 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertSame('u1', $token1->getUserId());
         self::assertSame(['some', 'precious', 'information'], $token1->getCreatedInformation());
         self::assertSame('test-1', $token1->getPurpose());
+        self::assertSame([], $token1->getPayload());
         self::assertSame('uniquetoken-1', $token1->getValue());
         self::assertInstanceOf(DateTime::class, $token1->getCreatedAt());
         self::assertInstanceOf(DateTime::class, $token1->getExpiresAt());
         self::assertNull($token1->getUsedAt());
         self::assertNull($token1->getUsedInformation());
 
-        $token2 = $this->factory($configuration)->create($user2, 'test-2');
+        $token2 = $this->factory($configuration)->create($user2, 'test-2', ['payload', 'information']);
 
         self::assertInstanceOf(Token::class, $token2);
         self::assertSame('string', $token2->getUserClass());
         self::assertSame('u2', $token2->getUserId());
         self::assertSame(['some', 'precious', 'information'], $token2->getCreatedInformation());
         self::assertSame('test-2', $token2->getPurpose());
+        self::assertSame(['payload', 'information'], $token2->getPayload());
         self::assertSame('uniquetoken-2', $token2->getValue());
         self::assertInstanceOf(DateTime::class, $token2->getCreatedAt());
         self::assertInstanceOf(DateTime::class, $token2->getExpiresAt());

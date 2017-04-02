@@ -21,10 +21,11 @@ interface TokenManagerInterface
     /**
      * @param string $purpose
      * @param mixed  $user
+     * @param array  $payload
      *
      * @return Token
      */
-    public function create($purpose, $user);
+    public function create($purpose, $user, array $payload = []);
 
     /**
      * @param Token         $token

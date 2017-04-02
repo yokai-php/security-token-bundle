@@ -35,6 +35,11 @@ class Token
     private $purpose;
 
     /**
+     * @var array
+     */
+    private $payload = [];
+
+    /**
      * @var DateTime
      */
     private $createdAt;
@@ -65,16 +70,25 @@ class Token
      * @param string $value
      * @param string $purpose
      * @param string $duration
+     * @param array  $payload
      * @param array  $information
      */
-    public function __construct($userClass, $userId, $value, $purpose, $duration, array $information)
-    {
+    public function __construct(
+        $userClass,
+        $userId,
+        $value,
+        $purpose,
+        $duration,
+        array $payload = [],
+        array $information = []
+    ) {
         $this->userClass = $userClass;
         $this->userId = $userId;
         $this->value = $value;
         $this->purpose = $purpose;
         $this->createdAt = new DateTime();
         $this->expiresAt = (new DateTime())->modify($duration);
+        $this->payload = $payload;
         $this->createdInformation = $information;
     }
 
@@ -116,6 +130,14 @@ class Token
     public function getPurpose()
     {
         return $this->purpose;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPayload()
+    {
+        return $this->payload;
     }
 
     /**

@@ -24,6 +24,7 @@
         <field name="userId"             column="user_id"             type="string"     nullable="false" length="255"/>
         <field name="value"              column="value"               type="string"     nullable="false" length="255"/>
         <field name="purpose"            column="purpose"             type="string"     nullable="false" length="255"/>
+        <field name="payload"            column="payload"             type="json_array" nullable="false"             />
         <field name="createdAt"          column="created_at"          type="datetime"   nullable="false"             />
         <field name="createdInformation" column="created_information" type="json_array" nullable="false"             />
         <field name="expiresAt"          column="expires_at"          type="datetime"   nullable="false"             />
