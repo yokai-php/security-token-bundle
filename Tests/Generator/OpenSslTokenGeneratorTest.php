@@ -2,13 +2,12 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Generator;
 
-use PHPUnit\Framework\TestCase;
 use Yokai\SecurityTokenBundle\Generator\OpenSslTokenGenerator;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class OpenSslTokenGeneratorTest extends TestCase
+class OpenSslTokenGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

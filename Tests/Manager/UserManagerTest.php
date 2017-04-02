@@ -4,14 +4,13 @@ namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\UserManager;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class UserManagerTest extends TestCase
+class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var EntityManagerInterface|ObjectProphecy

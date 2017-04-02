@@ -2,7 +2,6 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
-use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
@@ -14,7 +13,7 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenManagerTest extends TestCase
+class TokenManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
