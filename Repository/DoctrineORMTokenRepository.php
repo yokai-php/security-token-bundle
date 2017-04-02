@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Repository;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
@@ -11,14 +12,34 @@ use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenRepository extends EntityRepository implements TokenRepositoryInterface
+class DoctrineORMTokenRepository implements TokenRepositoryInterface
 {
+    /**
+     * @var EntityManager
+     */
+    private $manager;
+
+    /**
+     * @var EntityRepository
+     */
+    private $repository;
+
+    /**
+     * @param EntityManager    $manager
+     * @param EntityRepository $repository
+     */
+    public function __construct(EntityManager $manager, EntityRepository $repository)
+    {
+        $this->manager = $manager;
+        $this->repository = $repository;
+    }
+
     /**
      * @inheritdoc
      */
     public function get($value, $purpose)
     {
-        $token = $this->findOneBy(
+        $token = $this->repository->findOneBy(
             [
                 'value' => $value,
                 'purpose' => $purpose,
@@ -43,8 +64,8 @@ class TokenRepository extends EntityRepository implements TokenRepositoryInterfa
      */
     public function create(Token $token)
     {
-        $this->getEntityManager()->persist($token);
-        $this->getEntityManager()->flush($token);
+        $this->manager->persist($token);
+        $this->manager->flush($token);
     }
 
     /**
@@ -52,8 +73,8 @@ class TokenRepository extends EntityRepository implements TokenRepositoryInterfa
      */
     public function update(Token $token)
     {
-        $this->getEntityManager()->persist($token);
-        $this->getEntityManager()->flush($token);
+        $this->manager->persist($token);
+        $this->manager->flush($token);
     }
 
     /**
@@ -61,7 +82,7 @@ class TokenRepository extends EntityRepository implements TokenRepositoryInterfa
      */
     public function exists($value, $purpose)
     {
-        $builder = $this->createQueryBuilder('token');
+        $builder = $this->repository->createQueryBuilder('token');
         $builder
             ->select('COUNT(token.id)')
             ->where('token.value = :value')
