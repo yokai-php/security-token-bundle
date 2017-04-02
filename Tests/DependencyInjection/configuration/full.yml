@@ -1,0 +1,16 @@
+
+yokai_security_token:
+    tokens:
+        security_password_init:
+            generator: generator_mock
+            duration:  +1 month
+        security_password_reset:
+            generator: generator_mock
+            duration:  +2 monthes
+    services:
+        information_guesser: information_guesser_mock
+        token_factory: token_factory_mock
+        token_repository: token_repository_mock
+        token_manager: token_manager_mock
+        user_manager: user_manager_mock
+        archivist: archivist_mock

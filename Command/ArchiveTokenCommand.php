@@ -41,7 +41,7 @@ class ArchiveTokenCommand extends ContainerAwareCommand
 
         if ($input->isInteractive() && !$before) {
             $question = new ConfirmationQuestion(
-                '<question>Careful, all consumed security token will be removed. Do you want to continue y/N ?</question>',
+                '<question>Careful, all consumed security token will be removed. Do you want to continue y/n ?</question>',
                 false
             );
 

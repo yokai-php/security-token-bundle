@@ -2,6 +2,8 @@
 
 namespace Yokai\SecurityTokenBundle\Configuration;
 
+use BadMethodCallException;
+
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
@@ -31,7 +33,9 @@ class TokenConfigurationRegistry
     public function get($purpose)
     {
         if (!isset($this->configurations[$purpose])) {
-            throw new \RuntimeException;//todo
+            throw new BadMethodCallException(
+                sprintf('There is no configured security token on "%s" purpose.', $purpose)
+            );
         }
 
         return $this->configurations[$purpose];

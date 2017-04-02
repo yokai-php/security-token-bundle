@@ -4,8 +4,7 @@
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
     <entity name="Yokai\SecurityTokenBundle\Entity\Token"
-            table="yokai_security_token"
-            repository-class="Yokai\SecurityTokenBundle\Repository\TokenRepository">
+            table="yokai_security_token">
         <indexes>
             <index columns="user_class,user_id"/>
             <index columns="created_at"/>

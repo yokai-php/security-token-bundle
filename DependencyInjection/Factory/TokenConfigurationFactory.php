@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\DependencyInjection\Factory;
 
+use BadMethodCallException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -23,7 +24,14 @@ class TokenConfigurationFactory
         $id = sprintf('yokai_security_token.configuration.%s', $purpose);
 
         if ($container->hasDefinition($id)) {
-            throw new \RuntimeException();//todo
+            throw new BadMethodCallException(
+                sprintf(
+                    'Cannot register service for security token on "" purpose.'.
+                    ' A service with id "%s" is already registered.',
+                    $purpose,
+                    $id
+                )
+            );
         }
 
         $definition = new Definition(
