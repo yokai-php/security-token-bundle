@@ -3,6 +3,7 @@
 namespace Yokai\SecurityTokenBundle\Tests\Factory;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfigurationRegistry;
@@ -15,7 +16,7 @@ use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenFactoryTest extends \PHPUnit_Framework_TestCase
+class TokenFactoryTest extends TestCase
 {
     /**
      * @var InformationGuesserInterface|ObjectProphecy
