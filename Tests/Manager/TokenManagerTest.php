@@ -82,12 +82,28 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_create_unique_token()
     {
-        $token1 = new Token('string', 'jdoe','unique-token-1', 'reset-password',  '+1 day', []);
-        $token2 = new Token('string', 'jdoe','unique-token-2', 'reset-password',  '+1 day', []);
+        $token1 = new Token(
+            'string',
+            'jdoe',
+            'unique-token-1',
+            'reset-password',
+            '+1 day',
+            ['payload', 'information'],
+            []
+        );
+        $token2 = new Token(
+            'string',
+            'jdoe',
+            'unique-token-2',
+            'reset-password',
+            '+1 day',
+            ['payload', 'information'],
+            ['created', 'information']
+        );
 
         $this->factory->expects($this->exactly(2))
-                      ->method('create')
-                      ->will($this->onConsecutiveCalls($token1, $token2));
+            ->method('create')
+            ->will($this->onConsecutiveCalls($token1, $token2));
 
         $this->repository->exists('unique-token-1', 'forgot_password')
             ->shouldBeCalledTimes(1)
@@ -101,7 +117,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
         $this->repository->create($token2)
             ->shouldBeCalledTimes(1);
 
-        $token = $this->manager()->create('forgot_password', 'john-doe');
+        $token = $this->manager()->create('forgot_password', 'john-doe', ['payload', 'information']);
 
         self::assertSame($token2, $token);
     }

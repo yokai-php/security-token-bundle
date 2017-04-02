@@ -62,10 +62,10 @@ class TokenManager implements TokenManagerInterface
     /**
      * @inheritdoc
      */
-    public function create($purpose, $user)
+    public function create($purpose, $user, array $payload = [])
     {
         do {
-            $token = $this->factory->create($user, $purpose);
+            $token = $this->factory->create($user, $purpose, $payload);
         } while ($this->repository->exists($token->getValue(), $purpose));
 
         $this->repository->create($token);
