@@ -17,16 +17,17 @@ class TokenConfigurationFactory
      * @param string           $purpose
      * @param string           $generator
      * @param integer          $duration
+     * @param integer          $usages
      * @param ContainerBuilder $container
      */
-    public static function create($purpose, $generator, $duration, ContainerBuilder $container)
+    public static function create($purpose, $generator, $duration, $usages, ContainerBuilder $container)
     {
         $id = sprintf('yokai_security_token.configuration.%s', $purpose);
 
         if ($container->hasDefinition($id)) {
             throw new BadMethodCallException(
                 sprintf(
-                    'Cannot register service for security token on "" purpose.'.
+                    'Cannot register service for security token on "%s" purpose.'.
                     ' A service with id "%s" is already registered.',
                     $purpose,
                     $id
@@ -39,7 +40,8 @@ class TokenConfigurationFactory
             [
                 $purpose,
                 new Reference($generator),
-                $duration
+                $duration,
+                $usages
             ]
         );
 

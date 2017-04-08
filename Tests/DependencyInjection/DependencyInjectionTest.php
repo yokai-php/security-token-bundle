@@ -103,6 +103,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
             self::assertInstanceOf($tokenConfig['generator'], $token->getGenerator());
             self::assertSame($tokenId, $token->getPurpose());
             self::assertSame($tokenConfig['duration'], $token->getDuration());
+            self::assertSame($tokenConfig['usages'], $token->getUsages());
         }
 
         foreach ($aliases as $alias => $expectedId) {
@@ -166,10 +167,12 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
                     'security_password_init' => [
                         'generator' => OpenSslTokenGenerator::class,
                         'duration' => '+2 days',
+                        'usages' => 1,
                     ],
                     'security_password_reset' => [
                         'generator' => OpenSslTokenGenerator::class,
                         'duration' => '+2 days',
+                        'usages' => 1,
                     ],
                 ],
                 $defaultAliases,
@@ -181,10 +184,12 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
                     'security_password_init' => [
                         'generator' => ProphecySubjectInterface::class,
                         'duration' => '+1 month',
+                        'usages' => 2,
                     ],
                     'security_password_reset' => [
                         'generator' => ProphecySubjectInterface::class,
                         'duration' => '+2 monthes',
+                        'usages' => 3,
                     ],
                 ],
                 [

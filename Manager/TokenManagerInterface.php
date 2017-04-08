@@ -30,8 +30,16 @@ interface TokenManagerInterface
     /**
      * @param Token         $token
      * @param DateTime|null $at
+     *
+     * @deprecated since version 2.2 and will be removed in 3.0
      */
     public function setUsed(Token $token, DateTime $at = null);
+
+    /**
+     * @param Token         $token
+     * @param DateTime|null $at
+     */
+    public function consume(Token $token, DateTime $at = null);
 
     /**
      * @param Token $token

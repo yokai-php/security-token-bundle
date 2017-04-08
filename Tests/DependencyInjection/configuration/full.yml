@@ -3,10 +3,12 @@ yokai_security_token:
     tokens:
         security_password_init:
             generator: generator_mock
-            duration:  +1 month
+            duration: +1 month
+            usages: 2
         security_password_reset:
             generator: generator_mock
-            duration:  +2 monthes
+            duration: +2 monthes
+            usages: 3
     services:
         information_guesser: information_guesser_mock
         token_factory: token_factory_mock

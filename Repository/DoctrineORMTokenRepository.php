@@ -53,7 +53,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
             throw TokenExpiredException::create($value, $purpose, $token->getExpiresAt());
         }
         if ($token->isUsed()) {
-            throw TokenUsedException::create($value, $purpose, $token->getUsedAt());
+            throw TokenUsedException::create($value, $purpose, $token->getCountUsages());
         }
 
         return $token;

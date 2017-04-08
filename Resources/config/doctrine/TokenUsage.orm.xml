@@ -1,0 +1,24 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="Yokai\SecurityTokenBundle\Entity\TokenUsage"
+            table="yokai_security_token_usage">
+        <indexes>
+            <index columns="created_at"/>
+        </indexes>
+
+        <id name="id" type="integer">
+            <generator strategy="IDENTITY"/>
+        </id>
+
+        <field name="createdAt"   column="created_at"  type="datetime"   nullable="false"/>
+        <field name="information" column="information" type="json_array" nullable="false"/>
+
+        <many-to-one field="token" target-entity="Yokai\SecurityTokenBundle\Entity\Token" inversed-by="usages">
+            <join-column name="token_id" on-delete="CASCADE"/>
+        </many-to-one>
+    </entity>
+
+</doctrine-mapping>
