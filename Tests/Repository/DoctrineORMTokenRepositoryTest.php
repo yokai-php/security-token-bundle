@@ -61,7 +61,7 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throw_exception_if_token_expired()
     {
-        $token = new Token('string', 'jdoe','unique', 'init_password',  '-1 day', []);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '-1 day', '+1 month', []);
 
         $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
             ->shouldBeCalledTimes(1)
@@ -76,7 +76,7 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throw_exception_if_token_used_single_time()
     {
-        $token = new Token('string', 'jdoe','unique', 'init_password',  '+1 day', 1);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1);
         $token->consume(['info'], new \DateTime());
 
         $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
@@ -92,7 +92,7 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throw_exception_if_token_used_multiple_times()
     {
-        $token = new Token('string', 'jdoe','unique', 'init_password',  '+1 day', 2);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 2);
         $token->consume(['info'], new \DateTime());
         $token->consume(['info'], new \DateTime());
 
@@ -108,7 +108,7 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function it_get_valid_token()
     {
-        $token = new Token('string', 'jdoe','unique', 'init_password',  '+1 day', []);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', []);
 
         $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
             ->shouldBeCalledTimes(1)
@@ -124,7 +124,7 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function it_create_token()
     {
-        $token = new Token('string', 'jdoe','unique', 'init_password',  '+1 day', []);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', []);
 
         $this->manager->persist($token)
             ->shouldBeCalledTimes(1);
@@ -139,7 +139,7 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function it_update_token()
     {
-        $token = new Token('string', 'jdoe','unique', 'init_password',  '+1 day', []);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', []);
 
         $this->manager->persist($token)
             ->shouldBeCalledTimes(1);

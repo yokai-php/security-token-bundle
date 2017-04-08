@@ -63,6 +63,11 @@ class Token
     private $expiresAt;
 
     /**
+     * @var DateTime
+     */
+    private $keepUntil;
+
+    /**
      * @var Collection|TokenUsage[]
      */
     private $usages;
@@ -72,7 +77,8 @@ class Token
      * @param string  $userId
      * @param string  $value
      * @param string  $purpose
-     * @param string  $duration
+     * @param string  $validDuration
+     * @param string  $keepDuration
      * @param integer $allowedUsages
      * @param array   $payload
      * @param array   $information
@@ -82,7 +88,8 @@ class Token
         $userId,
         $value,
         $purpose,
-        $duration,
+        $validDuration,
+        $keepDuration,
         $allowedUsages = 1,
         array $payload = [],
         array $information = []
@@ -92,7 +99,8 @@ class Token
         $this->value = $value;
         $this->purpose = $purpose;
         $this->createdAt = new DateTime();
-        $this->expiresAt = (new DateTime())->modify($duration);
+        $this->expiresAt = (new DateTime())->modify($validDuration);
+        $this->keepUntil = (clone $this->expiresAt)->modify($keepDuration);
         $this->allowedUsages = $allowedUsages;
         $this->payload = $payload;
         $this->createdInformation = $information;
@@ -169,6 +177,14 @@ class Token
     public function getExpiresAt()
     {
         return $this->expiresAt;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getKeepUntil()
+    {
+        return $this->keepUntil;
     }
 
     /**

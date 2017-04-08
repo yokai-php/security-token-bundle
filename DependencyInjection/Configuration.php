@@ -51,6 +51,9 @@ class Configuration implements ConfigurationInterface
                     ->integerNode('usages')
                         ->defaultValue(1)
                     ->end()
+                    ->scalarNode('keep')
+                        ->defaultValue('+1 month')
+                    ->end()
                 ->end()
             ->end()
         ;

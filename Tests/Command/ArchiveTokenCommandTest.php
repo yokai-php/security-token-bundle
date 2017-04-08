@@ -2,12 +2,10 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Command;
 
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 
@@ -66,36 +64,9 @@ class ArchiveTokenCommandTest extends KernelTestCase
     /**
      * @test
      */
-    public function it_archive_no_token_when_run_without_options_without_confirmation()
-    {
-        $command = $this->command();
-
-        $question = $this->createMock(QuestionHelper::class);
-        $question->expects($this->once())
-            ->method('ask')
-            ->willReturn(false);
-
-        $command->getHelperSet()->set($question, 'question');
-
-        $this->archivist->archive(Argument::any(), Argument::any())
-            ->shouldNotBeCalled();
-
-        $this->runCommand($command);
-    }
-
-    /**
-     * @test
-     */
     public function it_archive_every_token_when_run_without_options_with_confirmation()
     {
         $command = $this->command();
-
-        $question = $this->createMock(QuestionHelper::class);
-        $question->expects($this->once())
-            ->method('ask')
-            ->willReturn(true);
-
-        $command->getHelperSet()->set($question, 'question');
 
         $this->archivist->archive(null, null)
             ->shouldBeCalledTimes(1)
@@ -113,24 +84,11 @@ class ArchiveTokenCommandTest extends KernelTestCase
     {
         $command = $this->command();
 
-        $question = $this->createMock(QuestionHelper::class);
-        $question->expects($this->never())
-            ->method('ask');
-
-        $command->getHelperSet()->set($question, 'question');
-
-        $dateAssertions = Argument::allOf(
-            Argument::type(\DateTime::class),
-            Argument::that(function (\DateTime $date) {
-                return $date->format('Y') === (string) (date('Y') - 1);
-            })
-        );
-
-        $this->archivist->archive('init_password', $dateAssertions)
+        $this->archivist->archive('init_password', null)
             ->shouldBeCalledTimes(1)
             ->willReturn(10);
 
-        $output = $this->runCommand($command, ['purpose' => 'init_password', 'before' => '1 year']);
+        $output = $this->runCommand($command, ['purpose' => 'init_password']);
 
         self::assertContains('Successfully archived 10 security token(s).', $output);
     }

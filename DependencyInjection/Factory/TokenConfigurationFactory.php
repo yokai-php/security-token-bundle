@@ -16,11 +16,12 @@ class TokenConfigurationFactory
     /**
      * @param string           $purpose
      * @param string           $generator
-     * @param integer          $duration
+     * @param string           $duration
      * @param integer          $usages
+     * @param string           $keep
      * @param ContainerBuilder $container
      */
-    public static function create($purpose, $generator, $duration, $usages, ContainerBuilder $container)
+    public static function create($purpose, $generator, $duration, $usages, $keep, ContainerBuilder $container)
     {
         $id = sprintf('yokai_security_token.configuration.%s', $purpose);
 
@@ -41,7 +42,8 @@ class TokenConfigurationFactory
                 $purpose,
                 new Reference($generator),
                 $duration,
-                $usages
+                $usages,
+                $keep
             ]
         );
 
