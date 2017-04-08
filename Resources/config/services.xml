@@ -13,13 +13,6 @@
             <argument>Yokai\SecurityTokenBundle\Entity\Token</argument>
         </service>
 
-        <service id="yokai_security_token.token_usage_entity_repository"
-                 class="Doctrine\ORM\EntityRepository"
-                 public="false">
-            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
-            <argument>Yokai\SecurityTokenBundle\Entity\TokenUsage</argument>
-        </service>
-
         <service id="yokai_security_token.configuration_registry"
                  class="Yokai\SecurityTokenBundle\Configuration\TokenConfigurationRegistry"
                  public="false">
@@ -67,7 +60,6 @@
         <service id="yokai_security_token.delete_archivist"
                  class="Yokai\SecurityTokenBundle\Archive\DeleteArchivist">
             <argument type="service" id="yokai_security_token.token_entity_repository"/>
-            <argument type="service" id="yokai_security_token.token_usage_entity_repository"/>
         </service>
 
     </services>

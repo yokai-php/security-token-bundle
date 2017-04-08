@@ -9,6 +9,7 @@
             <index columns="user_class,user_id"/>
             <index columns="created_at"/>
             <index columns="expires_at"/>
+            <index columns="keep_until"/>
         </indexes>
 
         <unique-constraints>
@@ -27,6 +28,7 @@
         <field name="createdAt"          column="created_at"          type="datetime"   nullable="false"             />
         <field name="createdInformation" column="created_information" type="json_array" nullable="false"             />
         <field name="expiresAt"          column="expires_at"          type="datetime"   nullable="false"             />
+        <field name="keepUntil"          column="keep_until"          type="datetime"   nullable="false"             />
         <field name="allowedUsages"      column="allowed_usages"      type="integer"    nullable="false"             />
 
         <one-to-many field="usages" target-entity="Yokai\SecurityTokenBundle\Entity\TokenUsage" mapped-by="token">

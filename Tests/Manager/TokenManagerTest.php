@@ -88,6 +88,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             'unique-token-1',
             'reset-password',
             '+1 day',
+            '+1 month',
             ['payload', 'information'],
             []
         );
@@ -97,6 +98,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             'unique-token-2',
             'reset-password',
             '+1 day',
+            '+1 month',
             ['payload', 'information'],
             ['created', 'information']
         );
@@ -127,7 +129,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_consume_token()
     {
-        $token = new Token('string', 'jdoe','unique-token', 'reset-password',  '+1 day');
+        $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month');
 
         $this->informationGuesser->get()
             ->shouldBeCalledTimes(1)
@@ -151,7 +153,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_extract_user_from_token()
     {
-        $token = new Token('string', 'jdoe','unique-token', 'reset-password',  '+1 day', []);
+        $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', []);
 
         $this->userManager->get('string', 'jdoe')
             ->shouldBeCalledTimes(1)

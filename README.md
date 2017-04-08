@@ -53,14 +53,16 @@ Then you can configure all the tokens your applications aims to create.
 Each token can have following options :
 
 - `generator` : a service id that implements [`Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface`](Generator/TokenGeneratorInterface)
-- `duration` : a valid [`DateTime::modify`](php.net/manual/datetime.modify.php) argument
+- `duration` : a valid [`DateTime::modify`](php.net/manual/datetime.modify.php) argument that represent the validity duration for tokens of this type
 - `usages` : an integer that represent the number of allowed usages for tokens of this type
+- `keep` : a valid [`DateTime::modify`](php.net/manual/datetime.modify.php) argument that represent the keep duration for tokens of this type
 
 Default values fallback to :
 
 - `generator` : [`yokai_security_token.open_ssl_token_generator`](Generator/OpenSslTokenGenerator)
 - `duration` : `+2 days`
 - `usages` : `1`
+- `keep` : `+1 month`
 
 
 Usage
@@ -164,6 +166,16 @@ returning it when succeed, and throwing exceptions if something wrong :
 - Token already used
 
 The `Token Manager` service then mark the Token as used, so it cannot be used twice.
+
+
+Commands
+--------
+
+This bundle provide a simple command to archive obsolete tokens, so you can keep your database clean as possible.
+
+```bash
+$ path/to/symfony/console yokai:security-token:archive
+```
 
 
 MIT License

@@ -70,8 +70,8 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         $user2 = 'user-2';
 
         $configuration = [
-            new TokenConfiguration('test-1', $generator1->reveal(), '+1 minute', 1),
-            new TokenConfiguration('test-2', $generator2->reveal(), '+2 minute', 1),
+            new TokenConfiguration('test-1', $generator1->reveal(), '+1 minute', 1, '+1 month'),
+            new TokenConfiguration('test-2', $generator2->reveal(), '+2 minute', 1, '+1 month'),
         ];
 
         $this->userManager->getClass($user1)
@@ -103,6 +103,7 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertSame('uniquetoken-1', $token1->getValue());
         self::assertInstanceOf(DateTime::class, $token1->getCreatedAt());
         self::assertInstanceOf(DateTime::class, $token1->getExpiresAt());
+        self::assertInstanceOf(DateTime::class, $token1->getKeepUntil());
         self::assertCount(0, $token1->getUsages());
         self::assertSame(0, $token1->getCountUsages());
         self::assertFalse($token1->isUsed());
@@ -118,6 +119,7 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertSame('uniquetoken-2', $token2->getValue());
         self::assertInstanceOf(DateTime::class, $token2->getCreatedAt());
         self::assertInstanceOf(DateTime::class, $token2->getExpiresAt());
+        self::assertInstanceOf(DateTime::class, $token2->getKeepUntil());
         self::assertCount(0, $token2->getUsages());
         self::assertSame(0, $token2->getCountUsages());
         self::assertFalse($token1->isUsed());

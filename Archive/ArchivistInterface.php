@@ -11,7 +11,7 @@ interface ArchivistInterface
 {
     /**
      * @param string|null   $purpose
-     * @param DateTime|null $before
+     * @param DateTime|null $before  @deprecated since version 2.2 and will be removed in 3.0.
      *
      * @return integer
      */

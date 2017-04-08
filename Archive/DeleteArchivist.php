@@ -16,18 +16,11 @@ class DeleteArchivist implements ArchivistInterface
     private $tokenRepository;
 
     /**
-     * @var EntityRepository
-     */
-    private $tokenUsageRepository;
-
-    /**
      * @param EntityRepository $tokenRepository
-     * @param EntityRepository $tokenUsageRepository
      */
-    public function __construct(EntityRepository $tokenRepository, EntityRepository $tokenUsageRepository)
+    public function __construct(EntityRepository $tokenRepository)
     {
         $this->tokenRepository = $tokenRepository;
-        $this->tokenUsageRepository = $tokenUsageRepository;
     }
 
     /**
@@ -35,25 +28,26 @@ class DeleteArchivist implements ArchivistInterface
      */
     public function archive($purpose = null, DateTime $before = null)
     {
+        if (null !== $before) {
+            @trigger_error(
+                'The "before" argument of the "'.__METHOD__
+                .'" method is deprecated since version 2.2 and will be removed in 3.0.',
+                E_USER_DEPRECATED
+            );
+        }
+
         $builder = $this->tokenRepository->createQueryBuilder('token')
             ->delete($this->tokenRepository->getClassName(), 'token');
 
-        $subBuilder = $this->tokenUsageRepository->createQueryBuilder('token_usage')
-            ->select('token_usage.id');
-
-        $builder->where($builder->expr()->in('token.id', $subBuilder->getDQL()));
+        $builder
+            ->where($builder->expr()->lt('token.keepUntil', ':now'))
+            ->setParameter('now', new DateTime())
+        ;
 
         if ($purpose) {
             $builder
                 ->andWhere($builder->expr()->eq('token.purpose', ':purpose'))
                 ->setParameter('purpose', $purpose)
-            ;
-        }
-
-        if ($before) {
-            $builder
-                ->andWhere($builder->expr()->lt('token.createdAt', ':before'))
-                ->setParameter('before', $before)
             ;
         }
 
