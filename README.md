@@ -54,11 +54,13 @@ Each token can have following options :
 
 - `generator` : a service id that implements [`Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface`](Generator/TokenGeneratorInterface)
 - `duration` : a valid [`DateTime::modify`](php.net/manual/datetime.modify.php) argument
+- `usages` : an integer that represent the number of allowed usages for tokens of this type
 
 Default values fallback to :
 
 - `generator` : [`yokai_security_token.open_ssl_token_generator`](Generator/OpenSslTokenGenerator)
 - `duration` : `+2 days`
+- `usages` : `1`
 
 
 Usage

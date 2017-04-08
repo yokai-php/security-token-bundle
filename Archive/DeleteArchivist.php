@@ -13,14 +13,21 @@ class DeleteArchivist implements ArchivistInterface
     /**
      * @var EntityRepository
      */
-    private $repository;
+    private $tokenRepository;
 
     /**
-     * @param EntityRepository $repository
+     * @var EntityRepository
      */
-    public function __construct(EntityRepository $repository)
+    private $tokenUsageRepository;
+
+    /**
+     * @param EntityRepository $tokenRepository
+     * @param EntityRepository $tokenUsageRepository
+     */
+    public function __construct(EntityRepository $tokenRepository, EntityRepository $tokenUsageRepository)
     {
-        $this->repository = $repository;
+        $this->tokenRepository = $tokenRepository;
+        $this->tokenUsageRepository = $tokenUsageRepository;
     }
 
     /**
@@ -28,10 +35,13 @@ class DeleteArchivist implements ArchivistInterface
      */
     public function archive($purpose = null, DateTime $before = null)
     {
-        $builder = $this->repository->createQueryBuilder('token')
-            ->delete($this->repository->getClassName(), 'token');
+        $builder = $this->tokenRepository->createQueryBuilder('token')
+            ->delete($this->tokenRepository->getClassName(), 'token');
 
-        $builder->where($builder->expr()->isNotNull('token.usedAt'));
+        $subBuilder = $this->tokenUsageRepository->createQueryBuilder('token_usage')
+            ->select('token_usage.id');
+
+        $builder->where($builder->expr()->in('token.id', $subBuilder->getDQL()));
 
         if ($purpose) {
             $builder

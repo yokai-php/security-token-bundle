@@ -74,11 +74,27 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenUsedException
      */
-    public function it_throw_exception_if_token_used()
+    public function it_throw_exception_if_token_used_single_time()
     {
-        $token = new Token('string', 'jdoe','unique', 'init_password',  '+1 day', []);
-        $token->setUsedAt(new \DateTime());
-        $token->setUsedInformation(['info']);
+        $token = new Token('string', 'jdoe','unique', 'init_password',  '+1 day', 1);
+        $token->consume(['info'], new \DateTime());
+
+        $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
+            ->shouldBeCalledTimes(1)
+            ->willReturn($token);
+
+        $this->repository()->get('unique', 'init_password');
+    }
+
+    /**
+     * @test
+     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenUsedException
+     */
+    public function it_throw_exception_if_token_used_multiple_times()
+    {
+        $token = new Token('string', 'jdoe','unique', 'init_password',  '+1 day', 2);
+        $token->consume(['info'], new \DateTime());
+        $token->consume(['info'], new \DateTime());
 
         $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
             ->shouldBeCalledTimes(1)

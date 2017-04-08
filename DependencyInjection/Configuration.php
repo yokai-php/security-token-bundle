@@ -48,6 +48,9 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('duration')
                         ->defaultValue('+2 days')
                     ->end()
+                    ->integerNode('usages')
+                        ->defaultValue(1)
+                    ->end()
                 ->end()
             ->end()
         ;

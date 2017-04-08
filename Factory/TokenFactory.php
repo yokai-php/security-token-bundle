@@ -55,6 +55,7 @@ class TokenFactory implements TokenFactoryInterface
             $configuration->getGenerator()->generate(),
             $purpose,
             $configuration->getDuration(),
+            $configuration->getUsages(),
             $payload,
             $this->informationGuesser->get()
         );

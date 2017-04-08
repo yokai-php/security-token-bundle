@@ -25,15 +25,22 @@ class TokenConfiguration
     private $duration;
 
     /**
+     * @var integer
+     */
+    private $usages;
+
+    /**
      * @param string                  $purpose
      * @param TokenGeneratorInterface $generator
      * @param string                  $duration
+     * @param integer                 $usages
      */
-    public function __construct($purpose, TokenGeneratorInterface $generator, $duration)
+    public function __construct($purpose, TokenGeneratorInterface $generator, $duration, $usages)
     {
         $this->purpose = $purpose;
         $this->generator = $generator;
         $this->duration = $duration;
+        $this->usages = $usages;
     }
 
     /**
@@ -58,5 +65,13 @@ class TokenConfiguration
     public function getDuration()
     {
         return $this->duration;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUsages()
+    {
+        return $this->usages;
     }
 }

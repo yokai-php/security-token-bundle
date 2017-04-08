@@ -3,6 +3,9 @@
 namespace Yokai\SecurityTokenBundle\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use LogicException;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -50,28 +53,29 @@ class Token
     private $createdInformation = [];
 
     /**
+     * @var integer
+     */
+    private $allowedUsages;
+
+    /**
      * @var DateTime
      */
     private $expiresAt;
 
     /**
-     * @var DateTime|null
+     * @var Collection|TokenUsage[]
      */
-    private $usedAt;
+    private $usages;
 
     /**
-     * @var array
-     */
-    private $usedInformation;
-
-    /**
-     * @param string $userClass
-     * @param string $userId
-     * @param string $value
-     * @param string $purpose
-     * @param string $duration
-     * @param array  $payload
-     * @param array  $information
+     * @param string  $userClass
+     * @param string  $userId
+     * @param string  $value
+     * @param string  $purpose
+     * @param string  $duration
+     * @param integer $allowedUsages
+     * @param array   $payload
+     * @param array   $information
      */
     public function __construct(
         $userClass,
@@ -79,6 +83,7 @@ class Token
         $value,
         $purpose,
         $duration,
+        $allowedUsages = 1,
         array $payload = [],
         array $information = []
     ) {
@@ -88,8 +93,10 @@ class Token
         $this->purpose = $purpose;
         $this->createdAt = new DateTime();
         $this->expiresAt = (new DateTime())->modify($duration);
+        $this->allowedUsages = $allowedUsages;
         $this->payload = $payload;
         $this->createdInformation = $information;
+        $this->usages = new ArrayCollection();
     }
 
     /**
@@ -166,34 +173,76 @@ class Token
 
     /**
      * @return DateTime|null
+     *
+     * @deprecated since version 2.2 and will be removed in 3.0
      */
     public function getUsedAt()
     {
-        return $this->usedAt;
+        @trigger_error(
+            'The '.__METHOD__
+            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
+            E_USER_DEPRECATED
+        );
+
+        $usage = $this->getLastUsage();
+        if (null === $usage) {
+            return null;
+        }
+
+        return $usage->getCreatedAt();
     }
 
     /**
      * @param DateTime $usedAt
+     *
+     * @deprecated since version 2.2 and will be removed in 3.0
      */
     public function setUsedAt($usedAt)
     {
-        $this->usedAt = $usedAt;
+        @trigger_error(
+            'The '.__METHOD__
+            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
+            E_USER_DEPRECATED
+        );
+
+        $this->consume([], $usedAt);
     }
 
     /**
      * @return array
+     *
+     * @deprecated since version 2.2 and will be removed in 3.0
      */
     public function getUsedInformation()
     {
-        return $this->usedInformation;
+        @trigger_error(
+            'The '.__METHOD__
+            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
+            E_USER_DEPRECATED
+        );
+
+        $usage = $this->getLastUsage();
+        if (null === $usage) {
+            return null;
+        }
+
+        return $usage->getInformation();
     }
 
     /**
      * @param array $usedInformation
+     *
+     * @deprecated since version 2.2 and will be removed in 3.0
      */
     public function setUsedInformation($usedInformation)
     {
-        $this->usedInformation = $usedInformation;
+        @trigger_error(
+            'The '.__METHOD__
+            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
+            E_USER_DEPRECATED
+        );
+
+        $this->consume($usedInformation);
     }
 
     /**
@@ -209,6 +258,53 @@ class Token
      */
     public function isUsed()
     {
-        return null !== $this->usedAt;
+        return $this->getCountUsages() >= $this->getAllowedUsages();
+    }
+
+    /**
+     * @return int
+     */
+    public function getAllowedUsages()
+    {
+        return $this->allowedUsages;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountUsages()
+    {
+        return count($this->usages);
+    }
+
+    /**
+     * @return TokenUsage[]
+     */
+    public function getUsages()
+    {
+        return $this->usages->toArray();
+    }
+
+    /**
+     * @return TokenUsage|null
+     */
+    public function getLastUsage()
+    {
+        return $this->usages->last();
+    }
+
+    /**
+     * @param array         $information
+     * @param DateTime|null $date
+     */
+    public function consume(array $information, DateTime $date = null)
+    {
+        if ($this->isUsed()) {
+            throw new LogicException(
+                sprintf('Token "%d" is already used.', $this->id)
+            );
+        }
+
+        $this->usages->add(new TokenUsage($this, $information,$date));
     }
 }

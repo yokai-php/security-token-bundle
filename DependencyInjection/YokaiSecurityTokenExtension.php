@@ -34,7 +34,13 @@ class YokaiSecurityTokenExtension extends Extension
     private function registerTokens(array $config, ContainerBuilder $container)
     {
         foreach ($config['tokens'] as $name => $token) {
-            TokenConfigurationFactory::create($name, $token['generator'], $token['duration'], $container);
+            TokenConfigurationFactory::create(
+                $name,
+                $token['generator'],
+                $token['duration'],
+                $token['usages'],
+                $container
+            );
         }
     }
 

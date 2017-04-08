@@ -127,7 +127,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_consume_token()
     {
-        $token = new Token('string', 'jdoe','unique-token', 'reset-password',  '+1 day', []);
+        $token = new Token('string', 'jdoe','unique-token', 'reset-password',  '+1 day');
 
         $this->informationGuesser->get()
             ->shouldBeCalledTimes(1)
@@ -138,8 +138,12 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->manager()->setUsed($token);
 
-        self::assertSame(['some', 'precious', 'information'], $token->getUsedInformation());
-        self::assertInstanceOf(\DateTime::class, $token->getUsedAt());
+        self::assertCount(1, $token->getUsages());
+        self::assertSame(1, $token->getCountUsages());
+        self::assertTrue($token->isUsed());
+        self::assertNotNull($usage = $token->getLastUsage());
+        self::assertSame(['some', 'precious', 'information'], $usage->getInformation());
+        self::assertInstanceOf(\DateTime::class, $usage->getCreatedAt());
     }
 
     /**
