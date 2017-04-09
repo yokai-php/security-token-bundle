@@ -4,6 +4,9 @@ namespace Yokai\SecurityTokenBundle\Manager;
 
 use DateTime;
 use Yokai\SecurityTokenBundle\Entity\Token;
+use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
+use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
+use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -15,6 +18,10 @@ interface TokenManagerInterface
      * @param string $value
      *
      * @return Token
+     *
+     * @throws TokenNotFoundException if the token cannot be found
+     * @throws TokenExpiredException if the token is expired
+     * @throws TokenUsedException if the token is used
      */
     public function get($purpose, $value);
 

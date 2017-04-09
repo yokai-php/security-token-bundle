@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
@@ -53,6 +54,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         $this->container->setDefinition('doctrine.orm.default_metadata_driver', new Definition(MappingDriverChain::class));
         $this->container->setDefinition('doctrine.orm.default_configuration', new Definition(Configuration::class));
         $this->container->setDefinition('request_stack', new Definition(RequestStack::class));
+        $this->container->setDefinition('event_dispatcher', new Definition(EventDispatcher::class));
         $this->container->setParameter('doctrine.default_entity_manager', 'default');
 
         $mocks = [
