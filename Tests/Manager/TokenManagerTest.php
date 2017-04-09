@@ -15,6 +15,7 @@ use Yokai\SecurityTokenBundle\Event\TokenNotFoundEvent;
 use Yokai\SecurityTokenBundle\Event\TokenRetrievedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenTotallyConsumedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenUsedEvent;
+use Yokai\SecurityTokenBundle\EventDispatcher;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
@@ -82,7 +83,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             $this->repository->reveal(),
             $this->informationGuesser->reveal(),
             $this->userManager->reveal(),
-            $this->eventDispatcher->reveal()
+            new EventDispatcher($this->eventDispatcher->reveal())
         );
     }
 

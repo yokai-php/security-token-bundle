@@ -3,24 +3,14 @@
 namespace Yokai\SecurityTokenBundle\Manager;
 
 use DateTime;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
-use Yokai\SecurityTokenBundle\Event\ConsumeTokenEvent;
-use Yokai\SecurityTokenBundle\Event\CreateTokenEvent;
-use Yokai\SecurityTokenBundle\Event\TokenConsumedEvent;
-use Yokai\SecurityTokenBundle\Event\TokenCreatedEvent;
-use Yokai\SecurityTokenBundle\Event\TokenExpiredEvent;
-use Yokai\SecurityTokenBundle\Event\TokenNotFoundEvent;
-use Yokai\SecurityTokenBundle\Event\TokenRetrievedEvent;
-use Yokai\SecurityTokenBundle\Event\TokenTotallyConsumedEvent;
-use Yokai\SecurityTokenBundle\Event\TokenUsedEvent;
+use Yokai\SecurityTokenBundle\EventDispatcher;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
-use Yokai\SecurityTokenBundle\TokenEvents;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -48,7 +38,7 @@ class TokenManager implements TokenManagerInterface
     private $userManager;
 
     /**
-     * @var EventDispatcherInterface
+     * @var EventDispatcher
      */
     private $eventDispatcher;
 
@@ -57,14 +47,14 @@ class TokenManager implements TokenManagerInterface
      * @param TokenRepositoryInterface    $repository
      * @param InformationGuesserInterface $informationGuesser
      * @param UserManagerInterface        $userManager
-     * @param EventDispatcherInterface    $eventDispatcher
+     * @param EventDispatcher             $eventDispatcher
      */
     public function __construct(
         TokenFactoryInterface $factory,
         TokenRepositoryInterface $repository,
         InformationGuesserInterface $informationGuesser,
         UserManagerInterface $userManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcher $eventDispatcher
     ) {
         $this->factory = $factory;
         $this->repository = $repository;
@@ -81,20 +71,20 @@ class TokenManager implements TokenManagerInterface
         try {
             $token = $this->repository->get($value, $purpose);
         } catch (TokenNotFoundException $exception) {
-            $this->eventDispatcher->dispatch(TokenEvents::TOKEN_NOT_FOUND, new TokenNotFoundEvent($purpose, $value));
+            $this->eventDispatcher->tokenNotFound($purpose, $value);
 
             throw $exception;
         } catch (TokenExpiredException $exception) {
-            $this->eventDispatcher->dispatch(TokenEvents::TOKEN_EXPIRED, new TokenExpiredEvent($purpose, $value));
+            $this->eventDispatcher->tokenExpired($purpose, $value);
 
             throw $exception;
         } catch (TokenUsedException $exception) {
-            $this->eventDispatcher->dispatch(TokenEvents::TOKEN_USED, new TokenUsedEvent($purpose, $value));
+            $this->eventDispatcher->tokenUsed($purpose, $value);
 
             throw $exception;
         }
 
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_RETRIEVED, new TokenRetrievedEvent($token));
+        $this->eventDispatcher->tokenRetrieved($token);
 
         return $token;
     }
@@ -104,14 +94,13 @@ class TokenManager implements TokenManagerInterface
      */
     public function create($purpose, $user, array $payload = [])
     {
-        $event = new CreateTokenEvent($purpose, $user, $payload);
-        $this->eventDispatcher->dispatch(TokenEvents::CREATE_TOKEN, $event);
+        $event = $this->eventDispatcher->createToken($purpose, $user, $payload);
 
         $token = $this->factory->create($user, $purpose, $event->getPayload());
 
         $this->repository->create($token);
 
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_CREATED, new TokenCreatedEvent($token));
+        $this->eventDispatcher->tokenCreated($token);
 
         return $token;
     }
@@ -135,19 +124,15 @@ class TokenManager implements TokenManagerInterface
      */
     public function consume(Token $token, DateTime $at = null)
     {
-        $event = new ConsumeTokenEvent($token, $at, $this->informationGuesser->get());
-        $this->eventDispatcher->dispatch(TokenEvents::CONSUME_TOKEN, $event);
+        $event = $this->eventDispatcher->consumeToken($token, $at, $this->informationGuesser->get());
 
         $token->consume($event->getInformation(), $at);
 
         $this->repository->update($token);
 
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_CONSUMED, new TokenConsumedEvent($token));
+        $this->eventDispatcher->tokenConsumed($token);
         if ($token->isUsed()) {
-            $this->eventDispatcher->dispatch(
-                TokenEvents::TOKEN_TOTALLY_CONSUMED,
-                new TokenTotallyConsumedEvent($token)
-            );
+            $this->eventDispatcher->tokenTotallyConsumed($token);
         }
     }
 

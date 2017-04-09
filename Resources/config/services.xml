@@ -51,7 +51,7 @@
             <argument type="service" id="yokai_security_token.token_repository"/>
             <argument type="service" id="yokai_security_token.information_guesser"/>
             <argument type="service" id="yokai_security_token.user_manager"/>
-            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="yokai_security_token.event_dispatcher"/>
         </service>
 
         <service id="yokai_security_token.default_user_manager"
@@ -62,6 +62,11 @@
         <service id="yokai_security_token.delete_archivist"
                  class="Yokai\SecurityTokenBundle\Archive\DeleteArchivist">
             <argument type="service" id="yokai_security_token.token_entity_repository"/>
+        </service>
+
+        <service id="yokai_security_token.event_dispatcher"
+                 class="Yokai\SecurityTokenBundle\EventDispatcher">
+            <argument type="service" id="event_dispatcher"/>
         </service>
 
     </services>
