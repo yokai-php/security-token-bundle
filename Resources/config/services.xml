@@ -54,9 +54,15 @@
             <argument type="service" id="yokai_security_token.event_dispatcher"/>
         </service>
 
-        <service id="yokai_security_token.default_user_manager"
-                 class="Yokai\SecurityTokenBundle\Manager\UserManager">
+        <service id="yokai_security_token.user_manager"
+                 class="Yokai\SecurityTokenBundle\Manager\ChainUserManager">
+            <argument type="collection"/><!--to be replaced by compiler pass-->
+        </service>
+
+        <service id="yokai_security_token.doctrine_user_manager"
+                 class="Yokai\SecurityTokenBundle\Manager\DoctrineUserManager">
             <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            <tag name="yokai_security_token.user_manager"/>
         </service>
 
         <service id="yokai_security_token.delete_archivist"

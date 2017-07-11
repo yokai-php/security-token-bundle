@@ -14,5 +14,4 @@ yokai_security_token:
         token_factory: token_factory_mock
         token_repository: token_repository_mock
         token_manager: token_manager_mock
-        user_manager: user_manager_mock
         archivist: archivist_mock
