@@ -35,19 +35,26 @@ class TokenConfiguration
     private $keep;
 
     /**
+     * @var bool
+     */
+    private $unique;
+
+    /**
      * @param string                  $purpose
      * @param TokenGeneratorInterface $generator
      * @param string                  $duration
      * @param integer                 $usages
      * @param string                  $keep
+     * @param boolean                 $unique
      */
-    public function __construct($purpose, TokenGeneratorInterface $generator, $duration, $usages, $keep)
+    public function __construct($purpose, TokenGeneratorInterface $generator, $duration, $usages, $keep, $unique)
     {
         $this->purpose = $purpose;
         $this->generator = $generator;
         $this->duration = $duration;
         $this->usages = $usages;
         $this->keep = $keep;
+        $this->unique = $unique;
     }
 
     /**
@@ -88,5 +95,13 @@ class TokenConfiguration
     public function getKeep()
     {
         return $this->keep;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnique()
+    {
+        return $this->unique;
     }
 }

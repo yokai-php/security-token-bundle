@@ -40,6 +40,7 @@ class YokaiSecurityTokenExtension extends Extension
                 $token['duration'],
                 $token['usages'],
                 $token['keep'],
+                $token['unique'],
                 $container
             );
         }

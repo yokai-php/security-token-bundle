@@ -74,10 +74,35 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls('existtoken-2', 'uniquetoken-2'));
         $user2 = 'user-2';
 
+        $generator3 = $this->createMock(TokenGeneratorInterface::class);
+        $generator3->method('generate')
+            ->will($this->onConsecutiveCalls('existtoken-3', 'uniquetoken-3'));
+        $user3 = 'user-3';
+        $token3FromRepository = new Token(
+            'string',
+            $user3,
+            'uniquetoken-3',
+            'test-3',
+            '+2 minute',
+            '+1 month',
+            1,
+            [],
+            []
+        );
+
         $configuration = [
-            new TokenConfiguration('test-1', $generator1, '+1 minute', 1, '+1 month'),
-            new TokenConfiguration('test-2', $generator2, '+2 minute', 1, '+1 month'),
+            new TokenConfiguration('test-1', $generator1, '+1 minute', 1, '+1 month', false),
+            new TokenConfiguration('test-2', $generator2, '+2 minute', 1, '+1 month', false),
+            new TokenConfiguration('test-3', $generator3, '+2 minute', 1, '+1 month', true),
         ];
+
+        $this->repository->findExisting('string', 'u1', 'test-1')
+            ->shouldNotBeCalled();
+        $this->repository->findExisting('string', 'u2', 'test-2')
+            ->shouldNotBeCalled();
+        $this->repository->findExisting('string', 'u3', 'test-3')
+            ->shouldBeCalledTimes(1)
+            ->willReturn($token3FromRepository);
 
         $this->repository->exists('existtoken-1', 'test-1')
             ->shouldBeCalledTimes(1)
@@ -91,11 +116,18 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         $this->repository->exists('uniquetoken-2', 'test-2')
             ->shouldBeCalledTimes(1)
             ->willReturn(false);
+        $this->repository->exists('existtoken-3', 'test-3')
+            ->shouldNotBeCalled();
+        $this->repository->exists('uniquetoken-3', 'test-3')
+            ->shouldNotBeCalled();
 
         $this->userManager->getClass($user1)
             ->shouldBeCalledTimes(1)
             ->willReturn('string');
         $this->userManager->getClass($user2)
+            ->shouldBeCalledTimes(1)
+            ->willReturn('string');
+        $this->userManager->getClass($user3)
             ->shouldBeCalledTimes(1)
             ->willReturn('string');
 
@@ -105,6 +137,9 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         $this->userManager->getId($user2)
             ->shouldBeCalledTimes(1)
             ->willReturn('u2');
+        $this->userManager->getId($user3)
+            ->shouldBeCalledTimes(1)
+            ->willReturn('u3');
 
         $this->informationGuesser->get()
             ->shouldBeCalledTimes(2)
@@ -141,5 +176,9 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertCount(0, $token2->getUsages());
         self::assertSame(0, $token2->getCountUsages());
         self::assertFalse($token1->isUsed());
+
+        $token3 = $this->factory($configuration)->create($user3, 'test-3', ['payload', 'information']);
+
+        self::assertSame($token3FromRepository, $token3);
     }
 }
