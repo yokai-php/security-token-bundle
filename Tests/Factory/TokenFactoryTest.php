@@ -11,6 +11,7 @@ use Yokai\SecurityTokenBundle\Factory\TokenFactory;
 use Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
+use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -27,17 +28,24 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
      */
     private $userManager;
 
+    /**
+     * @var TokenRepositoryInterface|ObjectProphecy
+     */
+    private $repository;
+
     protected function setUp()
     {
         $this->informationGuesser = $this->prophesize(InformationGuesserInterface::class);
         $this->userManager = $this->prophesize(UserManagerInterface::class);
+        $this->repository = $this->prophesize(TokenRepositoryInterface::class);
     }
 
     protected function tearDown()
     {
         unset(
             $this->informationGuesser,
-            $this->userManager
+            $this->userManager,
+            $this->repository
         );
     }
 
@@ -46,7 +54,8 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         return new TokenFactory(
             new TokenConfigurationRegistry($configuration),
             $this->informationGuesser->reveal(),
-            $this->userManager->reveal()
+            $this->userManager->reveal(),
+            $this->repository->reveal()
         );
     }
 
@@ -55,24 +64,33 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function it_create_token_according_to_configuration()
     {
-        /** @var TokenGeneratorInterface|ObjectProphecy $generator */
-        $generator1 = $this->prophesize(TokenGeneratorInterface::class);
-        $generator1->generate()
-            ->shouldBeCalledTimes(1)
-            ->willReturn('uniquetoken-1');
+        $generator1 = $this->createMock(TokenGeneratorInterface::class);
+        $generator1->method('generate')
+            ->will($this->onConsecutiveCalls('existtoken-1', 'uniquetoken-1'));
         $user1 = 'user-1';
 
-        /** @var TokenGeneratorInterface|ObjectProphecy $generator */
-        $generator2 = $this->prophesize(TokenGeneratorInterface::class);
-        $generator2->generate()
-            ->shouldBeCalledTimes(1)
-            ->willReturn('uniquetoken-2');
+        $generator2 = $this->createMock(TokenGeneratorInterface::class);
+        $generator2->method('generate')
+            ->will($this->onConsecutiveCalls('existtoken-2', 'uniquetoken-2'));
         $user2 = 'user-2';
 
         $configuration = [
-            new TokenConfiguration('test-1', $generator1->reveal(), '+1 minute', 1, '+1 month'),
-            new TokenConfiguration('test-2', $generator2->reveal(), '+2 minute', 1, '+1 month'),
+            new TokenConfiguration('test-1', $generator1, '+1 minute', 1, '+1 month'),
+            new TokenConfiguration('test-2', $generator2, '+2 minute', 1, '+1 month'),
         ];
+
+        $this->repository->exists('existtoken-1', 'test-1')
+            ->shouldBeCalledTimes(1)
+            ->willReturn(true);
+        $this->repository->exists('uniquetoken-1', 'test-1')
+            ->shouldBeCalledTimes(1)
+            ->willReturn(false);
+        $this->repository->exists('existtoken-2', 'test-2')
+            ->shouldBeCalledTimes(1)
+            ->willReturn(true);
+        $this->repository->exists('uniquetoken-2', 'test-2')
+            ->shouldBeCalledTimes(1)
+            ->willReturn(false);
 
         $this->userManager->getClass($user1)
             ->shouldBeCalledTimes(1)

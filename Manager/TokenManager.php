@@ -4,6 +4,10 @@ namespace Yokai\SecurityTokenBundle\Manager;
 
 use DateTime;
 use Yokai\SecurityTokenBundle\Entity\Token;
+use Yokai\SecurityTokenBundle\EventDispatcher;
+use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
+use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
+use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
@@ -34,21 +38,29 @@ class TokenManager implements TokenManagerInterface
     private $userManager;
 
     /**
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
      * @param TokenFactoryInterface       $factory
      * @param TokenRepositoryInterface    $repository
      * @param InformationGuesserInterface $informationGuesser
      * @param UserManagerInterface        $userManager
+     * @param EventDispatcher             $eventDispatcher
      */
     public function __construct(
         TokenFactoryInterface $factory,
         TokenRepositoryInterface $repository,
         InformationGuesserInterface $informationGuesser,
-        UserManagerInterface $userManager
+        UserManagerInterface $userManager,
+        EventDispatcher $eventDispatcher
     ) {
         $this->factory = $factory;
         $this->repository = $repository;
         $this->informationGuesser = $informationGuesser;
         $this->userManager = $userManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -56,7 +68,25 @@ class TokenManager implements TokenManagerInterface
      */
     public function get($purpose, $value)
     {
-        return $this->repository->get($value, $purpose);
+        try {
+            $token = $this->repository->get($value, $purpose);
+        } catch (TokenNotFoundException $exception) {
+            $this->eventDispatcher->tokenNotFound($purpose, $value);
+
+            throw $exception;
+        } catch (TokenExpiredException $exception) {
+            $this->eventDispatcher->tokenExpired($purpose, $value);
+
+            throw $exception;
+        } catch (TokenUsedException $exception) {
+            $this->eventDispatcher->tokenUsed($purpose, $value);
+
+            throw $exception;
+        }
+
+        $this->eventDispatcher->tokenRetrieved($token);
+
+        return $token;
     }
 
     /**
@@ -64,11 +94,13 @@ class TokenManager implements TokenManagerInterface
      */
     public function create($purpose, $user, array $payload = [])
     {
-        do {
-            $token = $this->factory->create($user, $purpose, $payload);
-        } while ($this->repository->exists($token->getValue(), $purpose));
+        $event = $this->eventDispatcher->createToken($purpose, $user, $payload);
+
+        $token = $this->factory->create($user, $purpose, $event->getPayload());
 
         $this->repository->create($token);
+
+        $this->eventDispatcher->tokenCreated($token);
 
         return $token;
     }
@@ -92,9 +124,16 @@ class TokenManager implements TokenManagerInterface
      */
     public function consume(Token $token, DateTime $at = null)
     {
-        $token->consume($this->informationGuesser->get(), $at);
+        $event = $this->eventDispatcher->consumeToken($token, $at, $this->informationGuesser->get());
+
+        $token->consume($event->getInformation(), $at);
 
         $this->repository->update($token);
+
+        $this->eventDispatcher->tokenConsumed($token);
+        if ($token->isUsed()) {
+            $this->eventDispatcher->tokenTotallyConsumed($token);
+        }
     }
 
     /**
