@@ -5,6 +5,7 @@ namespace Yokai\SecurityTokenBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Yokai\DependencyInjection\CompilerPass\ArgumentRegisterTaggedServicesCompilerPass;
+use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -16,15 +17,22 @@ class YokaiSecurityTokenBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
+        $registerTokenConfiguration = new ArgumentRegisterTaggedServicesCompilerPass(
+            'yokai_security_token.configuration_registry',
+            'yokai_security_token.configuration',
+            null,
+            0
+        );
+        $registerUserManager = new ArgumentRegisterTaggedServicesCompilerPass(
+            'yokai_security_token.user_manager',
+            'yokai_security_token.user_manager',
+            UserManagerInterface::class,
+            0
+        );
+
         $container
-            ->addCompilerPass(
-                new ArgumentRegisterTaggedServicesCompilerPass(
-                    'yokai_security_token.configuration_registry',
-                    'yokai_security_token.configuration',
-                    null,
-                    0
-                )
-            )
+            ->addCompilerPass($registerTokenConfiguration)
+            ->addCompilerPass($registerUserManager)
         ;
     }
 }

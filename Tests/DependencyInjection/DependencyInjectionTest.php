@@ -90,7 +90,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
                 $container->findDefinition('yokai_security_token.default_token_factory')->setPublic(true);
                 $container->findDefinition('yokai_security_token.default_token_repository')->setPublic(true);
                 $container->findDefinition('yokai_security_token.default_token_manager')->setPublic(true);
-                $container->findDefinition('yokai_security_token.default_user_manager')->setPublic(true);
+                $container->findDefinition('yokai_security_token.user_manager')->setPublic(true);
                 $container->findDefinition('yokai_security_token.delete_archivist')->setPublic(true);
             }
         });
@@ -150,7 +150,6 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
             'yokai_security_token.token_factory' => 'yokai_security_token.default_token_factory',
             'yokai_security_token.token_repository' => 'yokai_security_token.default_token_repository',
             'yokai_security_token.token_manager' => 'yokai_security_token.default_token_manager',
-            'yokai_security_token.user_manager' => 'yokai_security_token.default_user_manager',
             'yokai_security_token.archivist' => 'yokai_security_token.delete_archivist',
         ];
 
@@ -199,7 +198,6 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
                     'yokai_security_token.token_factory' => 'token_factory_mock',
                     'yokai_security_token.token_repository' => 'token_repository_mock',
                     'yokai_security_token.token_manager' => 'token_manager_mock',
-                    'yokai_security_token.user_manager' => 'user_manager_mock',
                     'yokai_security_token.archivist' => 'archivist_mock',
                 ],
             ];

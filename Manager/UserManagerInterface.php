@@ -9,6 +9,20 @@ interface UserManagerInterface
 {
     /**
      * @param string $class
+     *
+     * @return boolean
+     */
+    public function supportsClass($class);
+
+    /**
+     * @param mixed $user
+     *
+     * @return boolean
+     */
+    public function supportsUser($user);
+
+    /**
+     * @param string $class
      * @param string $id
      *
      * @return mixed
