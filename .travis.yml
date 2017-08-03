@@ -3,14 +3,16 @@ language: php
 php:
   - 7.0
   - 7.1
+  - 7.2
 
 env:
   - SYMFONY_VERSION="2.7.*"
   - SYMFONY_VERSION="2.8.*"
   - SYMFONY_VERSION="3.0.*"
   - SYMFONY_VERSION="3.1.*"
-  - SYMFONY_VERSION="3.2"
-  - SYMFONY_VERSION="3.3.x-dev as 3.3"
+  - SYMFONY_VERSION="3.2.*"
+  - SYMFONY_VERSION="3.3.*"
+  - SYMFONY_VERSION="dev-master@dev"
 
 sudo: false
 
