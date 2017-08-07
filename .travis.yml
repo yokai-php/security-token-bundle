@@ -12,7 +12,7 @@ env:
   - SYMFONY_VERSION="3.1.*"
   - SYMFONY_VERSION="3.2.*"
   - SYMFONY_VERSION="3.3.*"
-  - SYMFONY_VERSION="dev-master@dev"
+  - SYMFONY_VERSION="3.4.x-dev"
 
 sudo: false
 
