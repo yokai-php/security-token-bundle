@@ -14,6 +14,13 @@ env:
   - SYMFONY_VERSION="3.3.*"
   - SYMFONY_VERSION="3.4.x-dev"
 
+matrix:
+  exclude:
+    - php: 7.0
+      env: SYMFONY_VERSION="3.4.x-dev" # Symfony >= 3.4 PHP requirement is ^7.1.3
+  allow_failures:
+    - env: SYMFONY_VERSION="3.4.x-dev" # Symfony unstable version, allowed to fail
+
 sudo: false
 
 cache:
