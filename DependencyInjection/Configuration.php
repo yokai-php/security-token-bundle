@@ -54,6 +54,9 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('keep')
                         ->defaultValue('+1 month')
                     ->end()
+                    ->booleanNode('unique')
+                        ->defaultValue(false)
+                    ->end()
                 ->end()
             ->end()
         ;

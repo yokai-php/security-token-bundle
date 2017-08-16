@@ -60,6 +60,20 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function findExisting($userClass, $userId, $purpose)
+    {
+        return $this->repository->findOneBy(
+            [
+                'userClass' => $userClass,
+                'userId' => $userId,
+                'purpose' => $purpose,
+            ]
+        );
+    }
+
+    /**
      * @inheritdoc
      */
     public function create(Token $token)

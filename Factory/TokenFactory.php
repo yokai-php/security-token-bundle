@@ -58,20 +58,26 @@ class TokenFactory implements TokenFactoryInterface
     {
         $configuration = $this->registry->get($purpose);
 
+        $userClass = $this->userManager->getClass($user);
+        $userId = $this->userManager->getId($user);
+
+        if ($configuration->isUnique()) {
+            $token = $this->repository->findExisting($userClass, $userId, $purpose);
+
+            if ($token instanceof Token) {
+                return $token;
+            }
+        }
+
         do {
             $value = $configuration->getGenerator()->generate();
         } while ($this->repository->exists($value, $purpose));
 
-        return new Token(
-            $this->userManager->getClass($user),
-            $this->userManager->getId($user),
-            $value,
-            $purpose,
-            $configuration->getDuration(),
-            $configuration->getKeep(),
-            $configuration->getUsages(),
-            $payload,
-            $this->informationGuesser->get()
-        );
+        $duration = $configuration->getDuration();
+        $keep = $configuration->getKeep();
+        $usages = $configuration->getUsages();
+        $information = $this->informationGuesser->get();
+
+        return new Token($userClass, $userId, $value, $purpose, $duration, $keep, $usages, $payload, $information);
     }
 }

@@ -25,6 +25,15 @@ interface TokenRepositoryInterface
     public function get($value, $purpose);
 
     /**
+     * @param string $userClass
+     * @param string $userId
+     * @param string $purpose
+     *
+     * @return Token|null
+     */
+    public function findExisting($userClass, $userId, $purpose);
+
+    /**
      * @param string $value
      * @param string $purpose
      *
