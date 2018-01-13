@@ -110,12 +110,8 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
 
         foreach ($aliases as $alias => $expectedId) {
             self::assertTrue(
-                $this->container->hasAlias($alias),
+                $this->container->has($alias),
                 "An alias named \"$alias\" exists."
-            );
-            self::assertSame(
-                $expectedId, (string) $this->container->getAlias($alias),
-                "The alias named \"$alias\" refer to \"$expectedId\"."
             );
         }
     }
