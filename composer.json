@@ -22,6 +22,11 @@
     "autoload": {
         "psr-4": { "Yokai\\SecurityTokenBundle\\": "" }
     },
+    "autoload-dev": {
+        "files": [
+            "Tests/app/YokaiSecurityTokenTestKernel.php"
+        ]
+    },
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
