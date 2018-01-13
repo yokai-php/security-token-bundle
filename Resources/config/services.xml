@@ -82,7 +82,7 @@
 
         <service id="yokai_security_token.command.archive"
                  class="Yokai\SecurityTokenBundle\Command\ArchiveTokenCommand"
-                 public="false">
+                 public="true">
             <tag name="console.command"/>
         </service>
 
