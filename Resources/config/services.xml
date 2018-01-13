@@ -75,6 +75,11 @@
             <argument type="service" id="event_dispatcher"/>
         </service>
 
+        <service id="yokai_security_token.command.archive"
+                 class="Yokai\SecurityTokenBundle\Command\ArchiveTokenCommand">
+            <tag name="console.command"/>
+        </service>
+
     </services>
 
 </container>
