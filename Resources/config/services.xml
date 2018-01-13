@@ -46,7 +46,8 @@
         </service>
 
         <service id="yokai_security_token.default_token_manager"
-                 class="Yokai\SecurityTokenBundle\Manager\TokenManager">
+                 class="Yokai\SecurityTokenBundle\Manager\TokenManager"
+                 public="false">
             <argument type="service" id="yokai_security_token.token_factory"/>
             <argument type="service" id="yokai_security_token.token_repository"/>
             <argument type="service" id="yokai_security_token.information_guesser"/>
@@ -55,28 +56,33 @@
         </service>
 
         <service id="yokai_security_token.user_manager"
-                 class="Yokai\SecurityTokenBundle\Manager\ChainUserManager">
+                 class="Yokai\SecurityTokenBundle\Manager\ChainUserManager"
+                 public="false">
             <argument type="collection"/><!--to be replaced by compiler pass-->
         </service>
 
         <service id="yokai_security_token.doctrine_user_manager"
-                 class="Yokai\SecurityTokenBundle\Manager\DoctrineUserManager">
+                 class="Yokai\SecurityTokenBundle\Manager\DoctrineUserManager"
+                 public="false">
             <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <tag name="yokai_security_token.user_manager"/>
         </service>
 
         <service id="yokai_security_token.delete_archivist"
-                 class="Yokai\SecurityTokenBundle\Archive\DeleteArchivist">
+                 class="Yokai\SecurityTokenBundle\Archive\DeleteArchivist"
+                 public="false">
             <argument type="service" id="yokai_security_token.token_entity_repository"/>
         </service>
 
         <service id="yokai_security_token.event_dispatcher"
-                 class="Yokai\SecurityTokenBundle\EventDispatcher">
+                 class="Yokai\SecurityTokenBundle\EventDispatcher"
+                 public="false">
             <argument type="service" id="event_dispatcher"/>
         </service>
 
         <service id="yokai_security_token.command.archive"
-                 class="Yokai\SecurityTokenBundle\Command\ArchiveTokenCommand">
+                 class="Yokai\SecurityTokenBundle\Command\ArchiveTokenCommand"
+                 public="false">
             <tag name="console.command"/>
         </service>
 
