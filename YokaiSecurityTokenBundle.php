@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle;
 
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Yokai\DependencyInjection\CompilerPass\ArgumentRegisterTaggedServicesCompilerPass;
@@ -34,5 +35,13 @@ class YokaiSecurityTokenBundle extends Bundle
             ->addCompilerPass($registerTokenConfiguration)
             ->addCompilerPass($registerUserManager)
         ;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function registerCommands(Application $application)
+    {
+        // commands are registered as services
     }
 }

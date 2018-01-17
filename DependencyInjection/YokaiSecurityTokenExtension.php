@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -53,7 +54,10 @@ class YokaiSecurityTokenExtension extends Extension
     private function registerAliases(array $config, ContainerBuilder $container)
     {
         foreach ($config['services'] as $name => $service) {
-            $container->setAlias(sprintf('yokai_security_token.%s', $name), $service);
+            $alias = $container->setAlias(sprintf('yokai_security_token.%s', $name), $service);
+            if (class_exists('Symfony\Component\DependencyInjection\Alias') && $alias instanceof Alias) {
+                $alias->setPublic(true);
+            }
         }
     }
 }

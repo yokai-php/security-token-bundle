@@ -1,6 +1,6 @@
 {
     "name": "yokai/security-token-bundle",
-    "description": "Handle security token creation in a Symfony application",
+    "description": "Handle security token manipulation in a Symfony application",
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +11,7 @@
     "require": {
         "php": ">=7.0",
         "ext-openssl": "*",
-        "symfony/framework-bundle": "~2.7|~3.0",
+        "symfony/framework-bundle": "~2.7|~3.0|~4.0",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "yokai/dependency-injection": "~1.0"
@@ -21,6 +21,11 @@
     },
     "autoload": {
         "psr-4": { "Yokai\\SecurityTokenBundle\\": "" }
+    },
+    "autoload-dev": {
+        "files": [
+            "Tests/app/YokaiSecurityTokenTestKernel.php"
+        ]
     },
     "minimum-stability": "stable",
     "extra": {
