@@ -49,6 +49,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
 
         $this->container->setParameter('kernel.debug', true);
         $this->container->setParameter('kernel.bundles', $bundles);
+        $this->container->setParameter('kernel.environment', 'test');
         $this->container->set('logger', $this->prophesize(LoggerInterface::class)->reveal());
         $this->container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
         $this->container->setDefinition('doctrine.orm.default_metadata_driver', new Definition(MappingDriverChain::class));
