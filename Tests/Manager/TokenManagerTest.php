@@ -8,17 +8,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Event\ConsumeTokenEvent;
 use Yokai\SecurityTokenBundle\Event\CreateTokenEvent;
+use Yokai\SecurityTokenBundle\Event\TokenAlreadyConsumedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenConsumedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenCreatedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenExpiredEvent;
 use Yokai\SecurityTokenBundle\Event\TokenNotFoundEvent;
 use Yokai\SecurityTokenBundle\Event\TokenRetrievedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenTotallyConsumedEvent;
-use Yokai\SecurityTokenBundle\Event\TokenUsedEvent;
 use Yokai\SecurityTokenBundle\EventDispatcher;
+use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Manager\TokenManager;
@@ -131,20 +131,20 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenUsedException
+     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenConsumedException
      */
     public function it_dispatch_used_exceptions_on_get_token_from_repository()
     {
         $this->repository->get('unique-token', 'forgot_password')
             ->shouldBeCalledTimes(1)
-            ->willThrow(TokenUsedException::create('unique-token', 'forgot_password', 3));
+            ->willThrow(TokenConsumedException::create('unique-token', 'forgot_password', 3));
 
-        $usedEvent = Argument::allOf(
-            Argument::type(TokenUsedEvent::class),
+        $alreadyConsumedEvent = Argument::allOf(
+            Argument::type(TokenAlreadyConsumedEvent::class),
             Argument::which('getPurpose', 'forgot_password'),
             Argument::which('getValue', 'unique-token')
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_USED, $usedEvent)
+        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_USED, $alreadyConsumedEvent)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->get('forgot_password', 'unique-token');
@@ -255,7 +255,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
 
         self::assertCount(1, $token->getUsages());
         self::assertSame(1, $token->getCountUsages());
-        self::assertTrue($token->isUsed());
+        self::assertTrue($token->isConsumed());
         self::assertNotNull($usage = $token->getLastUsage());
         self::assertSame(['some', 'precious', 'information'], $usage->getInformation());
         self::assertInstanceOf(\DateTime::class, $usage->getCreatedAt());

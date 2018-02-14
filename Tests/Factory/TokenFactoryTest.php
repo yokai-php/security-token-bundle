@@ -159,7 +159,7 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(DateTime::class, $token1->getKeepUntil());
         self::assertCount(0, $token1->getUsages());
         self::assertSame(0, $token1->getCountUsages());
-        self::assertFalse($token1->isUsed());
+        self::assertFalse($token1->isConsumed());
 
         $token2 = $this->factory($configuration)->create($user2, 'test-2', ['payload', 'information']);
 
@@ -175,7 +175,7 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(DateTime::class, $token2->getKeepUntil());
         self::assertCount(0, $token2->getUsages());
         self::assertSame(0, $token2->getCountUsages());
-        self::assertFalse($token1->isUsed());
+        self::assertFalse($token1->isConsumed());
 
         $token3 = $this->factory($configuration)->create($user3, 'test-3', ['payload', 'information']);
 

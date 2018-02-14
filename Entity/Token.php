@@ -270,9 +270,23 @@ class Token
     }
 
     /**
+     * @deprecated since 2.3 and will be removed in 3.0. Use isConsumed instead.
      * @return boolean
      */
     public function isUsed()
+    {
+        @trigger_error(
+            __METHOD__.' is deprecated. Use '.__CLASS__.'::isConsumed instead',
+            E_USER_DEPRECATED
+        );
+
+        return $this->isConsumed();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isConsumed()
     {
         return $this->getCountUsages() >= $this->getAllowedUsages();
     }
@@ -315,12 +329,12 @@ class Token
      */
     public function consume(array $information, DateTime $date = null)
     {
-        if ($this->isUsed()) {
+        if ($this->isConsumed()) {
             throw new LogicException(
-                sprintf('Token "%d" is already used.', $this->id)
+                sprintf('Token "%d" is already consumed.', $this->id)
             );
         }
 
-        $this->usages->add(new TokenUsage($this, $information,$date));
+        $this->usages->add(new TokenUsage($this, $information, $date));
     }
 }

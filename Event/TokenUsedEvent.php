@@ -5,6 +5,7 @@ namespace Yokai\SecurityTokenBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
+ * @deprecated since 2.3 to be removed in 3.0. Rely on TokenAlreadyConsumedEvent instead.
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenUsedEvent extends Event

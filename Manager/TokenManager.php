@@ -7,7 +7,7 @@ use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\EventDispatcher;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
+use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
@@ -78,8 +78,8 @@ class TokenManager implements TokenManagerInterface
             $this->eventDispatcher->tokenExpired($purpose, $value);
 
             throw $exception;
-        } catch (TokenUsedException $exception) {
-            $this->eventDispatcher->tokenUsed($purpose, $value);
+        } catch (TokenConsumedException $exception) {
+            $this->eventDispatcher->tokenAlreadyConsumed($purpose, $value);
 
             throw $exception;
         }
@@ -131,7 +131,7 @@ class TokenManager implements TokenManagerInterface
         $this->repository->update($token);
 
         $this->eventDispatcher->tokenConsumed($token);
-        if ($token->isUsed()) {
+        if ($token->isConsumed()) {
             $this->eventDispatcher->tokenTotallyConsumed($token);
         }
     }

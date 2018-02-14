@@ -3,17 +3,16 @@
 namespace Yokai\SecurityTokenBundle\Exception;
 
 /**
- * @deprecated since 2.3 to be removed in 3.0. Replaced with TokenAlreadyConsumed.
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenUsedException extends InvalidTokenException
+class TokenConsumedException extends TokenUsedException
 {
     /**
      * @param string $value
      * @param string $purpose
      * @param int    $usages
      *
-     * @return TokenUsedException
+     * @return TokenConsumedException
      */
     public static function create($value, $purpose, $usages)
     {
