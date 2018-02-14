@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Event\ConsumeTokenEvent;
 use Yokai\SecurityTokenBundle\Event\CreateTokenEvent;
+use Yokai\SecurityTokenBundle\Event\TokenAlreadyConsumedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenConsumedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenCreatedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenExpiredEvent;
@@ -145,6 +146,7 @@ class EventDispatcher
     }
 
     /**
+     * @deprecated since 2.3 to be removed in 3.0. Use tokenAlreadyConsumed instead.
      * @param string $purpose
      * @param string $value
      *
@@ -152,9 +154,24 @@ class EventDispatcher
      */
     public function tokenUsed($purpose, $value)
     {
+        @trigger_error(
+            __METHOD__.' is deprecated. Use '.__CLASS__.'::tokenAlreadyConsumed instead.'
+        );
+
+        return $this->tokenAlreadyConsumed($purpose, $value);
+    }
+
+    /**
+     * @param string $purpose
+     * @param string $value
+     *
+     * @return TokenAlreadyConsumedEvent
+     */
+    public function tokenAlreadyConsumed($purpose, $value)
+    {
         $this->eventDispatcher->dispatch(
             TokenEvents::TOKEN_USED,
-            $event = new TokenUsedEvent($purpose, $value)
+            $event = new TokenAlreadyConsumedEvent($purpose, $value)
         );
 
         return $event;

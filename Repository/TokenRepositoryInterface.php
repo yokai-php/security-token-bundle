@@ -5,7 +5,7 @@ namespace Yokai\SecurityTokenBundle\Repository;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
+use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -20,7 +20,7 @@ interface TokenRepositoryInterface
      *
      * @throws TokenNotFoundException if the token cannot be found
      * @throws TokenExpiredException if the token is expired
-     * @throws TokenUsedException if the token is used
+     * @throws TokenConsumedException if the token is consumed
      */
     public function get($value, $purpose);
 

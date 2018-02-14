@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
+use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -52,8 +52,8 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
         if ($token->isExpired()) {
             throw TokenExpiredException::create($value, $purpose, $token->getExpiresAt());
         }
-        if ($token->isUsed()) {
-            throw TokenUsedException::create($value, $purpose, $token->getCountUsages());
+        if ($token->isConsumed()) {
+            throw TokenConsumedException::create($value, $purpose, $token->getCountUsages());
         }
 
         return $token;

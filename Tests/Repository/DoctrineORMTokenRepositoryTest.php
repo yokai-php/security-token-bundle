@@ -72,7 +72,7 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenUsedException
+     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenConsumedException
      */
     public function it_throw_exception_if_token_used_single_time()
     {
@@ -88,7 +88,7 @@ class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenUsedException
+     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenConsumedException
      */
     public function it_throw_exception_if_token_used_multiple_times()
     {
