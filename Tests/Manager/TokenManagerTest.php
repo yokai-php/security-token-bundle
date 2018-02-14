@@ -144,7 +144,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             Argument::which('getPurpose', 'forgot_password'),
             Argument::which('getValue', 'unique-token')
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_USED, $alreadyConsumedEvent)
+        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_ALREADY_CONSUMED, $alreadyConsumedEvent)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->get('forgot_password', 'unique-token');

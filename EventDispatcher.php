@@ -170,7 +170,7 @@ class EventDispatcher
     public function tokenAlreadyConsumed($purpose, $value)
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::TOKEN_USED,
+            TokenEvents::TOKEN_ALREADY_CONSUMED,
             $event = new TokenAlreadyConsumedEvent($purpose, $value)
         );
 

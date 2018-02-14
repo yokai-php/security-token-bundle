@@ -5,6 +5,8 @@ namespace Yokai\SecurityTokenBundle\Generator;
 use LogicException;
 
 /**
+ * This token generator is using `openssl` extension to generate random token values.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class OpenSslTokenGenerator implements TokenGeneratorInterface
@@ -17,7 +19,7 @@ class OpenSslTokenGenerator implements TokenGeneratorInterface
     private $length;
 
     /**
-     * @param int $length
+     * @param int $length Token length
      */
     public function __construct($length = self::DEFAULT_LENGTH)
     {

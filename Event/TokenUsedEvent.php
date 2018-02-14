@@ -21,8 +21,8 @@ class TokenUsedEvent extends Event
     private $value;
 
     /**
-     * @param string $purpose
-     * @param string $value
+     * @param string $purpose The token purpose
+     * @param string $value   The token value
      */
     public function __construct($purpose, $value)
     {
@@ -31,6 +31,8 @@ class TokenUsedEvent extends Event
     }
 
     /**
+     * The token purpose
+     *
      * @return string
      */
     public function getPurpose()
@@ -39,6 +41,8 @@ class TokenUsedEvent extends Event
     }
 
     /**
+     * The token value
+     *
      * @return string
      */
     public function getValue()

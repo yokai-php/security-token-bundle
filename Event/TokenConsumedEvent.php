@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\Event;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
+ * Event being dispatched after a Token is consumed.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenConsumedEvent extends Event
@@ -16,7 +18,7 @@ class TokenConsumedEvent extends Event
     private $token;
 
     /**
-     * @param Token $token
+     * @param Token $token The consumed token
      */
     public function __construct(Token $token)
     {
@@ -24,6 +26,8 @@ class TokenConsumedEvent extends Event
     }
 
     /**
+     * The consumed token
+     *
      * @return Token
      */
     public function getToken()

@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\Event;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
+ * Event being dispatched after a Token is created.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenCreatedEvent extends Event
@@ -16,7 +18,7 @@ class TokenCreatedEvent extends Event
     private $token;
 
     /**
-     * @param Token $token
+     * @param Token $token The created token
      */
     public function __construct(Token $token)
     {
@@ -24,6 +26,8 @@ class TokenCreatedEvent extends Event
     }
 
     /**
+     * The created token
+     *
      * @return Token
      */
     public function getToken()

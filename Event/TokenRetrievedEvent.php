@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\Event;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
+ * Event being dispatched before a Token is fetched.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenRetrievedEvent extends Event
@@ -16,7 +18,7 @@ class TokenRetrievedEvent extends Event
     private $token;
 
     /**
-     * @param Token $token
+     * @param Token $token The retrieved token
      */
     public function __construct(Token $token)
     {
@@ -24,6 +26,8 @@ class TokenRetrievedEvent extends Event
     }
 
     /**
+     * The retrieved token
+     *
      * @return Token
      */
     public function getToken()

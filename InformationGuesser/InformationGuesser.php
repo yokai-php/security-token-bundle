@@ -5,6 +5,8 @@ namespace Yokai\SecurityTokenBundle\InformationGuesser;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
+ * This information guesser, is finding client ip and hostname
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class InformationGuesser implements InformationGuesserInterface
@@ -15,7 +17,7 @@ class InformationGuesser implements InformationGuesserInterface
     private $requestStack;
 
     /**
-     * @param RequestStack $requestStack
+     * @param RequestStack $requestStack The request stack
      */
     public function __construct(RequestStack $requestStack)
     {

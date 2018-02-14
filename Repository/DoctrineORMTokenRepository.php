@@ -10,6 +10,8 @@ use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 
 /**
+ * Doctrine ORM token repository;
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class DoctrineORMTokenRepository implements TokenRepositoryInterface
@@ -25,8 +27,8 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
     private $repository;
 
     /**
-     * @param EntityManager    $manager
-     * @param EntityRepository $repository
+     * @param EntityManager    $manager    The token entity manager
+     * @param EntityRepository $repository The token entity repository
      */
     public function __construct(EntityManager $manager, EntityRepository $repository)
     {

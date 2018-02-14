@@ -3,6 +3,8 @@
 namespace Yokai\SecurityTokenBundle\Manager;
 
 /**
+ * Chained user manager, delegate to other user managers.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class ChainUserManager implements UserManagerInterface
@@ -13,7 +15,7 @@ class ChainUserManager implements UserManagerInterface
     private $managers;
 
     /**
-     * @param UserManagerInterface[] $managers
+     * @param UserManagerInterface[] $managers A list of user managers
      */
     public function __construct($managers)
     {
@@ -73,7 +75,9 @@ class ChainUserManager implements UserManagerInterface
     }
 
     /**
-     * @param string $class
+     * Find appropriate user manager for a class.
+     *
+     * @param string $class The user class
      *
      * @return UserManagerInterface
      */
@@ -99,7 +103,9 @@ class ChainUserManager implements UserManagerInterface
     }
 
     /**
-     * @param mixed $user
+     * Find appropriate user manager for user.
+     *
+     * @param mixed $user A user
      *
      * @return UserManagerInterface
      */

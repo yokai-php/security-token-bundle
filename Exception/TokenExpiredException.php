@@ -5,14 +5,18 @@ namespace Yokai\SecurityTokenBundle\Exception;
 use DateTime;
 
 /**
+ * Exception thrown when token is fetched, but expired.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenExpiredException extends InvalidTokenException
 {
     /**
-     * @param string   $value
-     * @param string   $purpose
-     * @param DateTime $date
+     * Create an instance of this class.
+     *
+     * @param string   $value   The token value
+     * @param string   $purpose The token purpose
+     * @param DateTime $date    The token expiration date
      *
      * @return TokenExpiredException
      */
