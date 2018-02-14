@@ -8,13 +8,17 @@ use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 
 /**
+ * A token repository handles token persistence.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 interface TokenRepositoryInterface
 {
     /**
-     * @param string $value
-     * @param string $purpose
+     * Gets a Token instance from storage.
+     *
+     * @param string $value   The token value
+     * @param string $purpose The token purpose
      *
      * @return Token
      *
@@ -25,29 +29,37 @@ interface TokenRepositoryInterface
     public function get($value, $purpose);
 
     /**
-     * @param string $userClass
-     * @param string $userId
-     * @param string $purpose
+     * Find existing token for user and purpose.
+     *
+     * @param string $userClass The user class
+     * @param string $userId    The user identifier
+     * @param string $purpose   The token purpose
      *
      * @return Token|null
      */
     public function findExisting($userClass, $userId, $purpose);
 
     /**
-     * @param string $value
-     * @param string $purpose
+     * Tell whether or not it exists a token for given purpose and value.
+     *
+     * @param string $value   A token value
+     * @param string $purpose A token purpose
      *
      * @return boolean
      */
     public function exists($value, $purpose);
 
     /**
-     * @param Token $token
+     * Add a token to storage.
+     *
+     * @param Token $token The token to add
      */
     public function create(Token $token);
 
     /**
-     * @param Token $token
+     * Update a token to storage.
+     *
+     * @param Token $token The token to update
      */
     public function update(Token $token);
 }

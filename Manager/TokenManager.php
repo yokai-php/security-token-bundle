@@ -43,11 +43,11 @@ class TokenManager implements TokenManagerInterface
     private $eventDispatcher;
 
     /**
-     * @param TokenFactoryInterface       $factory
-     * @param TokenRepositoryInterface    $repository
-     * @param InformationGuesserInterface $informationGuesser
-     * @param UserManagerInterface        $userManager
-     * @param EventDispatcher             $eventDispatcher
+     * @param TokenFactoryInterface       $factory            The token factory
+     * @param TokenRepositoryInterface    $repository         The token repository
+     * @param InformationGuesserInterface $informationGuesser The information guesser
+     * @param UserManagerInterface        $userManager        The user manager
+     * @param EventDispatcher             $eventDispatcher    The event dispatcher
      */
     public function __construct(
         TokenFactoryInterface $factory,

@@ -3,14 +3,18 @@
 namespace Yokai\SecurityTokenBundle\Exception;
 
 /**
+ * Exception thrown when token is fetched, but already consumed.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenConsumedException extends TokenUsedException
 {
     /**
-     * @param string $value
-     * @param string $purpose
-     * @param int    $usages
+     * Create an instance of this class.
+     *
+     * @param string $value   Token value
+     * @param string $purpose Token purpose
+     * @param int    $usages  Count usages
      *
      * @return TokenConsumedException
      */

@@ -9,6 +9,8 @@ use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
+ * Uses configuration to determine Token creation rules.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenFactory implements TokenFactoryInterface
@@ -34,10 +36,10 @@ class TokenFactory implements TokenFactoryInterface
     private $repository;
 
     /**
-     * @param TokenConfigurationRegistry  $registry
-     * @param InformationGuesserInterface $informationGuesser
-     * @param UserManagerInterface        $userManager
-     * @param TokenRepositoryInterface    $repository
+     * @param TokenConfigurationRegistry  $registry           The configuration registry
+     * @param InformationGuesserInterface $informationGuesser The information guesser
+     * @param UserManagerInterface        $userManager        The user manager
+     * @param TokenRepositoryInterface    $repository         The token repository
      */
     public function __construct(
         TokenConfigurationRegistry $registry,
@@ -56,26 +58,35 @@ class TokenFactory implements TokenFactoryInterface
      */
     public function create($user, $purpose, array $payload = [])
     {
+        // get configuration for this token purpose
         $configuration = $this->registry->get($purpose);
 
+        // extract user information
         $userClass = $this->userManager->getClass($user);
         $userId = $this->userManager->getId($user);
 
+        // if configuration for this token tells that it can only exists one Token for this user
         if ($configuration->isUnique()) {
             $token = $this->repository->findExisting($userClass, $userId, $purpose);
 
+            // a token already exists for this user and this purpose, return it
             if ($token instanceof Token) {
                 return $token;
             }
         }
 
+        // enforce token uniqueness
+        // generate a value while it exists already
         do {
             $value = $configuration->getGenerator()->generate();
         } while ($this->repository->exists($value, $purpose));
 
+        // extract configuration values
         $duration = $configuration->getDuration();
         $keep = $configuration->getKeep();
         $usages = $configuration->getUsages();
+
+        // extract context information
         $information = $this->informationGuesser->get();
 
         return new Token($userClass, $userId, $value, $purpose, $duration, $keep, $usages, $payload, $information);

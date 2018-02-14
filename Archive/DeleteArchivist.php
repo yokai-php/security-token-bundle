@@ -6,6 +6,8 @@ use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**
+ * This archivist is removing all outdated tokens based on the `keepUntil` property.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class DeleteArchivist implements ArchivistInterface
@@ -16,7 +18,7 @@ class DeleteArchivist implements ArchivistInterface
     private $tokenRepository;
 
     /**
-     * @param EntityRepository $tokenRepository
+     * @param EntityRepository $tokenRepository The token entity repository
      */
     public function __construct(EntityRepository $tokenRepository)
     {

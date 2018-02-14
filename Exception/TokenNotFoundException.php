@@ -3,13 +3,17 @@
 namespace Yokai\SecurityTokenBundle\Exception;
 
 /**
+ * Exception thrown when token is not found.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenNotFoundException extends InvalidTokenException
 {
     /**
-     * @param string $value
-     * @param string $purpose
+     * Create an instance of this class.
+     *
+     * @param string $value   The token value
+     * @param string $purpose The token purpose
      *
      * @return TokenNotFoundException
      */

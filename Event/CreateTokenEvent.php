@@ -5,6 +5,8 @@ namespace Yokai\SecurityTokenBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
+ * Event being dispatched before a Token is created.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class CreateTokenEvent extends Event
@@ -25,9 +27,9 @@ class CreateTokenEvent extends Event
     private $payload;
 
     /**
-     * @param string $purpose
-     * @param mixed  $user
-     * @param array  $payload
+     * @param string $purpose The token purpose
+     * @param mixed  $user    The associated user
+     * @param array  $payload The token payload
      */
     public function __construct($purpose, $user, array $payload)
     {
@@ -37,6 +39,8 @@ class CreateTokenEvent extends Event
     }
 
     /**
+     * The token purpose
+     *
      * @return string
      */
     public function getPurpose()
@@ -45,6 +49,8 @@ class CreateTokenEvent extends Event
     }
 
     /**
+     * The associated user
+     *
      * @return mixed
      */
     public function getUser()
@@ -53,6 +59,8 @@ class CreateTokenEvent extends Event
     }
 
     /**
+     * The token payload
+     *
      * @return array
      */
     public function getPayload()
@@ -61,7 +69,9 @@ class CreateTokenEvent extends Event
     }
 
     /**
-     * @param array $payload
+     * Replace token payload
+     *
+     * @param array $payload The new payload value
      */
     public function setPayload($payload)
     {
@@ -69,7 +79,9 @@ class CreateTokenEvent extends Event
     }
 
     /**
-     * @param array $payload
+     * Add payload information to token
+     *
+     * @param array $payload Some payload to add
      */
     public function addPayload($payload)
     {

@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\Event;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
+ * Event being dispatched after a Token is totally consumed.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenTotallyConsumedEvent extends Event
@@ -16,7 +18,7 @@ class TokenTotallyConsumedEvent extends Event
     private $token;
 
     /**
-     * @param Token $token
+     * @param Token $token The totally consumed token
      */
     public function __construct(Token $token)
     {
@@ -24,6 +26,8 @@ class TokenTotallyConsumedEvent extends Event
     }
 
     /**
+     * The totally consumed token
+     *
      * @return Token
      */
     public function getToken()

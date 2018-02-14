@@ -9,13 +9,17 @@ use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 
 /**
+ * A token manager is the entry point to deal with tokens.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 interface TokenManagerInterface
 {
     /**
-     * @param string $purpose
-     * @param string $value
+     * Get a token instance.
+     *
+     * @param string $purpose The token purpose
+     * @param string $value   The token value
      *
      * @return Token
      *
@@ -26,9 +30,11 @@ interface TokenManagerInterface
     public function get($purpose, $value);
 
     /**
-     * @param string $purpose
-     * @param mixed  $user
-     * @param array  $payload
+     * Create a token.
+     *
+     * @param string $purpose The token purpose
+     * @param mixed  $user    The user to associate to the token
+     * @param array  $payload Some additional payload for the token
      *
      * @return Token
      */
@@ -43,13 +49,17 @@ interface TokenManagerInterface
     public function setUsed(Token $token, DateTime $at = null);
 
     /**
-     * @param Token         $token
-     * @param DateTime|null $at
+     * Consume a token.
+     *
+     * @param Token         $token The token to consume
+     * @param DateTime|null $at    The date/time at which the token was consumed (defaults to now)
      */
     public function consume(Token $token, DateTime $at = null);
 
     /**
-     * @param Token $token
+     * Get the user associated to a token.
+     *
+     * @param Token $token The token
      *
      * @return mixed
      */

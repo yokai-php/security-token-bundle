@@ -5,6 +5,8 @@ namespace Yokai\SecurityTokenBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
+ * Event being dispatched when a Token is fetch but expired.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class TokenExpiredEvent extends Event
@@ -20,8 +22,8 @@ class TokenExpiredEvent extends Event
     private $value;
 
     /**
-     * @param string $purpose
-     * @param string $value
+     * @param string $purpose The token purpose
+     * @param string $value   The token value
      */
     public function __construct($purpose, $value)
     {
@@ -30,6 +32,8 @@ class TokenExpiredEvent extends Event
     }
 
     /**
+     * The token purpose
+     *
      * @return string
      */
     public function getPurpose()
@@ -38,6 +42,8 @@ class TokenExpiredEvent extends Event
     }
 
     /**
+     * The token value
+     *
      * @return string
      */
     public function getValue()

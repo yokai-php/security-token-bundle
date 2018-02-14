@@ -7,6 +7,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
+ * User manager for doctrine entities.
+ *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 class DoctrineUserManager implements UserManagerInterface
@@ -17,7 +19,7 @@ class DoctrineUserManager implements UserManagerInterface
     private $doctrine;
 
     /**
-     * @param ManagerRegistry $doctrine
+     * @param ManagerRegistry $doctrine The doctrine registry
      */
     public function __construct(ManagerRegistry $doctrine)
     {
@@ -80,7 +82,9 @@ class DoctrineUserManager implements UserManagerInterface
     }
 
     /**
-     * @param string $class
+     * Get doctrine object manager for a class.
+     *
+     * @param string $class The user class
      *
      * @return ObjectManager
      */

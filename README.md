@@ -11,171 +11,27 @@ YokaiSecurityTokenBundle
 [![Code Coverage](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/77506b7f-27a5-4513-9e7a-716335e600c5/mini.png)](https://insight.sensiolabs.com/projects/77506b7f-27a5-4513-9e7a-716335e600c5)
 
-Installation
-------------
 
-### Add the bundle as dependency with Composer
+This bundle aims to provide a way to generate, store, manage security tokens for web applications.
 
-``` bash
-$ php composer.phar require yokai/security-token-bundle
-```
+Each time you need a token for 
 
-### Enable the bundle in the kernel
+- an account activation
+- a password reset
+- etc...
 
-``` php
-<?php
-// app/AppKernel.php
-
-public function registerBundles()
-{
-    $bundles = [
-        // ...
-        new Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle(),
-    ];
-}
-```
+You can use this bundle to generate, consume those tokens.
+Develop your features, the bundle is taking care of the technical implementation.
 
 
-### Configuration
+Documentation
+-------------
 
-``` yaml
-# app/config/config.yml
-
-yokai_security_token:
-    tokens:
-        reset_password: ~
-```
-
-First thing is to define the User entity that your application has defined.
-This way, each time a Token will be created, it will be linked automatically to it's User.
-
-Then you can configure all the tokens your applications aims to create.
-Each token can have following options :
-
-- `generator` : a service id that implements [`Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface`](Generator/TokenGeneratorInterface)
-- `duration` : a valid [`DateTime::modify`](php.net/manual/datetime.modify.php) argument that represent the validity duration for tokens of this type
-- `usages` : an integer that represent the number of allowed usages for tokens of this type
-- `keep` : a valid [`DateTime::modify`](php.net/manual/datetime.modify.php) argument that represent the keep duration for tokens of this type
-
-Default values fallback to :
-
-- `generator` : [`yokai_security_token.open_ssl_token_generator`](Generator/OpenSslTokenGenerator)
-- `duration` : `+2 days`
-- `usages` : `1`
-- `keep` : `+1 month`
-
-
-Usage
------
-
-``` php
-<?php
-
-namespace AppBundle\Controller;
-
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
-use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Exception\TokenUsedException;
-use Yokai\SecurityTokenBundle\Manager\TokenManagerInterface;
-
-class SecurityController extends Controller
-{
-    public function askResetPasswordAction(Request $request)
-    {
-        $user = $this->getUserRepository()->findOneByUsername($request->request->get('username'));
-        if (!$user) {
-            throw $this->createNotFoundException(); // or whatever you want
-        }
-
-        $this->getTokenManager()->create('reset_password', $user);
-
-        return new Response(); // or whatever you want
-    }
-
-    public function doResetPasswordAction(Request $request)
-    {
-        $token = null;
-        try {
-            $token = $this->getTokenManager()->get('reset_password', $request->query->get('token'));
-        } catch(TokenNotFoundException $e) {
-            /* there is no token with the asked value */
-        } catch(TokenExpiredException $e) {
-            /* a token was found, but expired */
-        } catch(TokenUsedException $e) {
-            /* a token was found, but already used */
-        }
-
-        if (!$token) {
-            throw $this->createNotFoundException(); // or whatever you want
-        }
-
-        $user = $this->getTokenManager()->getUser($token);
-
-        $user->setPassword($request->request->get('password'));
-        $this->getUserManager()->flush($user);
-
-        $this->getTokenManager()->setUsed($token);
-
-        return new Response(); // or whatever you want
-    }
-
-    /**
-     * @return TokenManagerInterface
-     */
-    private function getTokenManager()
-    {
-        return $this->get('yokai_security_token.token_manager');
-    }
-
-    /**
-     * @return EntityRepository
-     */
-    private function getUserRepository()
-    {
-        return $this->getDoctrine()->getRepository('AppBundle:User');
-    }
-
-    /**
-     * @return EntityManager
-     */
-    private function getUserManager()
-    {
-        return $this->getDoctrine()->getManager();
-    }
-}
-```
-
-**askResetPasswordAction** :
-
-The `Token Manager` service will handle creating a security token for you,
-according to what you have configured for the purpose you asked.
-
-
-**doResetPasswordAction** :
-
-The `Token Manager` service will handle retrieving security token for you,
-returning it when succeed, and throwing exceptions if something wrong :
-
-- Token not found
-- Token expired
-- Token already used
-
-The `Token Manager` service then mark the Token as used, so it cannot be used twice.
-
-
-Commands
---------
-
-This bundle provide a simple command to archive obsolete tokens, so you can keep your database clean as possible.
-
-```bash
-$ path/to/symfony/console yokai:security-token:archive
-```
+- [Installation](Resources/doc/1-installation.md)
+- [Configuration](Resources/doc/2-configuration.md)
+- [Usage](Resources/doc/3-usage.md)
+- [Archive command](Resources/doc/4-archive-command.md)
+- [Events](Resources/doc/5-events.md)
 
 
 MIT License
@@ -190,3 +46,7 @@ Authors
 The bundle was originally created by [Yann Eugoné](https://github.com/yann-eugone).
 
 See the list of [contributors](https://github.com/yokai-php/security-token-bundle/contributors).
+
+---
+
+Thank's to [Prestaconcept](https://github.com/prestaconcept) for supporting this bundle.
