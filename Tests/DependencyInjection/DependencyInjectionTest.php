@@ -3,6 +3,7 @@
 namespace Yokai\SecurityTokenBundle\Tests\DependencyInjection;
 
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Prophecy\Prophecy\ProphecySubjectInterface;
@@ -51,6 +52,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         $this->container->setParameter('kernel.bundles', $bundles);
         $this->container->setParameter('kernel.environment', 'test');
         $this->container->set('logger', $this->prophesize(LoggerInterface::class)->reveal());
+        $this->container->setDefinition('doctrine', new Definition(ManagerRegistry::class));
         $this->container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
         $this->container->setDefinition('doctrine.orm.default_metadata_driver', new Definition(MappingDriverChain::class));
         $this->container->setDefinition('doctrine.orm.default_configuration', new Definition(Configuration::class));
