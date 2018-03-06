@@ -64,7 +64,7 @@
         <service id="yokai_security_token.doctrine_user_manager"
                  class="Yokai\SecurityTokenBundle\Manager\DoctrineUserManager"
                  public="false">
-            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            <argument type="service" id="doctrine"/>
             <tag name="yokai_security_token.user_manager"/>
         </service>
 
