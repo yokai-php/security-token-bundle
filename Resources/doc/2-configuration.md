@@ -16,6 +16,7 @@ Each token can have following options :
 - `duration` : a valid [`DateTime::modify`](https://php.net/manual/datetime.modify.php) argument that represent the validity duration for tokens of this type
 - `usages` : an integer that represent the number of allowed usages for tokens of this type
 - `keep` : a valid [`DateTime::modify`](https://php.net/manual/datetime.modify.php) argument that represent the keep duration for tokens of this type
+- `unique` : a boolean that indicates whether or not the token must be unique per user
 
 Default values fallback to :
 
@@ -23,6 +24,7 @@ Default values fallback to :
 - `duration` : `+2 days`
 - `usages` : `1`
 - `keep` : `+1 month`
+- `unique` : `false`
 
 
 ---
