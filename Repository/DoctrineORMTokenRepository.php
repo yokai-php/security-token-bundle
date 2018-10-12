@@ -66,13 +66,21 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
      */
     public function findExisting($userClass, $userId, $purpose)
     {
-        return $this->repository->findOneBy(
+        $token = $this->repository->findOneBy(
             [
                 'userClass' => $userClass,
                 'userId' => $userId,
                 'purpose' => $purpose,
             ]
         );
+        if (!$token instanceof Token) {
+            return null;
+        }
+        if ($token->isConsumed() || $token->isExpired()) {
+            return null;
+        }
+
+        return $token;
     }
 
     /**
