@@ -29,7 +29,7 @@ interface TokenRepositoryInterface
     public function get($value, $purpose);
 
     /**
-     * Find existing token for user and purpose.
+     * Find existing and active token for user and purpose.
      *
      * @param string $userClass The user class
      * @param string $userId    The user identifier
