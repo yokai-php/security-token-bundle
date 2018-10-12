@@ -14,7 +14,7 @@ Each token can have following options :
 
 - `generator` : a service id that implements [`Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface`](../../Generator/TokenGeneratorInterface.php)
 - `duration` : a valid [`DateTime::modify`](https://php.net/manual/datetime.modify.php) argument that represent the validity duration for tokens of this type
-- `usages` : an integer that represent the number of allowed usages for tokens of this type
+- `usages` : an integer that represent the number of allowed usages for tokens of this type (`0` means unlimited)
 - `keep` : a valid [`DateTime::modify`](https://php.net/manual/datetime.modify.php) argument that represent the keep duration for tokens of this type
 
 Default values fallback to :
