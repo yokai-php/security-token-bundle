@@ -288,7 +288,12 @@ class Token
      */
     public function isConsumed()
     {
-        return $this->getCountUsages() >= $this->getAllowedUsages();
+        $allowed = $this->getAllowedUsages();
+        if ($allowed === 0) {
+            return false;
+        }
+
+        return $this->getCountUsages() >= $allowed;
     }
 
     /**
