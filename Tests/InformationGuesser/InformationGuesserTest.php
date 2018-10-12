@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\InformationGuesser;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser;
@@ -9,7 +10,7 @@ use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class InformationGuesserTest extends \PHPUnit_Framework_TestCase
+class InformationGuesserTest extends TestCase
 {
     /**
      * @param RequestStack $requestStack

@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,7 +30,7 @@ use Yokai\SecurityTokenBundle\TokenEvents;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenManagerTest extends \PHPUnit_Framework_TestCase
+class TokenManagerTest extends TestCase
 {
     /**
      * @var TokenFactoryInterface|ObjectProphecy

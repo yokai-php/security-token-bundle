@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ProphecySubjectInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -29,7 +30,7 @@ use Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
+class DependencyInjectionTest extends TestCase
 {
     /**
      * @var ContainerBuilder

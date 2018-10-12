@@ -6,13 +6,14 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
+class DoctrineUserManagerTest extends TestCase
 {
     /**
      * @var ManagerRegistry|ObjectProphecy

@@ -2,12 +2,13 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenTest extends \PHPUnit_Framework_TestCase
+class TokenTest extends TestCase
 {
     public function testLimitedUsagesToken()
     {

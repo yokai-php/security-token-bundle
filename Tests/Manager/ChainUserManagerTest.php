@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\ChainUserManager;
@@ -12,7 +13,7 @@ use Yokai\SecurityTokenBundle\Tests\Manager\Mock\UserEntity;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class ChainUserManagerTest extends \PHPUnit_Framework_TestCase
+class ChainUserManagerTest extends TestCase
 {
     /**
      * @param UserManagerInterface[] $managers

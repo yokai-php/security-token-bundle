@@ -4,6 +4,7 @@ namespace Yokai\SecurityTokenBundle\Tests\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Repository\DoctrineORMTokenRepository;
@@ -11,7 +12,7 @@ use Yokai\SecurityTokenBundle\Repository\DoctrineORMTokenRepository;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class DoctrineORMTokenRepositoryTest extends \PHPUnit_Framework_TestCase
+class DoctrineORMTokenRepositoryTest extends TestCase
 {
     /**
      * @var EntityManager|ObjectProphecy
