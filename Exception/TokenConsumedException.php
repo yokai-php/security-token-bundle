@@ -18,7 +18,7 @@ class TokenConsumedException extends InvalidTokenException
      *
      * @return TokenConsumedException
      */
-    public static function create($value, $purpose, $usages)
+    public static function create(string $value, string $purpose, int $usages): self
     {
         return new self(
             sprintf(

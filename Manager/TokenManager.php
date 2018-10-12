@@ -66,7 +66,7 @@ class TokenManager implements TokenManagerInterface
     /**
      * @inheritdoc
      */
-    public function get($purpose, $value)
+    public function get(string $purpose, string $value): Token
     {
         try {
             $token = $this->repository->get($value, $purpose);
@@ -92,7 +92,7 @@ class TokenManager implements TokenManagerInterface
     /**
      * @inheritdoc
      */
-    public function create($purpose, $user, array $payload = [])
+    public function create(string $purpose, $user, array $payload = []): Token
     {
         $event = $this->eventDispatcher->createToken($purpose, $user, $payload);
 
@@ -108,7 +108,7 @@ class TokenManager implements TokenManagerInterface
     /**
      * @inheritDoc
      */
-    public function consume(Token $token, DateTime $at = null)
+    public function consume(Token $token, DateTime $at = null): void
     {
         $event = $this->eventDispatcher->consumeToken($token, $at, $this->informationGuesser->get());
 

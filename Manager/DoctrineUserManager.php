@@ -29,21 +29,21 @@ class DoctrineUserManager implements UserManagerInterface
     /**
      * @inheritDoc
      */
-    public function supportsClass($class)
+    public function supportsClass(string $class): bool
     {
         try {
-            $manager = $this->getManagerFor($class);
-        } catch (\Exception $exception) {
+            $this->getManagerFor($class);
+        } catch (\InvalidArgumentException $exception) {
             return false;
         }
 
-        return $manager instanceof ObjectManager;
+        return true;
     }
 
     /**
      * @inheritDoc
      */
-    public function supportsUser($user)
+    public function supportsUser($user): bool
     {
         return $this->supportsClass(
             $this->getClass($user)
@@ -53,7 +53,7 @@ class DoctrineUserManager implements UserManagerInterface
     /**
      * @inheritDoc
      */
-    public function get($class, $id)
+    public function get(string $class, string $id)
     {
         return $this->getManagerFor($class)->find($class, $id);
     }
@@ -61,7 +61,7 @@ class DoctrineUserManager implements UserManagerInterface
     /**
      * @inheritDoc
      */
-    public function getClass($user)
+    public function getClass($user): string
     {
         return ClassUtils::getClass($user);
     }
@@ -69,13 +69,13 @@ class DoctrineUserManager implements UserManagerInterface
     /**
      * @inheritDoc
      */
-    public function getId($user)
+    public function getId($user): string
     {
         $class = $this->getClass($user);
         $identifiers = $this->getManagerFor($class)->getClassMetadata($class)->getIdentifierValues($user);
 
         if (count($identifiers) > 1) {
-            throw new \RuntimeException('Entities with composite ids are not supported');
+            throw new \InvalidArgumentException('Entities with composite ids are not supported');
         }
 
         return (string) reset($identifiers);
@@ -88,12 +88,12 @@ class DoctrineUserManager implements UserManagerInterface
      *
      * @return ObjectManager
      */
-    private function getManagerFor($class)
+    private function getManagerFor(string $class): ObjectManager
     {
         $manager = $this->doctrine->getManagerForClass($class);
 
         if ($manager === null) {
-            throw new \RuntimeException(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Class "%s" seems not to be a managed Doctrine entity. Did you forget to map it?',
                     $class

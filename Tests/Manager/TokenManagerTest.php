@@ -184,6 +184,7 @@ class TokenManagerTest extends TestCase
             'forgot_password',
             '+1 day',
             '+1 month',
+            1,
             ['payload', 'information'],
             ['created', 'information']
         );
@@ -267,7 +268,7 @@ class TokenManagerTest extends TestCase
      */
     public function it_extract_user_from_token()
     {
-        $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', []);
+        $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 1, []);
 
         $this->userManager->get('string', 'jdoe')
             ->shouldBeCalledTimes(1)

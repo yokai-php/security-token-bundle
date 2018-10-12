@@ -31,7 +31,7 @@ class CreateTokenEvent extends Event
      * @param mixed  $user    The associated user
      * @param array  $payload The token payload
      */
-    public function __construct($purpose, $user, array $payload)
+    public function __construct(string $purpose, $user, array $payload)
     {
         $this->purpose = $purpose;
         $this->user = $user;
@@ -63,7 +63,7 @@ class CreateTokenEvent extends Event
      *
      * @return array
      */
-    public function getPayload()
+    public function getPayload(): array
     {
         return $this->payload;
     }
@@ -73,7 +73,7 @@ class CreateTokenEvent extends Event
      *
      * @param array $payload The new payload value
      */
-    public function setPayload($payload)
+    public function setPayload(array $payload): void
     {
         $this->payload = $payload;
     }
@@ -83,7 +83,7 @@ class CreateTokenEvent extends Event
      *
      * @param array $payload Some payload to add
      */
-    public function addPayload($payload)
+    public function addPayload(array $payload): void
     {
         $this->payload = array_merge($this->payload, $payload);
     }

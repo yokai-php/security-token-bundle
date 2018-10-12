@@ -62,7 +62,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
      */
     public function it_throw_exception_if_token_expired()
     {
-        $token = new Token('string', 'jdoe', 'unique', 'init_password', '-1 day', '+1 month', []);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '-1 day', '+1 month', 1, []);
 
         $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
             ->shouldBeCalledTimes(1)
@@ -109,7 +109,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
      */
     public function it_get_valid_token()
     {
-        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', []);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
         $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
             ->shouldBeCalledTimes(1)
@@ -125,7 +125,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
      */
     public function it_create_token()
     {
-        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', []);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
         $this->manager->persist($token)
             ->shouldBeCalledTimes(1);
@@ -140,7 +140,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
      */
     public function it_update_token()
     {
-        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', []);
+        $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
         $this->manager->persist($token)
             ->shouldBeCalledTimes(1);

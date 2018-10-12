@@ -26,7 +26,7 @@ interface TokenRepositoryInterface
      * @throws TokenExpiredException if the token is expired
      * @throws TokenConsumedException if the token is consumed
      */
-    public function get($value, $purpose);
+    public function get(string $value, string $purpose): Token;
 
     /**
      * Find existing and active token for user and purpose.
@@ -37,7 +37,7 @@ interface TokenRepositoryInterface
      *
      * @return Token|null
      */
-    public function findExisting($userClass, $userId, $purpose);
+    public function findExisting(string $userClass, string $userId, string $purpose): ?Token;
 
     /**
      * Tell whether or not it exists a token for given purpose and value.
@@ -45,21 +45,21 @@ interface TokenRepositoryInterface
      * @param string $value   A token value
      * @param string $purpose A token purpose
      *
-     * @return boolean
+     * @return bool
      */
-    public function exists($value, $purpose);
+    public function exists(string $value, string $purpose): bool;
 
     /**
      * Add a token to storage.
      *
      * @param Token $token The token to add
      */
-    public function create(Token $token);
+    public function create(Token $token): void;
 
     /**
      * Update a token to storage.
      *
      * @param Token $token The token to update
      */
-    public function update(Token $token);
+    public function update(Token $token): void;
 }

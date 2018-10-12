@@ -30,7 +30,7 @@ class TokenConsumedEvent extends Event
      *
      * @return Token
      */
-    public function getToken()
+    public function getToken(): Token
     {
         return $this->token;
     }

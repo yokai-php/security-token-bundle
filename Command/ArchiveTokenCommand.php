@@ -28,7 +28,7 @@ class ArchiveTokenCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('yokai:security-token:archive')
@@ -39,7 +39,7 @@ class ArchiveTokenCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $purpose = $input->getOption('purpose');
 
@@ -48,5 +48,7 @@ class ArchiveTokenCommand extends Command
         $output->writeln(
             sprintf('<info>Successfully archived <comment>%d</comment> security token(s).</info>', $count)
         );
+
+        return 0;
     }
 }

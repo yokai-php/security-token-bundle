@@ -27,7 +27,7 @@ interface TokenManagerInterface
      * @throws TokenExpiredException if the token is expired
      * @throws TokenConsumedException if the token is consumed
      */
-    public function get($purpose, $value);
+    public function get(string $purpose, string $value): Token;
 
     /**
      * Create a token.
@@ -38,7 +38,7 @@ interface TokenManagerInterface
      *
      * @return Token
      */
-    public function create($purpose, $user, array $payload = []);
+    public function create(string $purpose, $user, array $payload = []): Token;
 
     /**
      * Consume a token.
@@ -46,7 +46,7 @@ interface TokenManagerInterface
      * @param Token         $token The token to consume
      * @param DateTime|null $at    The date/time at which the token was consumed (defaults to now)
      */
-    public function consume(Token $token, DateTime $at = null);
+    public function consume(Token $token, DateTime $at = null): void;
 
     /**
      * Get the user associated to a token.

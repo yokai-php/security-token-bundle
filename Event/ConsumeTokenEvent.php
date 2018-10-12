@@ -33,7 +33,7 @@ class ConsumeTokenEvent extends Event
      * @param DateTime|null $at          Date/time at which the token has been consumed
      * @param array         $information Some context information
      */
-    public function __construct(Token $token, DateTime $at = null, array $information)
+    public function __construct(Token $token, ?DateTime $at, array $information)
     {
         $this->token = $token;
         $this->at = $at;
@@ -45,7 +45,7 @@ class ConsumeTokenEvent extends Event
      *
      * @return Token
      */
-    public function getToken()
+    public function getToken(): Token
     {
         return $this->token;
     }
@@ -55,7 +55,7 @@ class ConsumeTokenEvent extends Event
      *
      * @return DateTime|null
      */
-    public function getAt()
+    public function getAt(): ?DateTime
     {
         return $this->at;
     }
@@ -65,7 +65,7 @@ class ConsumeTokenEvent extends Event
      *
      * @return array
      */
-    public function getInformation()
+    public function getInformation(): array
     {
         return $this->information;
     }

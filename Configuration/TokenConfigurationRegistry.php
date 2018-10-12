@@ -26,11 +26,14 @@ class TokenConfigurationRegistry
     }
 
     /**
-     * @param string $purpose
+     * Get configuration.
+     *
+     * @param string $purpose Token purpose
      *
      * @return TokenConfiguration
+     * @throws BadMethodCallException
      */
-    public function get($purpose)
+    public function get(string $purpose): TokenConfiguration
     {
         if (!isset($this->configurations[$purpose])) {
             throw new BadMethodCallException(

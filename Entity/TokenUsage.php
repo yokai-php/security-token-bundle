@@ -7,7 +7,7 @@ use DateTime;
 class TokenUsage
 {
     /**
-     * @var int
+     * @var int|null
      */
     private $id;
 
@@ -39,9 +39,9 @@ class TokenUsage
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -49,7 +49,7 @@ class TokenUsage
     /**
      * @return Token
      */
-    public function getToken()
+    public function getToken(): Token
     {
         return $this->token;
     }
@@ -57,7 +57,7 @@ class TokenUsage
     /**
      * @return DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
@@ -65,7 +65,7 @@ class TokenUsage
     /**
      * @return array
      */
-    public function getInformation()
+    public function getInformation(): array
     {
         return $this->information;
     }

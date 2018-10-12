@@ -49,7 +49,7 @@ class ChainUserManagerTest extends TestCase
         $manager->getId(Argument::type(UserEntity::class))
             ->willReturn('increment');
 
-        $manager->get(UserEntity::class, Argument::type('int'))
+        $manager->get(UserEntity::class, Argument::type('string'))
             ->willReturn(new UserEntity());
 
         return $manager->reveal();
@@ -179,7 +179,7 @@ class ChainUserManagerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
+     * @expectedException \InvalidArgumentException
      */
     public function it_throw_exception_on_get_user_class_without_appropriate_manager()
     {
@@ -189,7 +189,7 @@ class ChainUserManagerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
+     * @expectedException \InvalidArgumentException
      */
     public function it_throw_exception_on_get_user_id_without_appropriate_manager()
     {
@@ -199,7 +199,7 @@ class ChainUserManagerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
+     * @expectedException \InvalidArgumentException
      */
     public function it_throw_exception_on_get_user_without_appropriate_manager()
     {
