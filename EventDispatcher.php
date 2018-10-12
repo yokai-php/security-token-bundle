@@ -14,7 +14,6 @@ use Yokai\SecurityTokenBundle\Event\TokenExpiredEvent;
 use Yokai\SecurityTokenBundle\Event\TokenNotFoundEvent;
 use Yokai\SecurityTokenBundle\Event\TokenRetrievedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenTotallyConsumedEvent;
-use Yokai\SecurityTokenBundle\Event\TokenUsedEvent;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -143,22 +142,6 @@ class EventDispatcher
         );
 
         return $event;
-    }
-
-    /**
-     * @deprecated since 2.3 to be removed in 3.0. Use tokenAlreadyConsumed instead.
-     * @param string $purpose
-     * @param string $value
-     *
-     * @return TokenUsedEvent
-     */
-    public function tokenUsed($purpose, $value)
-    {
-        @trigger_error(
-            __METHOD__.' is deprecated. Use '.__CLASS__.'::tokenAlreadyConsumed instead.'
-        );
-
-        return $this->tokenAlreadyConsumed($purpose, $value);
     }
 
     /**

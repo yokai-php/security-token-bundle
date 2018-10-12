@@ -107,21 +107,6 @@ final class TokenEvents
     const TOKEN_EXPIRED = 'yokai_security_yoken.token_expired';
 
     /**
-     * @deprecated since 2.3 to be removed in 3.0. Use TOKEN_ALREADY_CONSUMED instead.
-     *
-     * The TOKEN_USED event occurs whenever the Yokai\SecurityTokenBundle\Manager\TokenManagerInterface
-     * throw a Yokai\SecurityTokenBundle\Exception\TokenUsedException.
-     *
-     * This event allows you to do be notified of token request that fail to used.
-     * The event listener method receives a Yokai\SecurityTokenBundle\Event\TokenUsedEvent instance.
-     *
-     * @Event
-     *
-     * @var string
-     */
-    const TOKEN_USED = 'yokai_security_yoken.token_used';
-
-    /**
      * The TOKEN_ALREADY_CONSUMED event occurs whenever the Yokai\SecurityTokenBundle\Manager\TokenManagerInterface
      * throw a Yokai\SecurityTokenBundle\Exception\TokenConsumedException.
      *

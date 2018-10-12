@@ -2,8 +2,6 @@
 
 namespace Yokai\SecurityTokenBundle\Archive;
 
-use DateTime;
-
 /**
  * An archivist deals with Token that may be outdated, and decide what to do with those.
  *
@@ -14,10 +12,9 @@ interface ArchivistInterface
     /**
      * Archive outdated tokens.
      *
-     * @param string|null   $purpose The token purpose
-     * @param DateTime|null $before  @deprecated since version 2.2 and will be removed in 3.0.
+     * @param string|null $purpose The token purpose
      *
      * @return integer
      */
-    public function archive($purpose = null, DateTime $before = null);
+    public function archive($purpose = null);
 }

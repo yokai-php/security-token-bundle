@@ -188,99 +188,11 @@ class Token
     }
 
     /**
-     * @return DateTime|null
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
-     */
-    public function getUsedAt()
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $usage = $this->getLastUsage();
-        if (null === $usage) {
-            return null;
-        }
-
-        return $usage->getCreatedAt();
-    }
-
-    /**
-     * @param DateTime $usedAt
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
-     */
-    public function setUsedAt($usedAt)
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->consume([], $usedAt);
-    }
-
-    /**
-     * @return array
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
-     */
-    public function getUsedInformation()
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $usage = $this->getLastUsage();
-        if (null === $usage) {
-            return null;
-        }
-
-        return $usage->getInformation();
-    }
-
-    /**
-     * @param array $usedInformation
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
-     */
-    public function setUsedInformation($usedInformation)
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->consume($usedInformation);
-    }
-
-    /**
      * @return boolean
      */
     public function isExpired()
     {
         return $this->expiresAt < new DateTime();
-    }
-
-    /**
-     * @deprecated since 2.3 and will be removed in 3.0. Use isConsumed instead.
-     * @return boolean
-     */
-    public function isUsed()
-    {
-        @trigger_error(
-            __METHOD__.' is deprecated. Use '.__CLASS__.'::isConsumed instead',
-            E_USER_DEPRECATED
-        );
-
-        return $this->isConsumed();
     }
 
     /**

@@ -106,20 +106,6 @@ class TokenManager implements TokenManagerInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function setUsed(Token $token, DateTime $at = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the consume() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->consume($token, $at);
-    }
-
-    /**
      * @inheritDoc
      */
     public function consume(Token $token, DateTime $at = null)

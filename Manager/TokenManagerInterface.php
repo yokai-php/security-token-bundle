@@ -41,14 +41,6 @@ interface TokenManagerInterface
     public function create($purpose, $user, array $payload = []);
 
     /**
-     * @param Token         $token
-     * @param DateTime|null $at
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
-     */
-    public function setUsed(Token $token, DateTime $at = null);
-
-    /**
      * Consume a token.
      *
      * @param Token         $token The token to consume

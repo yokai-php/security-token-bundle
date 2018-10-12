@@ -7,7 +7,7 @@ namespace Yokai\SecurityTokenBundle\Exception;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenConsumedException extends TokenUsedException
+class TokenConsumedException extends InvalidTokenException
 {
     /**
      * Create an instance of this class.
