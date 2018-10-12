@@ -83,6 +83,7 @@
         <service id="yokai_security_token.command.archive"
                  class="Yokai\SecurityTokenBundle\Command\ArchiveTokenCommand"
                  public="true">
+            <argument type="service" id="yokai_security_token.archivist"/>
             <tag name="console.command"/>
             <argument type="service" id="yokai_security_token.archivist"/>
         </service>

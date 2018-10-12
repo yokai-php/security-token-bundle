@@ -20,9 +20,8 @@ class ArchiveTokenCommand extends Command
 
     public function __construct(ArchivistInterface $archivist)
     {
-        parent::__construct();
-
         $this->archivist = $archivist;
+        parent::__construct();
     }
 
     /**
