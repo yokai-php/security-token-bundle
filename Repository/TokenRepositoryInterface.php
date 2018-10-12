@@ -3,9 +3,9 @@
 namespace Yokai\SecurityTokenBundle\Repository;
 
 use Yokai\SecurityTokenBundle\Entity\Token;
+use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 
 /**
  * A token repository handles token persistence.
