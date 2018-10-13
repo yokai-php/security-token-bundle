@@ -25,7 +25,7 @@ class ChainUserManager implements UserManagerInterface
     /**
      * @inheritDoc
      */
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         try {
             $this->getManagerForClass($class);
