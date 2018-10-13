@@ -28,7 +28,6 @@
             "Tests/app/YokaiSecurityTokenTestKernel.php"
         ]
     },
-    "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
             "dev-master": "3.x-dev"
