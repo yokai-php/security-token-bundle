@@ -32,15 +32,15 @@ class ChainUserManagerTest extends \PHPUnit_Framework_TestCase
         /** @var UserManagerInterface|ObjectProphecy $manager */
         $manager = $this->prophesize(UserManagerInterface::class);
 
-        $manager->supportsClass(UserEntity::class)
-            ->willReturn(true);
-        $manager->supportsClass(UserDocument::class)
-            ->willReturn(false);
+        $manager->supportsClass(Argument::any())
+            ->will(function (array $args) {
+                return $args[0] === UserEntity::class;
+            });
 
-        $manager->supportsUser(Argument::type(UserEntity::class))
-            ->willReturn(true);
-        $manager->supportsUser(Argument::type(UserDocument::class))
-            ->willReturn(false);
+        $manager->supportsUser(Argument::any())
+            ->will(function (array $args) {
+                return $args[0] instanceof UserEntity;
+            });
 
         $manager->getClass(Argument::type(UserEntity::class))
             ->willReturn(UserEntity::class);
@@ -62,15 +62,15 @@ class ChainUserManagerTest extends \PHPUnit_Framework_TestCase
         /** @var UserManagerInterface|ObjectProphecy $manager */
         $manager = $this->prophesize(UserManagerInterface::class);
 
-        $manager->supportsClass(UserEntity::class)
-            ->willReturn(false);
-        $manager->supportsClass(UserDocument::class)
-            ->willReturn(true);
+        $manager->supportsClass(Argument::any())
+            ->will(function (array $args) {
+                return $args[0] === UserDocument::class;
+            });
 
-        $manager->supportsUser(Argument::type(UserEntity::class))
-            ->willReturn(false);
-        $manager->supportsUser(Argument::type(UserDocument::class))
-            ->willReturn(true);
+        $manager->supportsUser(Argument::any())
+            ->will(function (array $args) {
+                return $args[0] instanceof UserDocument;
+            });
 
         $manager->getClass(Argument::type(UserDocument::class))
             ->willReturn(UserDocument::class);
