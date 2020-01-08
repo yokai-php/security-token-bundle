@@ -19,7 +19,7 @@ The command is using the archivist service to perform the operation.
 
 ### Creating your own archivist
 
-Fist create a the class that will contain your own logic and the associated service.
+Fist create a class that will contain your own logic and the associated service.
 
 ```php
 <?php
