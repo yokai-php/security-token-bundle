@@ -41,8 +41,7 @@ class Configuration implements ConfigurationInterface
      */
     private function getTokensNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('tokens');
+        $node = $this->root('tokens');
 
         $node
             ->useAttributeAsKey('purpose')
@@ -75,8 +74,7 @@ class Configuration implements ConfigurationInterface
      */
     private function getServicesNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('services');
+        $node = $this->root('services');
 
         $node->addDefaultsIfNotSet();
         $node
@@ -100,5 +98,18 @@ class Configuration implements ConfigurationInterface
         ;
 
         return $node;
+    }
+
+    private function root($name)
+    {
+        if (version_compare(Kernel::VERSION, '4.2') >= 0) {
+            $builder = new TreeBuilder($name);
+
+            return $builder->getRootNode();
+        }
+
+        $builder = new TreeBuilder();
+
+        return $builder->root($name);
     }
 }
