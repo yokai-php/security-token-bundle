@@ -2,8 +2,8 @@
 
 namespace Yokai\SecurityTokenBundle\Manager;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
