@@ -2,8 +2,8 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\DependencyInjection;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Prophecy\Prophecy\ProphecySubjectInterface;

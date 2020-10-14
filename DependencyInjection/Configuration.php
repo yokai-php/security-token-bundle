@@ -5,6 +5,7 @@ namespace Yokai\SecurityTokenBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -16,8 +17,13 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $root = $builder->root('yokai_security_token');
+        if (version_compare(Kernel::VERSION, '4.2') >= 0) {
+            $builder = new TreeBuilder('yokai_security_token');
+            $root = $builder->getRootNode();
+        } else {
+            $builder = new TreeBuilder();
+            $root = $builder->root('yokai_security_token');
+        }
 
         $root->addDefaultsIfNotSet();
         $root
@@ -35,8 +41,13 @@ class Configuration implements ConfigurationInterface
      */
     private function getTokensNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('tokens');
+        if (version_compare(Kernel::VERSION, '4.2') >= 0) {
+            $builder = new TreeBuilder('tokens');
+            $node = $builder->getRootNode();
+        } else {
+            $builder = new TreeBuilder();
+            $node = $builder->root('tokens');
+        }
 
         $node
             ->useAttributeAsKey('purpose')
@@ -69,8 +80,13 @@ class Configuration implements ConfigurationInterface
      */
     private function getServicesNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('services');
+        if (version_compare(Kernel::VERSION, '4.2') >= 0) {
+            $builder = new TreeBuilder('services');
+            $node = $builder->getRootNode();
+        } else {
+            $builder = new TreeBuilder();
+            $node = $builder->root('services');
+        }
 
         $node->addDefaultsIfNotSet();
         $node
