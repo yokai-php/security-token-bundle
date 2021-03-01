@@ -16,7 +16,15 @@ class YokaiSecurityTokenBundle extends Bundle
     /**
      * @inheritDoc
      */
-    public function build(ContainerBuilder $container)
+    public function getPath(): string
+    {
+        return \dirname(__DIR__);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function build(ContainerBuilder $container): void
     {
         $registerTokenConfiguration = new ArgumentRegisterTaggedServicesCompilerPass(
             'yokai_security_token.configuration_registry',
@@ -40,7 +48,7 @@ class YokaiSecurityTokenBundle extends Bundle
     /**
      * @inheritDoc
      */
-    public function registerCommands(Application $application)
+    public function registerCommands(Application $application): void
     {
         // commands are registered as services
     }
