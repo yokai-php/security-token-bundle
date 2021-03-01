@@ -13,7 +13,7 @@ class OpenSslTokenGeneratorTest extends TestCase
     /**
      * @test
      */
-    public function it_generate_unique_token()
+    public function it_generate_unique_token(): void
     {
         $generator = new OpenSslTokenGenerator();
 

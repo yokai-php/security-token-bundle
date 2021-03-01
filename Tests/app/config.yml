@@ -2,13 +2,13 @@ framework:
     test: true
     secret: test
     router:
-        resource: "%kernel.root_dir%/routing.yml"
+        resource: "%kernel.project_dir%/app/routing.yml"
 
 doctrine:
     dbal:
         driver:   pdo_sqlite
         charset:  UTF8
-        path:     "%kernel.root_dir%/db.db3"
+        path:     "%kernel.project_dir%/app/db.db3"
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore

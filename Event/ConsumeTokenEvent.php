@@ -3,7 +3,7 @@
 namespace Yokai\SecurityTokenBundle\Event;
 
 use DateTime;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**

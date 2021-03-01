@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -15,20 +16,12 @@ use Yokai\SecurityTokenBundle\Tests\Manager\Mock\UserEntity;
  */
 class ChainUserManagerTest extends TestCase
 {
-    /**
-     * @param UserManagerInterface[] $managers
-     *
-     * @return ChainUserManager
-     */
-    private function manager($managers)
+    private function manager($managers): ChainUserManager
     {
         return new ChainUserManager($managers);
     }
 
-    /**
-     * @return UserManagerInterface
-     */
-    private function entityManager()
+    private function entityManager(): UserManagerInterface
     {
         /** @var UserManagerInterface|ObjectProphecy $manager */
         $manager = $this->prophesize(UserManagerInterface::class);
@@ -55,10 +48,7 @@ class ChainUserManagerTest extends TestCase
         return $manager->reveal();
     }
 
-    /**
-     * @return UserManagerInterface
-     */
-    private function documentManager()
+    private function documentManager(): UserManagerInterface
     {
         /** @var UserManagerInterface|ObjectProphecy $manager */
         $manager = $this->prophesize(UserManagerInterface::class);
@@ -88,7 +78,7 @@ class ChainUserManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_supports_same_classes_as_managers()
+    public function it_supports_same_classes_as_managers(): void
     {
         $entityManager = $this->entityManager();
         $documentManager = $this->documentManager();
@@ -116,7 +106,7 @@ class ChainUserManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_supports_same_users_as_managers()
+    public function it_supports_same_users_as_managers(): void
     {
         $entityManager = $this->entityManager();
         $documentManager = $this->documentManager();
@@ -144,7 +134,7 @@ class ChainUserManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_get_user_class_from_appropriate_manager()
+    public function it_get_user_class_from_appropriate_manager(): void
     {
         $entity = new UserEntity();
         $document = new UserDocument();
@@ -170,7 +160,7 @@ class ChainUserManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_get_user_from_appropriate_manager()
+    public function it_get_user_from_appropriate_manager(): void
     {
         $userCompleteManager = $this->manager([$this->entityManager(), $this->documentManager()]);
         self::assertInstanceOf(UserEntity::class, $userCompleteManager->get(UserEntity::class, 9999));
@@ -179,30 +169,33 @@ class ChainUserManagerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
-    public function it_throw_exception_on_get_user_class_without_appropriate_manager()
+    public function it_throw_exception_on_get_user_class_without_appropriate_manager(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $userCompleteManager = $this->manager([$this->entityManager(), $this->documentManager()]);
         $userCompleteManager->getClass(new \stdClass());
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
-    public function it_throw_exception_on_get_user_id_without_appropriate_manager()
+    public function it_throw_exception_on_get_user_id_without_appropriate_manager(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $userCompleteManager = $this->manager([$this->entityManager(), $this->documentManager()]);
         $userCompleteManager->getId(new \stdClass());
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
-    public function it_throw_exception_on_get_user_without_appropriate_manager()
+    public function it_throw_exception_on_get_user_without_appropriate_manager(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $userCompleteManager = $this->manager([$this->entityManager(), $this->documentManager()]);
         $userCompleteManager->get('stdClass', 'foo');
     }

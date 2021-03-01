@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class YokaiSecurityTokenTestKernel extends Kernel
 {
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
@@ -17,23 +17,23 @@ class YokaiSecurityTokenTestKernel extends Kernel
         ];
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__.'/config.yml');
+        $loader->load(__DIR__ . '/config.yml');
     }
 
-    public function getRootDir()
+    public function getProjectDir(): string
     {
-        return __DIR__;
+        return dirname(__DIR__);
     }
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
-        return sys_get_temp_dir().'/'.Kernel::VERSION.'/cache/'.$this->environment;
+        return sys_get_temp_dir() . '/' . Kernel::VERSION . '/cache/' . $this->environment;
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
-        return sys_get_temp_dir().'/'.Kernel::VERSION.'/logs';
+        return sys_get_temp_dir() . '/' . Kernel::VERSION . '/logs';
     }
 }

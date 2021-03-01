@@ -5,7 +5,7 @@ namespace Yokai\SecurityTokenBundle\Tests\Manager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Event\ConsumeTokenEvent;
 use Yokai\SecurityTokenBundle\Event\CreateTokenEvent;
@@ -57,7 +57,7 @@ class TokenManagerTest extends TestCase
      */
     private $eventDispatcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->prophesize(TokenFactoryInterface::class);
         $this->repository = $this->prophesize(TokenRepositoryInterface::class);
@@ -66,7 +66,7 @@ class TokenManagerTest extends TestCase
         $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset(
             $this->factory,
@@ -77,7 +77,7 @@ class TokenManagerTest extends TestCase
         );
     }
 
-    protected function manager()
+    protected function manager(): TokenManager
     {
         return new TokenManager(
             $this->factory->reveal(),
@@ -90,10 +90,11 @@ class TokenManagerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenNotFoundException
      */
-    public function it_dispatch_not_found_exceptions_on_get_token_from_repository()
+    public function it_dispatch_not_found_exceptions_on_get_token_from_repository(): void
     {
+        $this->expectException(TokenNotFoundException::class);
+
         $this->repository->get('unique-token', 'forgot_password')
             ->shouldBeCalledTimes(1)
             ->willThrow(TokenNotFoundException::create('unique-token', 'forgot_password'));
@@ -103,7 +104,7 @@ class TokenManagerTest extends TestCase
             Argument::which('getPurpose', 'forgot_password'),
             Argument::which('getValue', 'unique-token')
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_NOT_FOUND, $notFoundEvent)
+        $this->eventDispatcher->dispatch($notFoundEvent, TokenEvents::TOKEN_NOT_FOUND)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->get('forgot_password', 'unique-token');
@@ -111,10 +112,11 @@ class TokenManagerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenExpiredException
      */
-    public function it_dispatch_expired_exceptions_on_get_token_from_repository()
+    public function it_dispatch_expired_exceptions_on_get_token_from_repository(): void
     {
+        $this->expectException(TokenExpiredException::class);
+
         $this->repository->get('unique-token', 'forgot_password')
             ->shouldBeCalledTimes(1)
             ->willThrow(TokenExpiredException::create('unique-token', 'forgot_password', new \DateTime()));
@@ -124,7 +126,7 @@ class TokenManagerTest extends TestCase
             Argument::which('getPurpose', 'forgot_password'),
             Argument::which('getValue', 'unique-token')
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_EXPIRED, $expiredEvent)
+        $this->eventDispatcher->dispatch($expiredEvent, TokenEvents::TOKEN_EXPIRED)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->get('forgot_password', 'unique-token');
@@ -132,10 +134,11 @@ class TokenManagerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Yokai\SecurityTokenBundle\Exception\TokenConsumedException
      */
-    public function it_dispatch_used_exceptions_on_get_token_from_repository()
+    public function it_dispatch_used_exceptions_on_get_token_from_repository(): void
     {
+        $this->expectException(TokenConsumedException::class);
+
         $this->repository->get('unique-token', 'forgot_password')
             ->shouldBeCalledTimes(1)
             ->willThrow(TokenConsumedException::create('unique-token', 'forgot_password', 3));
@@ -145,7 +148,7 @@ class TokenManagerTest extends TestCase
             Argument::which('getPurpose', 'forgot_password'),
             Argument::which('getValue', 'unique-token')
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_ALREADY_CONSUMED, $alreadyConsumedEvent)
+        $this->eventDispatcher->dispatch($alreadyConsumedEvent, TokenEvents::TOKEN_ALREADY_CONSUMED)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->get('forgot_password', 'unique-token');
@@ -154,7 +157,7 @@ class TokenManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_get_token_from_repository()
+    public function it_get_token_from_repository(): void
     {
         $this->repository->get('unique-token', 'forgot_password')
             ->shouldBeCalledTimes(1)
@@ -164,7 +167,7 @@ class TokenManagerTest extends TestCase
             Argument::type(TokenRetrievedEvent::class),
             Argument::which('getToken', $expected)
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_RETRIEVED, $retrievedEvent)
+        $this->eventDispatcher->dispatch($retrievedEvent, TokenEvents::TOKEN_RETRIEVED)
             ->shouldBeCalledTimes(1);
 
         $token = $this->manager()->get('forgot_password', 'unique-token');
@@ -175,7 +178,7 @@ class TokenManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_create_unique_token()
+    public function it_create_unique_token(): void
     {
         $expectedToken = new Token(
             'string',
@@ -202,14 +205,14 @@ class TokenManagerTest extends TestCase
             Argument::which('getUser', 'john-doe'),
             Argument::which('getPayload', ['payload', 'information'])
         );
-        $this->eventDispatcher->dispatch(TokenEvents::CREATE_TOKEN, $createEvent)
+        $this->eventDispatcher->dispatch($createEvent, TokenEvents::CREATE_TOKEN)
             ->shouldBeCalledTimes(1);
 
         $createdEvent = Argument::allOf(
             Argument::type(TokenCreatedEvent::class),
             Argument::which('getToken', $expectedToken)
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_CREATED, $createdEvent)
+        $this->eventDispatcher->dispatch($createdEvent, TokenEvents::TOKEN_CREATED)
             ->shouldBeCalledTimes(1);
 
         $token = $this->manager()->create('forgot_password', 'john-doe', ['payload', 'information']);
@@ -220,7 +223,7 @@ class TokenManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_consume_token()
+    public function it_consume_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month');
 
@@ -236,21 +239,21 @@ class TokenManagerTest extends TestCase
             Argument::which('getToken', $token),
             Argument::which('getInformation', ['some', 'precious', 'information'])
         );
-        $this->eventDispatcher->dispatch(TokenEvents::CONSUME_TOKEN, $consumeEvent)
+        $this->eventDispatcher->dispatch($consumeEvent, TokenEvents::CONSUME_TOKEN)
             ->shouldBeCalledTimes(1);
 
         $consumedEvent = Argument::allOf(
             Argument::type(TokenConsumedEvent::class),
             Argument::which('getToken', $token)
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_CONSUMED, $consumedEvent)
+        $this->eventDispatcher->dispatch($consumedEvent, TokenEvents::TOKEN_CONSUMED)
             ->shouldBeCalledTimes(1);
 
         $totallyConsumedEvent = Argument::allOf(
             Argument::type(TokenTotallyConsumedEvent::class),
             Argument::which('getToken', $token)
         );
-        $this->eventDispatcher->dispatch(TokenEvents::TOKEN_TOTALLY_CONSUMED, $totallyConsumedEvent)
+        $this->eventDispatcher->dispatch($totallyConsumedEvent, TokenEvents::TOKEN_TOTALLY_CONSUMED)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->consume($token);
@@ -266,7 +269,7 @@ class TokenManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_extract_user_from_token()
+    public function it_extract_user_from_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 1, []);
 

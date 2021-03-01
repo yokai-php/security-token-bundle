@@ -45,7 +45,7 @@ For example, lets say that you want to log errors during token retrieval, you ca
 namespace App\EventListener;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\EventDispatcher\EventSubscriberInterface;
 use Yokai\SecurityTokenBundle\TokenEvents;
 use Yokai\SecurityTokenBundle\Event as SecurityTokenEvents;
 

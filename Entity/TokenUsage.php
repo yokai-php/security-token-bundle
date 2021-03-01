@@ -27,9 +27,9 @@ class TokenUsage
     private $information = [];
 
     /**
-     * @param Token    $token
-     * @param array    $information
-     * @param DateTime $createdAt
+     * @param Token         $token
+     * @param array         $information
+     * @param DateTime|null $createdAt
      */
     public function __construct(Token $token, array $information, DateTime $createdAt = null)
     {

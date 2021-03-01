@@ -2,10 +2,11 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\DependencyInjection;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ProphecySubjectInterface;
 use Psr\Log\LoggerInterface;
@@ -37,7 +38,7 @@ class DependencyInjectionTest extends TestCase
      */
     private $container;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $bundle = new YokaiSecurityTokenBundle();
         $this->container = new ContainerBuilder();
@@ -83,7 +84,7 @@ class DependencyInjectionTest extends TestCase
      * @test
      * @dataProvider configurationProvider
      */
-    public function it_parse_configuration_as_expected($resource, array $tokens, array $aliases)
+    public function it_parse_configuration_as_expected(string $resource, array $tokens, array $aliases): void
     {
         // for test purpose, all services are switched to public
         $this->container->addCompilerPass(new class implements CompilerPassInterface {
@@ -120,10 +121,7 @@ class DependencyInjectionTest extends TestCase
         }
     }
 
-    /**
-     * @param string $resource
-     */
-    protected function loadConfiguration($resource)
+    protected function loadConfiguration(string $resource): void
     {
         $locator = new FileLocator(__DIR__.'/configuration/');
         $path = $locator->locate($resource);
@@ -137,13 +135,12 @@ class DependencyInjectionTest extends TestCase
 
             default:
                 throw new \InvalidArgumentException('File ' . $path . ' is not supported.');
-                break;
         }
 
         $loader->load($resource);
     }
 
-    public function configurationProvider()
+    public function configurationProvider(): Generator
     {
         $defaultAliases = [
             'yokai_security_token.information_guesser' => 'yokai_security_token.default_information_guesser',
@@ -204,7 +201,7 @@ class DependencyInjectionTest extends TestCase
         }
     }
 
-    public function formatProvider()
+    public function formatProvider(): Generator
     {
         yield ['yml'];
     }

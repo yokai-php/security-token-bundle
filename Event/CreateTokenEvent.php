@@ -2,7 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event being dispatched before a Token is created.

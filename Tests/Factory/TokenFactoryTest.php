@@ -34,14 +34,14 @@ class TokenFactoryTest extends TestCase
      */
     private $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->informationGuesser = $this->prophesize(InformationGuesserInterface::class);
         $this->userManager = $this->prophesize(UserManagerInterface::class);
         $this->repository = $this->prophesize(TokenRepositoryInterface::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset(
             $this->informationGuesser,
@@ -50,7 +50,7 @@ class TokenFactoryTest extends TestCase
         );
     }
 
-    protected function factory(array $configuration)
+    protected function factory(array $configuration): TokenFactory
     {
         return new TokenFactory(
             new TokenConfigurationRegistry($configuration),
@@ -63,7 +63,7 @@ class TokenFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_create_token_according_to_configuration()
+    public function it_create_token_according_to_configuration(): void
     {
         $generator1 = $this->createMock(TokenGeneratorInterface::class);
         $generator1->method('generate')
