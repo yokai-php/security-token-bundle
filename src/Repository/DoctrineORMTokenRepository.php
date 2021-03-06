@@ -113,12 +113,8 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
             ->select('COUNT(token.id)')
             ->where('token.value = :value')
             ->andWhere('token.purpose = :purpose')
-            ->setParameters(
-                [
-                    'value' => $value,
-                    'purpose' => $purpose,
-                ]
-            )
+            ->setParameter('value', $value)
+            ->setParameter('purpose', $purpose)
         ;
 
         return intval($builder->getQuery()->getSingleScalarResult()) > 0;
