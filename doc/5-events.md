@@ -45,8 +45,7 @@ For example, lets say that you want to log errors during token retrieval, you ca
 namespace App\EventListener;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\EventDispatcher\EventSubscriberInterface;
-use Yokai\SecurityTokenBundle\TokenEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Yokai\SecurityTokenBundle\Event as SecurityTokenEvents;
 
 class LogSecurityTokenErrors implements EventSubscriberInterface
@@ -62,13 +61,13 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            TokenEvents::TOKEN_NOT_FOUND => 'onTokenNotFound',
-            TokenEvents::TOKEN_EXPIRED => 'onTokenExpired',
-            TokenEvents::TOKEN_ALREADY_CONSUMED => 'onTokenConsumed',
+            SecurityTokenEvents\TokenNotFoundEvent::class => 'onTokenNotFound',
+            SecurityTokenEvents\TokenExpiredEvent::class => 'onTokenExpired',
+            SecurityTokenEvents\TokenAlreadyConsumedEvent::class => 'onTokenConsumed',
         ];
     }
 
-    public function onTokenNotFound(SecurityTokenEvents\TokenNotFoundEvent $event)
+    public function onTokenNotFound(SecurityTokenEvents\TokenNotFoundEvent $event): void
     {
         $this->logger->warning(
             'Security token was not found',
@@ -76,7 +75,7 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
         );
     }
 
-    public function onTokenExpired(SecurityTokenEvents\TokenExpiredEvent $event)
+    public function onTokenExpired(SecurityTokenEvents\TokenExpiredEvent $event): void
     {
         $this->logger->warning(
             'Security token was expired',
@@ -84,7 +83,7 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
         );
     }
 
-    public function onTokenConsumed(SecurityTokenEvents\TokenAlreadyConsumedEvent $event)
+    public function onTokenConsumed(SecurityTokenEvents\TokenAlreadyConsumedEvent $event): void
     {
         $this->logger->warning(
             'Security token was already consumed',
