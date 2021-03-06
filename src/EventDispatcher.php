@@ -34,15 +34,15 @@ class EventDispatcher
 
     /**
      * @param string $purpose
-     * @param string $value
+     * @param mixed  $user
      * @param array  $payload
      *
      * @return CreateTokenEvent
      */
-    public function createToken(string $purpose, string $value, array $payload): CreateTokenEvent
+    public function createToken(string $purpose, string $user, array $payload): CreateTokenEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new CreateTokenEvent($purpose, $value, $payload)
+            $event = new CreateTokenEvent($purpose, $user, $payload)
         );
 
         return $event;
