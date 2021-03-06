@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Manager;
 
 /**
@@ -10,12 +12,12 @@ namespace Yokai\SecurityTokenBundle\Manager;
 class ChainUserManager implements UserManagerInterface
 {
     /**
-     * @var UserManagerInterface[]
+     * @var iterable<UserManagerInterface>
      */
     private $managers;
 
     /**
-     * @param UserManagerInterface[] $managers A list of user managers
+     * @param iterable<UserManagerInterface> $managers A list of user managers
      */
     public function __construct(iterable $managers)
     {
@@ -77,7 +79,7 @@ class ChainUserManager implements UserManagerInterface
     /**
      * Find appropriate user manager for a class.
      *
-     * @param string $class The user class
+     * @param class-string $class The user class
      *
      * @return UserManagerInterface
      * @throws \InvalidArgumentException

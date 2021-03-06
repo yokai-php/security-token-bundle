@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\Factory;
 
 use DateTime;
@@ -16,6 +18,8 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class TokenFactoryTest extends TestCase
 {

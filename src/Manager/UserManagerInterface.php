@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Manager;
 
 /**
@@ -12,7 +14,7 @@ interface UserManagerInterface
     /**
      * Tell whether or not the manager is supporting a user class.
      *
-     * @param string $class The user class
+     * @param class-string $class The user class
      *
      * @return boolean
      */
@@ -30,8 +32,8 @@ interface UserManagerInterface
     /**
      * Get user of certain class with certain id.
      *
-     * @param string $class The user class
-     * @param string $id    The user id
+     * @param class-string $class The user class
+     * @param string       $id    The user id
      *
      * @return mixed
      */
@@ -42,7 +44,7 @@ interface UserManagerInterface
      *
      * @param mixed $user The user
      *
-     * @return string
+     * @return class-string
      */
     public function getClass($user): string;
 

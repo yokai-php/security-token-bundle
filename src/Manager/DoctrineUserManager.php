@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
@@ -63,7 +65,10 @@ class DoctrineUserManager implements UserManagerInterface
      */
     public function getClass($user): string
     {
-        return ClassUtils::getClass($user);
+        /** @var class-string $class */
+        $class = ClassUtils::getClass($user);
+
+        return $class;
     }
 
     /**

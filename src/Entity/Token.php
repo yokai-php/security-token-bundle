@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Entity;
 
 use DateTime;
@@ -18,7 +20,7 @@ class Token
     private $id;
 
     /**
-     * @var string
+     * @var class-string
      */
     private $userClass;
 
@@ -73,15 +75,15 @@ class Token
     private $usages;
 
     /**
-     * @param string  $userClass
-     * @param string  $userId
-     * @param string  $value
-     * @param string  $purpose
-     * @param string  $validDuration
-     * @param string  $keepDuration
-     * @param int     $allowedUsages
-     * @param array   $payload
-     * @param array   $information
+     * @param class-string $userClass
+     * @param string       $userId
+     * @param string       $value
+     * @param string       $purpose
+     * @param string       $validDuration
+     * @param string       $keepDuration
+     * @param int          $allowedUsages
+     * @param array        $payload
+     * @param array        $information
      */
     public function __construct(
         string $userClass,
@@ -116,7 +118,7 @@ class Token
     }
 
     /**
-     * @return string
+     * @return class-string
      */
     public function getUserClass(): string
     {

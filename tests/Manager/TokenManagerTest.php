@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
 use PHPUnit\Framework\TestCase;
@@ -25,10 +27,11 @@ use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Manager\TokenManager;
 use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
-use Yokai\SecurityTokenBundle\TokenEvents;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class TokenManagerTest extends TestCase
 {
@@ -104,7 +107,7 @@ class TokenManagerTest extends TestCase
             Argument::which('getPurpose', 'forgot_password'),
             Argument::which('getValue', 'unique-token')
         );
-        $this->eventDispatcher->dispatch($notFoundEvent, TokenEvents::TOKEN_NOT_FOUND)
+        $this->eventDispatcher->dispatch($notFoundEvent)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->get('forgot_password', 'unique-token');
@@ -126,7 +129,7 @@ class TokenManagerTest extends TestCase
             Argument::which('getPurpose', 'forgot_password'),
             Argument::which('getValue', 'unique-token')
         );
-        $this->eventDispatcher->dispatch($expiredEvent, TokenEvents::TOKEN_EXPIRED)
+        $this->eventDispatcher->dispatch($expiredEvent)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->get('forgot_password', 'unique-token');
@@ -148,7 +151,7 @@ class TokenManagerTest extends TestCase
             Argument::which('getPurpose', 'forgot_password'),
             Argument::which('getValue', 'unique-token')
         );
-        $this->eventDispatcher->dispatch($alreadyConsumedEvent, TokenEvents::TOKEN_ALREADY_CONSUMED)
+        $this->eventDispatcher->dispatch($alreadyConsumedEvent)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->get('forgot_password', 'unique-token');
@@ -167,7 +170,7 @@ class TokenManagerTest extends TestCase
             Argument::type(TokenRetrievedEvent::class),
             Argument::which('getToken', $expected)
         );
-        $this->eventDispatcher->dispatch($retrievedEvent, TokenEvents::TOKEN_RETRIEVED)
+        $this->eventDispatcher->dispatch($retrievedEvent)
             ->shouldBeCalledTimes(1);
 
         $token = $this->manager()->get('forgot_password', 'unique-token');
@@ -205,14 +208,14 @@ class TokenManagerTest extends TestCase
             Argument::which('getUser', 'john-doe'),
             Argument::which('getPayload', ['payload', 'information'])
         );
-        $this->eventDispatcher->dispatch($createEvent, TokenEvents::CREATE_TOKEN)
+        $this->eventDispatcher->dispatch($createEvent)
             ->shouldBeCalledTimes(1);
 
         $createdEvent = Argument::allOf(
             Argument::type(TokenCreatedEvent::class),
             Argument::which('getToken', $expectedToken)
         );
-        $this->eventDispatcher->dispatch($createdEvent, TokenEvents::TOKEN_CREATED)
+        $this->eventDispatcher->dispatch($createdEvent)
             ->shouldBeCalledTimes(1);
 
         $token = $this->manager()->create('forgot_password', 'john-doe', ['payload', 'information']);
@@ -239,21 +242,21 @@ class TokenManagerTest extends TestCase
             Argument::which('getToken', $token),
             Argument::which('getInformation', ['some', 'precious', 'information'])
         );
-        $this->eventDispatcher->dispatch($consumeEvent, TokenEvents::CONSUME_TOKEN)
+        $this->eventDispatcher->dispatch($consumeEvent)
             ->shouldBeCalledTimes(1);
 
         $consumedEvent = Argument::allOf(
             Argument::type(TokenConsumedEvent::class),
             Argument::which('getToken', $token)
         );
-        $this->eventDispatcher->dispatch($consumedEvent, TokenEvents::TOKEN_CONSUMED)
+        $this->eventDispatcher->dispatch($consumedEvent)
             ->shouldBeCalledTimes(1);
 
         $totallyConsumedEvent = Argument::allOf(
             Argument::type(TokenTotallyConsumedEvent::class),
             Argument::which('getToken', $token)
         );
-        $this->eventDispatcher->dispatch($totallyConsumedEvent, TokenEvents::TOKEN_TOTALLY_CONSUMED)
+        $this->eventDispatcher->dispatch($totallyConsumedEvent)
             ->shouldBeCalledTimes(1);
 
         $this->manager()->consume($token);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -31,11 +33,11 @@ class Kernel extends BaseKernel
 
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir() . '/' . Kernel::VERSION . '/cache/' . $this->environment;
+        return sys_get_temp_dir() . '/' . BaseKernel::VERSION . '/cache/' . $this->environment;
     }
 
     public function getLogDir(): string
     {
-        return sys_get_temp_dir() . '/' . Kernel::VERSION . '/logs';
+        return sys_get_temp_dir() . '/' . BaseKernel::VERSION . '/logs';
     }
 }

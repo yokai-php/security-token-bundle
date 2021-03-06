@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -40,6 +42,7 @@ class ArchiveTokenCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string|null $purpose */
         $purpose = $input->getOption('purpose');
 
         $count = $this->archivist->archive($purpose);

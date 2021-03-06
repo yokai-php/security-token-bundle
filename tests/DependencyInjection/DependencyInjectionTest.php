@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\DependencyInjection;
 
 use Doctrine\ORM\Configuration;
@@ -30,6 +32,8 @@ use Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class DependencyInjectionTest extends TestCase
 {
@@ -56,7 +60,10 @@ class DependencyInjectionTest extends TestCase
         $this->container->set('logger', $this->prophesize(LoggerInterface::class)->reveal());
         $this->container->setDefinition('doctrine', new Definition(ManagerRegistry::class));
         $this->container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
-        $this->container->setDefinition('doctrine.orm.default_metadata_driver', new Definition(MappingDriverChain::class));
+        $this->container->setDefinition(
+            'doctrine.orm.default_metadata_driver',
+            new Definition(MappingDriverChain::class)
+        );
         $this->container->setDefinition('doctrine.orm.default_configuration', new Definition(Configuration::class));
         $this->container->setDefinition('request_stack', new Definition(RequestStack::class));
         $this->container->setDefinition('event_dispatcher', new Definition(EventDispatcher::class));
@@ -123,7 +130,7 @@ class DependencyInjectionTest extends TestCase
 
     protected function loadConfiguration(string $resource): void
     {
-        $locator = new FileLocator(__DIR__.'/configuration/');
+        $locator = new FileLocator(__DIR__ . '/configuration/');
         $path = $locator->locate($resource);
 
         switch (pathinfo($path, PATHINFO_EXTENSION)) {

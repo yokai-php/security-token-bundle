@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\Generator;
 
 use PHPUnit\Framework\TestCase;
@@ -7,6 +9,8 @@ use Yokai\SecurityTokenBundle\Generator\OpenSslTokenGenerator;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class OpenSslTokenGeneratorTest extends TestCase
 {

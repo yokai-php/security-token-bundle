@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle;
 
 use DateTime;
@@ -40,8 +42,7 @@ class EventDispatcher
     public function createToken(string $purpose, string $value, array $payload): CreateTokenEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new CreateTokenEvent($purpose, $value, $payload),
-            TokenEvents::CREATE_TOKEN
+            $event = new CreateTokenEvent($purpose, $value, $payload)
         );
 
         return $event;
@@ -55,8 +56,7 @@ class EventDispatcher
     public function tokenCreated(Token $token): TokenCreatedEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new TokenCreatedEvent($token),
-            TokenEvents::TOKEN_CREATED
+            $event = new TokenCreatedEvent($token)
         );
 
         return $event;
@@ -72,8 +72,7 @@ class EventDispatcher
     public function consumeToken(Token $token, DateTime $at = null, array $information = []): ConsumeTokenEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new ConsumeTokenEvent($token, $at, $information),
-            TokenEvents::CONSUME_TOKEN
+            $event = new ConsumeTokenEvent($token, $at, $information)
         );
 
         return $event;
@@ -87,8 +86,7 @@ class EventDispatcher
     public function tokenConsumed(Token $token): TokenConsumedEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new TokenConsumedEvent($token),
-            TokenEvents::TOKEN_CONSUMED
+            $event = new TokenConsumedEvent($token)
         );
 
         return $event;
@@ -102,8 +100,7 @@ class EventDispatcher
     public function tokenTotallyConsumed(Token $token): TokenTotallyConsumedEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new TokenTotallyConsumedEvent($token),
-            TokenEvents::TOKEN_TOTALLY_CONSUMED
+            $event = new TokenTotallyConsumedEvent($token)
         );
 
         return $event;
@@ -118,8 +115,7 @@ class EventDispatcher
     public function tokenNotFound(string $purpose, string $value): TokenNotFoundEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new TokenNotFoundEvent($purpose, $value),
-            TokenEvents::TOKEN_NOT_FOUND
+            $event = new TokenNotFoundEvent($purpose, $value)
         );
 
         return $event;
@@ -134,8 +130,7 @@ class EventDispatcher
     public function tokenExpired(string $purpose, string $value): TokenExpiredEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new TokenExpiredEvent($purpose, $value),
-            TokenEvents::TOKEN_EXPIRED
+            $event = new TokenExpiredEvent($purpose, $value)
         );
 
         return $event;
@@ -150,8 +145,7 @@ class EventDispatcher
     public function tokenAlreadyConsumed(string $purpose, string $value): TokenAlreadyConsumedEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new TokenAlreadyConsumedEvent($purpose, $value),
-            TokenEvents::TOKEN_ALREADY_CONSUMED
+            $event = new TokenAlreadyConsumedEvent($purpose, $value)
         );
 
         return $event;
@@ -165,8 +159,7 @@ class EventDispatcher
     public function tokenRetrieved(Token $token): TokenRetrievedEvent
     {
         $this->eventDispatcher->dispatch(
-            $event = new TokenRetrievedEvent($token),
-            TokenEvents::TOKEN_RETRIEVED
+            $event = new TokenRetrievedEvent($token)
         );
 
         return $event;
