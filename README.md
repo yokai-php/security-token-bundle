@@ -1,15 +1,12 @@
 YokaiSecurityTokenBundle
 ========================
 
-[![Latest Stable Version](https://poser.pugx.org/yokai/security-token-bundle/v/stable)](https://packagist.org/packages/yokai/security-token-bundle)
-[![Latest Unstable Version](https://poser.pugx.org/yokai/security-token-bundle/v/unstable)](https://packagist.org/packages/yokai/security-token-bundle)
-[![Total Downloads](https://poser.pugx.org/yokai/security-token-bundle/downloads)](https://packagist.org/packages/yokai/security-token-bundle)
-[![License](https://poser.pugx.org/yokai/security-token-bundle/license)](https://packagist.org/packages/yokai/security-token-bundle)
+[![Tests](https://img.shields.io/github/workflow/status/yokai-php/security-token-bundle/Tests?style=flat-square&label=tests)](https://github.com/yokai-php/security-token-bundle/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/yokai-php/security-token-bundle?style=flat-square)](https://codecov.io/gh/yokai-php/security-token-bundle)
+[![Contributors](https://img.shields.io/github/contributors/yokai-php/security-token-bundle?style=flat-square)](https://github.com/yokai-php/security-token-bundle/graphs/contributors)
 
-[![Build Status](https://api.travis-ci.org/yokai-php/security-token-bundle.png?branch=master)](https://travis-ci.org/yokai-php/security-token-bundle)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yokai-php/security-token-bundle/?branch=master)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/77506b7f-27a5-4513-9e7a-716335e600c5/mini.png)](https://insight.sensiolabs.com/projects/77506b7f-27a5-4513-9e7a-716335e600c5)
+[![Latest Stable Version](https://img.shields.io/packagist/v/yokai/security-token-bundle?style=flat-square)](https://packagist.org/packages/yokai/security-token-bundle)
+[![Downloads Monthly](https://img.shields.io/packagist/dm/yokai/security-token-bundle?style=flat-square)](https://packagist.org/packages/yokai/security-token-bundle)
 
 
 This bundle aims to provide a way to generate, store, manage security tokens for web applications.
