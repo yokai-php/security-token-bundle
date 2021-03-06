@@ -8,26 +8,22 @@
          processIsolation="false"
          stopOnFailure="false"
          colors="true"
-         bootstrap="Tests/bootstrap.php"
+         bootstrap="vendor/autoload.php"
         >
 
     <php>
-        <server name="KERNEL_CLASS" value="YokaiSecurityTokenTestKernel"/>
+        <server name="KERNEL_CLASS" value="Yokai\SecurityTokenBundle\Tests\Kernel"/>
     </php>
 
     <testsuites>
         <testsuite name="YokaiSecurityTokenBundle Test Suite">
-            <directory>./Tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
+            <directory>./src</directory>
         </whitelist>
     </filter>
 </phpunit>

@@ -1,30 +1,32 @@
 <?php
 
+namespace Yokai\SecurityTokenBundle\Tests;
+
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class YokaiSecurityTokenTestKernel extends Kernel
+class Kernel extends BaseKernel
 {
     public function registerBundles(): iterable
     {
         return [
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle(),
+            new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new \Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle(),
         ];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__ . '/config.yml');
+        $loader->load(__DIR__ . '/app/config.yml');
     }
 
     public function getProjectDir(): string
     {
-        return dirname(__DIR__);
+        return __DIR__;
     }
 
     public function getCacheDir(): string
