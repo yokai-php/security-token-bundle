@@ -6,7 +6,7 @@ YokaiSecurityTokenBundle
 [![Contributors](https://img.shields.io/github/contributors/yokai-php/security-token-bundle?style=flat-square)](https://github.com/yokai-php/security-token-bundle/graphs/contributors)
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/yokai/security-token-bundle?style=flat-square)](https://packagist.org/packages/yokai/security-token-bundle)
-[![Downloads Monthly](https://img.shields.io/packagist/dm/yokai/security-token-bundle?style=flat-square)](https://packagist.org/packages/yokai/security-token-bundle)
+[![Downloads Monthly](https://img.shields.io/packagist/dm/yokai/security-token-bundle?style=flat-square)](https://packagist.org/packages/yokai/security-token-bundle/stats)
 
 
 This bundle aims to provide a way to generate, store, manage security tokens for web applications.
