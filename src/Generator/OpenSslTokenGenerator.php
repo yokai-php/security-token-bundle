@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Generator;
 
 use LogicException;
@@ -11,7 +13,7 @@ use LogicException;
  */
 class OpenSslTokenGenerator implements TokenGeneratorInterface
 {
-    const DEFAULT_LENGTH = 32;
+    private const DEFAULT_LENGTH = 32;
 
     /**
      * @var int

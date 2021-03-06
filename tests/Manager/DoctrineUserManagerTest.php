@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +14,8 @@ use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class DoctrineUserManagerTest extends TestCase
 {
@@ -53,7 +57,7 @@ class DoctrineUserManagerTest extends TestCase
 
     protected function user($id)
     {
-        return new class($id) {
+        return new class ($id) {
             private $id;
 
             public function __construct($id)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\InformationGuesser;
 
 use PHPUnit\Framework\TestCase;
@@ -9,6 +11,8 @@ use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class InformationGuesserTest extends TestCase
 {

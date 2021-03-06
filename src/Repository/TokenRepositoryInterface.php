@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Repository;
 
 use Yokai\SecurityTokenBundle\Entity\Token;

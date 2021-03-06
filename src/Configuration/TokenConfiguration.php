@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Configuration;
 
 use Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface;

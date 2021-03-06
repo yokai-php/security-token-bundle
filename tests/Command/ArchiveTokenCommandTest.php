@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\Command;
 
 use Prophecy\Prophecy\ObjectProphecy;
@@ -11,6 +13,8 @@ use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class ArchiveTokenCommandTest extends KernelTestCase
 {
@@ -53,7 +57,7 @@ class ArchiveTokenCommandTest extends KernelTestCase
     {
         $input = ['command' => $command->getName()];
         foreach ($options as $name => $value) {
-            $input['--'.$name] = $value;
+            $input['--' . $name] = $value;
         }
         $tester = new CommandTester($command);
         $tester->execute($input);

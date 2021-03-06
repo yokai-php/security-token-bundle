@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle;
 
 /**
@@ -17,7 +19,7 @@ final class TokenEvents
      *
      * @var string
      */
-    const CREATE_TOKEN = 'yokai_security_yoken.create_token';
+    public const CREATE_TOKEN = 'yokai_security_yoken.create_token';
 
     /**
      * The TOKEN_CREATED event occurs after a token is created.
@@ -29,7 +31,7 @@ final class TokenEvents
      *
      * @var string
      */
-    const TOKEN_CREATED = 'yokai_security_yoken.token_created';
+    public const TOKEN_CREATED = 'yokai_security_yoken.token_created';
 
     /**
      * The CONSUME_TOKEN event occurs before a token is consumed.
@@ -41,7 +43,7 @@ final class TokenEvents
      *
      * @var string
      */
-    const CONSUME_TOKEN = 'yokai_security_yoken.consume_token';
+    public const CONSUME_TOKEN = 'yokai_security_yoken.consume_token';
 
     /**
      * The TOKEN_CONSUMED event occurs after a token is consumed.
@@ -53,7 +55,7 @@ final class TokenEvents
      *
      * @var string
      */
-    const TOKEN_CONSUMED = 'yokai_security_yoken.token_consumed';
+    public const TOKEN_CONSUMED = 'yokai_security_yoken.token_consumed';
 
     /**
      * The TOKEN_TOTALLY_CONSUMED event occurs after a token is totally consumed (no more usages allowed on this token).
@@ -65,7 +67,7 @@ final class TokenEvents
      *
      * @var string
      */
-    const TOKEN_TOTALLY_CONSUMED = 'yokai_security_yoken.token_used';
+    public const TOKEN_TOTALLY_CONSUMED = 'yokai_security_yoken.token_used';
 
     /**
      * The TOKEN_RETRIEVED event occurs whenever the Yokai\SecurityTokenBundle\Manager\TokenManagerInterface
@@ -78,7 +80,7 @@ final class TokenEvents
      *
      * @var string
      */
-    const TOKEN_RETRIEVED = 'yokai_security_yoken.token_retrieved';
+    public const TOKEN_RETRIEVED = 'yokai_security_yoken.token_retrieved';
 
     /**
      * The TOKEN_NOT_FOUND event occurs whenever the Yokai\SecurityTokenBundle\Manager\TokenManagerInterface
@@ -91,7 +93,7 @@ final class TokenEvents
      *
      * @var string
      */
-    const TOKEN_NOT_FOUND = 'yokai_security_yoken.token_not_found';
+    public const TOKEN_NOT_FOUND = 'yokai_security_yoken.token_not_found';
 
     /**
      * The TOKEN_EXPIRED event occurs whenever the Yokai\SecurityTokenBundle\Manager\TokenManagerInterface
@@ -104,7 +106,7 @@ final class TokenEvents
      *
      * @var string
      */
-    const TOKEN_EXPIRED = 'yokai_security_yoken.token_expired';
+    public const TOKEN_EXPIRED = 'yokai_security_yoken.token_expired';
 
     /**
      * The TOKEN_ALREADY_CONSUMED event occurs whenever the Yokai\SecurityTokenBundle\Manager\TokenManagerInterface
@@ -117,5 +119,5 @@ final class TokenEvents
      *
      * @var string
      */
-    const TOKEN_ALREADY_CONSUMED = 'yokai_security_yoken.token_already_consumed';
+    public const TOKEN_ALREADY_CONSUMED = 'yokai_security_yoken.token_already_consumed';
 }

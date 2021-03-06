@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\Repository;
 
 use Doctrine\ORM\EntityManager;
@@ -14,6 +16,8 @@ use Yokai\SecurityTokenBundle\Repository\DoctrineORMTokenRepository;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class DoctrineORMTokenRepositoryTest extends TestCase
 {

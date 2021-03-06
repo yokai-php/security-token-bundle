@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\InformationGuesser;
 
 use Symfony\Component\HttpFoundation\RequestStack;

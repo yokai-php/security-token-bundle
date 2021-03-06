@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
 use PHPUnit\Framework\TestCase;
@@ -29,6 +31,8 @@ use Yokai\SecurityTokenBundle\TokenEvents;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class TokenManagerTest extends TestCase
 {

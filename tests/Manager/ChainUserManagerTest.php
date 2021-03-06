@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
 use InvalidArgumentException;
@@ -13,6 +15,8 @@ use Yokai\SecurityTokenBundle\Tests\Manager\Mock\UserEntity;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class ChainUserManagerTest extends TestCase
 {
@@ -163,8 +167,11 @@ class ChainUserManagerTest extends TestCase
     public function it_get_user_from_appropriate_manager(): void
     {
         $userCompleteManager = $this->manager([$this->entityManager(), $this->documentManager()]);
-        self::assertInstanceOf(UserEntity::class, $userCompleteManager->get(UserEntity::class, 9999));
-        self::assertInstanceOf(UserDocument::class, $userCompleteManager->get(UserDocument::class, '1111-2222-3333-4444'));
+        self::assertInstanceOf(UserEntity::class, $userCompleteManager->get(UserEntity::class, '9999'));
+        self::assertInstanceOf(
+            UserDocument::class,
+            $userCompleteManager->get(UserDocument::class, '1111-2222-3333-4444')
+        );
     }
 
     /**

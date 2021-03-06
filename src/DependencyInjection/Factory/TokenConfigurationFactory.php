@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yokai\SecurityTokenBundle\DependencyInjection\Factory;
 
 use BadMethodCallException;
@@ -36,7 +38,7 @@ class TokenConfigurationFactory
         if ($container->hasDefinition($id)) {
             throw new BadMethodCallException(
                 sprintf(
-                    'Cannot register service for security token on "%s" purpose.'.
+                    'Cannot register service for security token on "%s" purpose.' .
                     ' A service with id "%s" is already registered.',
                     $purpose,
                     $id
