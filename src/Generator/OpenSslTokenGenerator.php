@@ -37,6 +37,6 @@ class OpenSslTokenGenerator implements TokenGeneratorInterface
      */
     public function generate(): string
     {
-        return rtrim(strtr(base64_encode(openssl_random_pseudo_bytes($this->length)), '+/', '-_'), '=');
+        return rtrim(strtr(base64_encode((string)openssl_random_pseudo_bytes($this->length)), '+/', '-_'), '=');
     }
 }

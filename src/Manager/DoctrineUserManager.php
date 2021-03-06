@@ -65,7 +65,10 @@ class DoctrineUserManager implements UserManagerInterface
      */
     public function getClass($user): string
     {
-        return ClassUtils::getClass($user);
+        /** @var class-string $class */
+        $class = ClassUtils::getClass($user);
+
+        return $class;
     }
 
     /**

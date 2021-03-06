@@ -42,6 +42,7 @@ class ArchiveTokenCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string|null $purpose */
         $purpose = $input->getOption('purpose');
 
         $count = $this->archivist->archive($purpose);
