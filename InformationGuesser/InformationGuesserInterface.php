@@ -14,5 +14,5 @@ interface InformationGuesserInterface
      *
      * @return array
      */
-    public function get();
+    public function get(): array;
 }

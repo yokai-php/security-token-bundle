@@ -2,7 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event being dispatched when a Token is not found.
@@ -25,7 +25,7 @@ class TokenNotFoundEvent extends Event
      * @param string $purpose The token purpose
      * @param string $value   The token value
      */
-    public function __construct($purpose, $value)
+    public function __construct(string $purpose, string $value)
     {
         $this->purpose = $purpose;
         $this->value = $value;
@@ -36,7 +36,7 @@ class TokenNotFoundEvent extends Event
      *
      * @return string
      */
-    public function getPurpose()
+    public function getPurpose(): string
     {
         return $this->purpose;
     }
@@ -46,7 +46,7 @@ class TokenNotFoundEvent extends Event
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }

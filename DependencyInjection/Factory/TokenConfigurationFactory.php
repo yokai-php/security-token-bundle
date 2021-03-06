@@ -17,13 +17,20 @@ class TokenConfigurationFactory
      * @param string           $purpose
      * @param string           $generator
      * @param string           $duration
-     * @param integer          $usages
+     * @param int              $usages
      * @param string           $keep
      * @param boolean          $unique
      * @param ContainerBuilder $container
      */
-    public static function create($purpose, $generator, $duration, $usages, $keep, $unique, ContainerBuilder $container)
-    {
+    public static function create(
+        string $purpose,
+        string $generator,
+        string $duration,
+        int $usages,
+        string $keep,
+        bool $unique,
+        ContainerBuilder $container
+    ): void {
         $id = sprintf('yokai_security_token.configuration.%s', $purpose);
 
         if ($container->hasDefinition($id)) {

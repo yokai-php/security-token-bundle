@@ -2,14 +2,15 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenTest extends \PHPUnit_Framework_TestCase
+class TokenTest extends TestCase
 {
-    public function testLimitedUsagesToken()
+    public function testLimitedUsagesToken(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 2);
         self::assertFalse($token->isConsumed());
@@ -24,7 +25,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
         self::assertSame([2], $token->getLastUsage()->getInformation());
     }
 
-    public function testUnlimitedUsagesToken()
+    public function testUnlimitedUsagesToken(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 0);
         self::assertFalse($token->isConsumed());

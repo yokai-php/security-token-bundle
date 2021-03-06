@@ -5,9 +5,9 @@ namespace Yokai\SecurityTokenBundle\Manager;
 use DateTime;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\EventDispatcher;
+use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
@@ -66,7 +66,7 @@ class TokenManager implements TokenManagerInterface
     /**
      * @inheritdoc
      */
-    public function get($purpose, $value)
+    public function get(string $purpose, string $value): Token
     {
         try {
             $token = $this->repository->get($value, $purpose);
@@ -92,7 +92,7 @@ class TokenManager implements TokenManagerInterface
     /**
      * @inheritdoc
      */
-    public function create($purpose, $user, array $payload = [])
+    public function create(string $purpose, $user, array $payload = []): Token
     {
         $event = $this->eventDispatcher->createToken($purpose, $user, $payload);
 
@@ -106,23 +106,9 @@ class TokenManager implements TokenManagerInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function setUsed(Token $token, DateTime $at = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the consume() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->consume($token, $at);
-    }
-
-    /**
      * @inheritDoc
      */
-    public function consume(Token $token, DateTime $at = null)
+    public function consume(Token $token, DateTime $at = null): void
     {
         $event = $this->eventDispatcher->consumeToken($token, $at, $this->informationGuesser->get());
 

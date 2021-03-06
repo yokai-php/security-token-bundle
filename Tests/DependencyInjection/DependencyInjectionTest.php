@@ -2,10 +2,12 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\DependencyInjection;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
+use Generator;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ProphecySubjectInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -29,14 +31,14 @@ use Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
+class DependencyInjectionTest extends TestCase
 {
     /**
      * @var ContainerBuilder
      */
     private $container;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $bundle = new YokaiSecurityTokenBundle();
         $this->container = new ContainerBuilder();
@@ -82,7 +84,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider configurationProvider
      */
-    public function it_parse_configuration_as_expected($resource, array $tokens, array $aliases)
+    public function it_parse_configuration_as_expected(string $resource, array $tokens, array $aliases): void
     {
         // for test purpose, all services are switched to public
         $this->container->addCompilerPass(new class implements CompilerPassInterface {
@@ -119,10 +121,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * @param string $resource
-     */
-    protected function loadConfiguration($resource)
+    protected function loadConfiguration(string $resource): void
     {
         $locator = new FileLocator(__DIR__.'/configuration/');
         $path = $locator->locate($resource);
@@ -136,13 +135,12 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
 
             default:
                 throw new \InvalidArgumentException('File ' . $path . ' is not supported.');
-                break;
         }
 
         $loader->load($resource);
     }
 
-    public function configurationProvider()
+    public function configurationProvider(): Generator
     {
         $defaultAliases = [
             'yokai_security_token.information_guesser' => 'yokai_security_token.default_information_guesser',
@@ -203,7 +201,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function formatProvider()
+    public function formatProvider(): Generator
     {
         yield ['yml'];
     }

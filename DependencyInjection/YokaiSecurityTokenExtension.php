@@ -2,11 +2,10 @@
 
 namespace Yokai\SecurityTokenBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 use Yokai\SecurityTokenBundle\DependencyInjection\Factory\TokenConfigurationFactory;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
@@ -23,7 +22,7 @@ class YokaiSecurityTokenExtension extends Extension
     /**
      * @inheritdoc
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
@@ -39,7 +38,7 @@ class YokaiSecurityTokenExtension extends Extension
      * @param array            $config
      * @param ContainerBuilder $container
      */
-    private function registerTokens(array $config, ContainerBuilder $container)
+    private function registerTokens(array $config, ContainerBuilder $container): void
     {
         foreach ($config['tokens'] as $name => $token) {
             TokenConfigurationFactory::create(
@@ -58,23 +57,20 @@ class YokaiSecurityTokenExtension extends Extension
      * @param array            $config
      * @param ContainerBuilder $container
      */
-    private function registerAliases(array $config, ContainerBuilder $container)
+    private function registerAliases(array $config, ContainerBuilder $container): void
     {
-        $aliasExists = class_exists('Symfony\Component\DependencyInjection\Alias');
         $isTest = $container->getParameter('kernel.environment') === 'test';
 
         foreach ($config['services'] as $name => $service) {
             $alias = $container->setAlias(sprintf('yokai_security_token.%s', $name), $service);
-            if ($aliasExists && $alias instanceof Alias && $isTest) {
-                $alias->setPublic(true);
-            }
+            $alias->setPublic(true);
         }
     }
 
     /**
      * @param ContainerBuilder $container
      */
-    private function registerAutoconfigureAliases(ContainerBuilder $container)
+    private function registerAutoconfigureAliases(ContainerBuilder $container): void
     {
         $interfaceMap = [
             'information_guesser' => InformationGuesserInterface::class,

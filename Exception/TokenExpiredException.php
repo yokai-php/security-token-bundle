@@ -20,7 +20,7 @@ class TokenExpiredException extends InvalidTokenException
      *
      * @return TokenExpiredException
      */
-    public static function create($value, $purpose, DateTime $date)
+    public static function create(string $value, string $purpose, DateTime $date): self
     {
         return new self(
             sprintf(
@@ -31,5 +31,4 @@ class TokenExpiredException extends InvalidTokenException
             )
         );
     }
-
 }

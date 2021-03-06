@@ -27,7 +27,7 @@ class InformationGuesser implements InformationGuesserInterface
     /**
      * @inheritDoc
      */
-    public function get()
+    public function get(): array
     {
         $request = $this->requestStack->getMasterRequest();
         if (!$request) {

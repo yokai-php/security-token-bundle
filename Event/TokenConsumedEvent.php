@@ -2,7 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
@@ -30,7 +30,7 @@ class TokenConsumedEvent extends Event
      *
      * @return Token
      */
-    public function getToken()
+    public function getToken(): Token
     {
         return $this->token;
     }

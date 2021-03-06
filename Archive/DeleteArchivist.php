@@ -28,16 +28,8 @@ class DeleteArchivist implements ArchivistInterface
     /**
      * @inheritDoc
      */
-    public function archive($purpose = null, DateTime $before = null)
+    public function archive(string $purpose = null): int
     {
-        if (null !== $before) {
-            @trigger_error(
-                'The "before" argument of the "'.__METHOD__
-                .'" method is deprecated since version 2.2 and will be removed in 3.0.',
-                E_USER_DEPRECATED
-            );
-        }
-
         $builder = $this->tokenRepository->createQueryBuilder('token')
             ->delete($this->tokenRepository->getClassName(), 'token');
 

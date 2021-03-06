@@ -16,7 +16,7 @@ interface UserManagerInterface
      *
      * @return boolean
      */
-    public function supportsClass($class);
+    public function supportsClass(string $class): bool;
 
     /**
      * Tell whether or not the manager is supporting a user.
@@ -25,7 +25,7 @@ interface UserManagerInterface
      *
      * @return boolean
      */
-    public function supportsUser($user);
+    public function supportsUser($user): bool;
 
     /**
      * Get user of certain class with certain id.
@@ -35,7 +35,7 @@ interface UserManagerInterface
      *
      * @return mixed
      */
-    public function get($class, $id);
+    public function get(string $class, string $id);
 
     /**
      * Get the class of a user.
@@ -44,7 +44,7 @@ interface UserManagerInterface
      *
      * @return string
      */
-    public function getClass($user);
+    public function getClass($user): string;
 
     /**
      * Get the id of a user.
@@ -53,5 +53,5 @@ interface UserManagerInterface
      *
      * @return string
      */
-    public function getId($user);
+    public function getId($user): string;
 }

@@ -3,6 +3,7 @@
 namespace Yokai\SecurityTokenBundle\Tests\Factory;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfigurationRegistry;
@@ -16,7 +17,7 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenFactoryTest extends \PHPUnit_Framework_TestCase
+class TokenFactoryTest extends TestCase
 {
     /**
      * @var InformationGuesserInterface|ObjectProphecy
@@ -33,14 +34,14 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
      */
     private $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->informationGuesser = $this->prophesize(InformationGuesserInterface::class);
         $this->userManager = $this->prophesize(UserManagerInterface::class);
         $this->repository = $this->prophesize(TokenRepositoryInterface::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset(
             $this->informationGuesser,
@@ -49,7 +50,7 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function factory(array $configuration)
+    protected function factory(array $configuration): TokenFactory
     {
         return new TokenFactory(
             new TokenConfigurationRegistry($configuration),
@@ -62,7 +63,7 @@ class TokenFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_create_token_according_to_configuration()
+    public function it_create_token_according_to_configuration(): void
     {
         $generator1 = $this->createMock(TokenGeneratorInterface::class);
         $generator1->method('generate')

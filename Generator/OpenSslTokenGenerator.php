@@ -21,7 +21,7 @@ class OpenSslTokenGenerator implements TokenGeneratorInterface
     /**
      * @param int $length Token length
      */
-    public function __construct($length = self::DEFAULT_LENGTH)
+    public function __construct(int $length = self::DEFAULT_LENGTH)
     {
         if (!function_exists('openssl_random_pseudo_bytes')) {
             throw new LogicException('The extension "openssl" is required to use "open ssl" token generator.');
@@ -33,7 +33,7 @@ class OpenSslTokenGenerator implements TokenGeneratorInterface
     /**
      * @inheritdoc
      */
-    public function generate()
+    public function generate(): string
     {
         return rtrim(strtr(base64_encode(openssl_random_pseudo_bytes($this->length)), '+/', '-_'), '=');
     }

@@ -2,6 +2,7 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\InformationGuesser;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser;
@@ -9,14 +10,9 @@ use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesser;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class InformationGuesserTest extends \PHPUnit_Framework_TestCase
+class InformationGuesserTest extends TestCase
 {
-    /**
-     * @param RequestStack $requestStack
-     *
-     * @return InformationGuesser
-     */
-    protected function guesser(RequestStack $requestStack)
+    protected function guesser(RequestStack $requestStack): InformationGuesser
     {
         return new InformationGuesser($requestStack);
     }
@@ -24,7 +20,7 @@ class InformationGuesserTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_return_empty_array_if_no_master_request()
+    public function it_return_empty_array_if_no_master_request(): void
     {
         $requestStack = new RequestStack();
 
@@ -36,7 +32,7 @@ class InformationGuesserTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_return_array_with_ip_from_master_request()
+    public function it_return_array_with_ip_from_master_request(): void
     {
         $requestStack = new RequestStack();
         $requestStack->push(new Request([], [], [], [], [], ['REMOTE_ADDR' => '88.88.88.88']));

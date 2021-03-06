@@ -17,7 +17,7 @@ class TokenNotFoundException extends InvalidTokenException
      *
      * @return TokenNotFoundException
      */
-    public static function create($value, $purpose)
+    public static function create(string $value, string $purpose): self
     {
         return new self(
             sprintf(

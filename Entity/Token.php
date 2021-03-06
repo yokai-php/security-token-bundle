@@ -13,7 +13,7 @@ use LogicException;
 class Token
 {
     /**
-     * @var int
+     * @var int|null
      */
     private $id;
 
@@ -79,18 +79,18 @@ class Token
      * @param string  $purpose
      * @param string  $validDuration
      * @param string  $keepDuration
-     * @param integer $allowedUsages
+     * @param int     $allowedUsages
      * @param array   $payload
      * @param array   $information
      */
     public function __construct(
-        $userClass,
-        $userId,
-        $value,
-        $purpose,
-        $validDuration,
-        $keepDuration,
-        $allowedUsages = 1,
+        string $userClass,
+        string $userId,
+        string $value,
+        string $purpose,
+        string $validDuration,
+        string $keepDuration,
+        int $allowedUsages = 1,
         array $payload = [],
         array $information = []
     ) {
@@ -108,9 +108,9 @@ class Token
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -118,7 +118,7 @@ class Token
     /**
      * @return string
      */
-    public function getUserClass()
+    public function getUserClass(): string
     {
         return $this->userClass;
     }
@@ -126,7 +126,7 @@ class Token
     /**
      * @return string
      */
-    public function getUserId()
+    public function getUserId(): string
     {
         return $this->userId;
     }
@@ -134,7 +134,7 @@ class Token
     /**
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -142,7 +142,7 @@ class Token
     /**
      * @return string
      */
-    public function getPurpose()
+    public function getPurpose(): string
     {
         return $this->purpose;
     }
@@ -150,7 +150,7 @@ class Token
     /**
      * @return array
      */
-    public function getPayload()
+    public function getPayload(): array
     {
         return $this->payload;
     }
@@ -158,7 +158,7 @@ class Token
     /**
      * @return DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
@@ -166,7 +166,7 @@ class Token
     /**
      * @return array
      */
-    public function getCreatedInformation()
+    public function getCreatedInformation(): array
     {
         return $this->createdInformation;
     }
@@ -174,7 +174,7 @@ class Token
     /**
      * @return DateTime
      */
-    public function getExpiresAt()
+    public function getExpiresAt(): DateTime
     {
         return $this->expiresAt;
     }
@@ -182,111 +182,23 @@ class Token
     /**
      * @return DateTime
      */
-    public function getKeepUntil()
+    public function getKeepUntil(): DateTime
     {
         return $this->keepUntil;
     }
 
     /**
-     * @return DateTime|null
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
+     * @return bool
      */
-    public function getUsedAt()
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $usage = $this->getLastUsage();
-        if (null === $usage) {
-            return null;
-        }
-
-        return $usage->getCreatedAt();
-    }
-
-    /**
-     * @param DateTime $usedAt
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
-     */
-    public function setUsedAt($usedAt)
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->consume([], $usedAt);
-    }
-
-    /**
-     * @return array
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
-     */
-    public function getUsedInformation()
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $usage = $this->getLastUsage();
-        if (null === $usage) {
-            return null;
-        }
-
-        return $usage->getInformation();
-    }
-
-    /**
-     * @param array $usedInformation
-     *
-     * @deprecated since version 2.2 and will be removed in 3.0
-     */
-    public function setUsedInformation($usedInformation)
-    {
-        @trigger_error(
-            'The '.__METHOD__
-            .' method is deprecated since version 2.2 and will be removed in 3.0. Use the getLastUsage() method instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->consume($usedInformation);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isExpired()
+    public function isExpired(): bool
     {
         return $this->expiresAt < new DateTime();
     }
 
     /**
-     * @deprecated since 2.3 and will be removed in 3.0. Use isConsumed instead.
-     * @return boolean
+     * @return bool
      */
-    public function isUsed()
-    {
-        @trigger_error(
-            __METHOD__.' is deprecated. Use '.__CLASS__.'::isConsumed instead',
-            E_USER_DEPRECATED
-        );
-
-        return $this->isConsumed();
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isConsumed()
+    public function isConsumed(): bool
     {
         $allowed = $this->getAllowedUsages();
         if ($allowed === 0) {
@@ -299,7 +211,7 @@ class Token
     /**
      * @return int
      */
-    public function getAllowedUsages()
+    public function getAllowedUsages(): int
     {
         return $this->allowedUsages;
     }
@@ -307,7 +219,7 @@ class Token
     /**
      * @return int
      */
-    public function getCountUsages()
+    public function getCountUsages(): int
     {
         return count($this->usages);
     }
@@ -315,7 +227,7 @@ class Token
     /**
      * @return TokenUsage[]
      */
-    public function getUsages()
+    public function getUsages(): array
     {
         return $this->usages->toArray();
     }
@@ -323,7 +235,7 @@ class Token
     /**
      * @return TokenUsage|null
      */
-    public function getLastUsage()
+    public function getLastUsage(): ?TokenUsage
     {
         return $this->usages->last();
     }
@@ -331,8 +243,10 @@ class Token
     /**
      * @param array         $information
      * @param DateTime|null $date
+     *
+     * @throws LogicException
      */
-    public function consume(array $information, DateTime $date = null)
+    public function consume(array $information, DateTime $date = null): void
     {
         if ($this->isConsumed()) {
             throw new LogicException(

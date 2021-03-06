@@ -3,7 +3,7 @@
 namespace Yokai\SecurityTokenBundle;
 
 use DateTime;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Event\ConsumeTokenEvent;
 use Yokai\SecurityTokenBundle\Event\CreateTokenEvent;
@@ -14,7 +14,6 @@ use Yokai\SecurityTokenBundle\Event\TokenExpiredEvent;
 use Yokai\SecurityTokenBundle\Event\TokenNotFoundEvent;
 use Yokai\SecurityTokenBundle\Event\TokenRetrievedEvent;
 use Yokai\SecurityTokenBundle\Event\TokenTotallyConsumedEvent;
-use Yokai\SecurityTokenBundle\Event\TokenUsedEvent;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
@@ -26,167 +25,96 @@ class EventDispatcher
      */
     private $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param string $purpose
-     * @param string $value
-     * @param array  $payload
-     *
-     * @return CreateTokenEvent
-     */
-    public function createToken($purpose, $value, array $payload)
+    public function createToken(string $purpose, string $value, array $payload): CreateTokenEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::CREATE_TOKEN,
-            $event = new CreateTokenEvent($purpose, $value, $payload)
+            $event = new CreateTokenEvent($purpose, $value, $payload),
+            TokenEvents::CREATE_TOKEN
         );
 
         return $event;
     }
 
-    /**
-     * @param Token $token
-     *
-     * @return TokenCreatedEvent
-     */
-    public function tokenCreated(Token $token)
+    public function tokenCreated(Token $token): TokenCreatedEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::TOKEN_CREATED,
-            $event = new TokenCreatedEvent($token)
+            $event = new TokenCreatedEvent($token),
+            TokenEvents::TOKEN_CREATED
         );
 
         return $event;
     }
 
-    /**
-     * @param Token         $token
-     * @param DateTime|null $at
-     * @param array         $information
-     *
-     * @return ConsumeTokenEvent
-     */
-    public function consumeToken(Token $token, DateTime $at = null, array $information = [])
+    public function consumeToken(Token $token, DateTime $at = null, array $information = []): ConsumeTokenEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::CONSUME_TOKEN,
-            $event = new ConsumeTokenEvent($token, $at, $information)
+            $event = new ConsumeTokenEvent($token, $at, $information),
+            TokenEvents::CONSUME_TOKEN
         );
 
         return $event;
     }
 
-    /**
-     * @param Token $token
-     *
-     * @return TokenConsumedEvent
-     */
-    public function tokenConsumed(Token $token)
+    public function tokenConsumed(Token $token): TokenConsumedEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::TOKEN_CONSUMED,
-            $event = new TokenConsumedEvent($token)
+            $event = new TokenConsumedEvent($token),
+            TokenEvents::TOKEN_CONSUMED
         );
 
         return $event;
     }
 
-    /**
-     * @param Token $token
-     *
-     * @return TokenTotallyConsumedEvent
-     */
-    public function tokenTotallyConsumed(Token $token)
+    public function tokenTotallyConsumed(Token $token): TokenTotallyConsumedEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::TOKEN_TOTALLY_CONSUMED,
-            $event = new TokenTotallyConsumedEvent($token)
+            $event = new TokenTotallyConsumedEvent($token),
+            TokenEvents::TOKEN_TOTALLY_CONSUMED
         );
 
         return $event;
     }
 
-    /**
-     * @param string $purpose
-     * @param string $value
-     *
-     * @return TokenNotFoundEvent
-     */
-    public function tokenNotFound($purpose, $value)
+    public function tokenNotFound(string $purpose, string $value): TokenNotFoundEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::TOKEN_NOT_FOUND,
-            $event = new TokenNotFoundEvent($purpose, $value)
+            $event = new TokenNotFoundEvent($purpose, $value),
+            TokenEvents::TOKEN_NOT_FOUND
         );
 
         return $event;
     }
 
-    /**
-     * @param string $purpose
-     * @param string $value
-     *
-     * @return TokenExpiredEvent
-     */
-    public function tokenExpired($purpose, $value)
+    public function tokenExpired(string $purpose, string $value): TokenExpiredEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::TOKEN_EXPIRED,
-            $event = new TokenExpiredEvent($purpose, $value)
+            $event = new TokenExpiredEvent($purpose, $value),
+            TokenEvents::TOKEN_EXPIRED
         );
 
         return $event;
     }
 
-    /**
-     * @deprecated since 2.3 to be removed in 3.0. Use tokenAlreadyConsumed instead.
-     * @param string $purpose
-     * @param string $value
-     *
-     * @return TokenUsedEvent
-     */
-    public function tokenUsed($purpose, $value)
-    {
-        @trigger_error(
-            __METHOD__.' is deprecated. Use '.__CLASS__.'::tokenAlreadyConsumed instead.'
-        );
-
-        return $this->tokenAlreadyConsumed($purpose, $value);
-    }
-
-    /**
-     * @param string $purpose
-     * @param string $value
-     *
-     * @return TokenAlreadyConsumedEvent
-     */
-    public function tokenAlreadyConsumed($purpose, $value)
+    public function tokenAlreadyConsumed(string $purpose, string $value): TokenAlreadyConsumedEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::TOKEN_ALREADY_CONSUMED,
-            $event = new TokenAlreadyConsumedEvent($purpose, $value)
+            $event = new TokenAlreadyConsumedEvent($purpose, $value),
+            TokenEvents::TOKEN_ALREADY_CONSUMED
         );
 
         return $event;
     }
 
-    /**
-     * @param Token $token
-     *
-     * @return TokenRetrievedEvent
-     */
-    public function tokenRetrieved(Token $token)
+    public function tokenRetrieved(Token $token): TokenRetrievedEvent
     {
         $this->eventDispatcher->dispatch(
-            TokenEvents::TOKEN_RETRIEVED,
-            $event = new TokenRetrievedEvent($token)
+            $event = new TokenRetrievedEvent($token),
+            TokenEvents::TOKEN_RETRIEVED
         );
 
         return $event;

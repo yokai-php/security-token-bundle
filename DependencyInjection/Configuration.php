@@ -14,10 +14,10 @@ class Configuration implements ConfigurationInterface
     /**
      * @inheritdoc
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $builder = new TreeBuilder();
-        $root = $builder->root('yokai_security_token');
+        $builder = new TreeBuilder('yokai_security_token');
+        $root = $builder->getRootNode();
 
         $root->addDefaultsIfNotSet();
         $root
@@ -33,10 +33,10 @@ class Configuration implements ConfigurationInterface
     /**
      * @return NodeDefinition
      */
-    private function getTokensNode()
+    private function getTokensNode(): NodeDefinition
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('tokens');
+        $builder = new TreeBuilder('tokens');
+        $node = $builder->getRootNode();
 
         $node
             ->useAttributeAsKey('purpose')
@@ -67,10 +67,10 @@ class Configuration implements ConfigurationInterface
     /**
      * @return NodeDefinition
      */
-    private function getServicesNode()
+    private function getServicesNode(): NodeDefinition
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('services');
+        $builder = new TreeBuilder('services');
+        $node = $builder->getRootNode();
 
         $node->addDefaultsIfNotSet();
         $node

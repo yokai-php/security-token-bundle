@@ -7,7 +7,7 @@ namespace Yokai\SecurityTokenBundle\Exception;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenConsumedException extends TokenUsedException
+class TokenConsumedException extends InvalidTokenException
 {
     /**
      * Create an instance of this class.
@@ -18,7 +18,7 @@ class TokenConsumedException extends TokenUsedException
      *
      * @return TokenConsumedException
      */
-    public static function create($value, $purpose, $usages)
+    public static function create(string $value, string $purpose, int $usages): self
     {
         return new self(
             sprintf(

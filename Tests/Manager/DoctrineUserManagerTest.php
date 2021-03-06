@@ -2,17 +2,18 @@
 
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
+class DoctrineUserManagerTest extends TestCase
 {
     /**
      * @var ManagerRegistry|ObjectProphecy
@@ -29,14 +30,14 @@ class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
      */
     private $classMetadata;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->prophesize(ManagerRegistry::class);
         $this->objectManager = $this->prophesize(ObjectManager::class);
         $this->classMetadata = $this->prophesize(ClassMetadata::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset(
             $this->registry,
@@ -45,7 +46,7 @@ class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function manager()
+    protected function manager(): DoctrineUserManager
     {
         return new DoctrineUserManager($this->registry->reveal());
     }
@@ -70,7 +71,7 @@ class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_supports_doctrine_entities()
+    public function it_supports_doctrine_entities(): void
     {
         $user = $this->user('jdoe');
 
@@ -85,7 +86,7 @@ class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_do_not_supports_objects_out_of_doctrine()
+    public function it_do_not_supports_objects_out_of_doctrine(): void
     {
         $user = $this->user('jdoe');
 
@@ -100,7 +101,7 @@ class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_get_user()
+    public function it_get_user(): void
     {
         $expected = $this->user('jdoe');
 
@@ -120,7 +121,7 @@ class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_get_user_class()
+    public function it_get_user_class(): void
     {
         $expected = $this->user('jdoe');
 
@@ -132,7 +133,7 @@ class DoctrineUserManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_get_user_id()
+    public function it_get_user_id(): void
     {
         $expected = $this->user('jdoe');
 

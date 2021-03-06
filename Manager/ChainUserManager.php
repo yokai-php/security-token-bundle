@@ -17,7 +17,7 @@ class ChainUserManager implements UserManagerInterface
     /**
      * @param UserManagerInterface[] $managers A list of user managers
      */
-    public function __construct($managers)
+    public function __construct(iterable $managers)
     {
         $this->managers = $managers;
     }
@@ -25,35 +25,35 @@ class ChainUserManager implements UserManagerInterface
     /**
      * @inheritDoc
      */
-    public function supportsClass($class)
+    public function supportsClass(string $class): bool
     {
         try {
-            $manager = $this->getManagerForClass($class);
-        } catch (\Exception $exception) {
+            $this->getManagerForClass($class);
+        } catch (\InvalidArgumentException $exception) {
             return false;
         }
 
-        return $manager instanceof UserManagerInterface;
+        return true;
     }
 
     /**
      * @inheritDoc
      */
-    public function supportsUser($user)
+    public function supportsUser($user): bool
     {
         try {
-            $manager = $this->getManagerForUser($user);
-        } catch (\Exception $exception) {
+            $this->getManagerForUser($user);
+        } catch (\InvalidArgumentException $exception) {
             return false;
         }
 
-        return $manager instanceof UserManagerInterface;
+        return true;
     }
 
     /**
      * @inheritDoc
      */
-    public function get($class, $id)
+    public function get(string $class, string $id)
     {
         return $this->getManagerForClass($class)->get($class, $id);
     }
@@ -61,7 +61,7 @@ class ChainUserManager implements UserManagerInterface
     /**
      * @inheritDoc
      */
-    public function getClass($user)
+    public function getClass($user): string
     {
         return $this->getManagerForUser($user)->getClass($user);
     }
@@ -69,7 +69,7 @@ class ChainUserManager implements UserManagerInterface
     /**
      * @inheritDoc
      */
-    public function getId($user)
+    public function getId($user): string
     {
         return $this->getManagerForUser($user)->getId($user);
     }
@@ -80,8 +80,9 @@ class ChainUserManager implements UserManagerInterface
      * @param string $class The user class
      *
      * @return UserManagerInterface
+     * @throws \InvalidArgumentException
      */
-    private function getManagerForClass($class)
+    private function getManagerForClass(string $class): UserManagerInterface
     {
         $tries = [];
 
@@ -93,7 +94,7 @@ class ChainUserManager implements UserManagerInterface
             $tries[] = get_class($manager);
         }
 
-        throw new \RuntimeException(
+        throw new \InvalidArgumentException(
             sprintf(
                 'Class "%s" is not supported by any UserManager. Tried "%s".',
                 $class,
@@ -108,8 +109,9 @@ class ChainUserManager implements UserManagerInterface
      * @param mixed $user A user
      *
      * @return UserManagerInterface
+     * @throws \InvalidArgumentException
      */
-    private function getManagerForUser($user)
+    private function getManagerForUser($user): UserManagerInterface
     {
         $tries = [];
 
@@ -127,7 +129,7 @@ class ChainUserManager implements UserManagerInterface
             $userAsString = (string)$user;
         }
 
-        throw new \RuntimeException(
+        throw new \InvalidArgumentException(
             sprintf(
                 'User "%s" is not supported by any UserManager. Tried "%s".',
                 $userAsString,

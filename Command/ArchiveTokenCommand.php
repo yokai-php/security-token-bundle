@@ -20,41 +20,34 @@ class ArchiveTokenCommand extends Command
 
     public function __construct(ArchivistInterface $archivist)
     {
-        parent::__construct();
-
         $this->archivist = $archivist;
+        parent::__construct();
     }
 
     /**
      * @inheritDoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('yokai:security-token:archive')
             ->addOption('purpose', null, InputOption::VALUE_OPTIONAL, 'Filter tokens to archive on purpose.')
-            ->addOption('before',  null, InputOption::VALUE_OPTIONAL, '[deprecated] Filter tokens to archive on created date.')
         ;
     }
 
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $purpose = $input->getOption('purpose');
-
-        if ($input->getOption('before')) {
-            @trigger_error(
-                'The "before" option is deprecated since version 2.2 and will be removed in 3.0.',
-                E_USER_DEPRECATED
-            );
-        }
 
         $count = $this->archivist->archive($purpose);
 
         $output->writeln(
             sprintf('<info>Successfully archived <comment>%d</comment> security token(s).</info>', $count)
         );
+
+        return 0;
     }
 }

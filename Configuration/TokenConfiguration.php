@@ -25,7 +25,7 @@ class TokenConfiguration
     private $duration;
 
     /**
-     * @var integer
+     * @var int
      */
     private $usages;
 
@@ -43,12 +43,18 @@ class TokenConfiguration
      * @param string                  $purpose
      * @param TokenGeneratorInterface $generator
      * @param string                  $duration
-     * @param integer                 $usages
+     * @param int                     $usages
      * @param string                  $keep
      * @param boolean                 $unique
      */
-    public function __construct($purpose, TokenGeneratorInterface $generator, $duration, $usages, $keep, $unique)
-    {
+    public function __construct(
+        string $purpose,
+        TokenGeneratorInterface $generator,
+        string $duration,
+        int $usages,
+        string $keep,
+        bool $unique
+    ) {
         $this->purpose = $purpose;
         $this->generator = $generator;
         $this->duration = $duration;
@@ -60,7 +66,7 @@ class TokenConfiguration
     /**
      * @return string
      */
-    public function getPurpose()
+    public function getPurpose(): string
     {
         return $this->purpose;
     }
@@ -68,7 +74,7 @@ class TokenConfiguration
     /**
      * @return TokenGeneratorInterface
      */
-    public function getGenerator()
+    public function getGenerator(): TokenGeneratorInterface
     {
         return $this->generator;
     }
@@ -76,15 +82,15 @@ class TokenConfiguration
     /**
      * @return string
      */
-    public function getDuration()
+    public function getDuration(): string
     {
         return $this->duration;
     }
 
     /**
-     * @return integer
+     * @return int
      */
-    public function getUsages()
+    public function getUsages(): int
     {
         return $this->usages;
     }
@@ -92,7 +98,7 @@ class TokenConfiguration
     /**
      * @return string
      */
-    public function getKeep()
+    public function getKeep(): string
     {
         return $this->keep;
     }
@@ -100,7 +106,7 @@ class TokenConfiguration
     /**
      * @return bool
      */
-    public function isUnique()
+    public function isUnique(): bool
     {
         return $this->unique;
     }

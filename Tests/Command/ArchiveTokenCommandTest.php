@@ -24,7 +24,7 @@ class ArchiveTokenCommandTest extends KernelTestCase
      */
     private $application;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->archivist = $this->prophesize(ArchivistInterface::class);
 
@@ -34,7 +34,7 @@ class ArchiveTokenCommandTest extends KernelTestCase
         $this->application = new Application(self::$kernel);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -49,7 +49,7 @@ class ArchiveTokenCommandTest extends KernelTestCase
         return $this->application->get('yokai:security-token:archive');
     }
 
-    protected function runCommand(Command $command, array $options = [])
+    protected function runCommand(Command $command, array $options = []): string
     {
         $input = ['command' => $command->getName()];
         foreach ($options as $name => $value) {
@@ -64,32 +64,32 @@ class ArchiveTokenCommandTest extends KernelTestCase
     /**
      * @test
      */
-    public function it_archive_every_token_when_run_without_options_with_confirmation()
+    public function it_archive_every_token_when_run_without_options_with_confirmation(): void
     {
         $command = $this->command();
 
-        $this->archivist->archive(null, null)
+        $this->archivist->archive(null)
             ->shouldBeCalledTimes(1)
             ->willReturn(10);
 
         $output = $this->runCommand($command);
 
-        self::assertContains('Successfully archived 10 security token(s).', $output);
+        self::assertStringContainsString('Successfully archived 10 security token(s).', $output);
     }
 
     /**
      * @test
      */
-    public function it_archive_partial_tokens_when_run_with_options()
+    public function it_archive_partial_tokens_when_run_with_options(): void
     {
         $command = $this->command();
 
-        $this->archivist->archive('init_password', null)
+        $this->archivist->archive('init_password')
             ->shouldBeCalledTimes(1)
             ->willReturn(10);
 
         $output = $this->runCommand($command, ['purpose' => 'init_password']);
 
-        self::assertContains('Successfully archived 10 security token(s).', $output);
+        self::assertStringContainsString('Successfully archived 10 security token(s).', $output);
     }
 }

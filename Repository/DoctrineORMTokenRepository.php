@@ -5,9 +5,9 @@ namespace Yokai\SecurityTokenBundle\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Yokai\SecurityTokenBundle\Entity\Token;
+use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 
 /**
  * Doctrine ORM token repository;
@@ -39,7 +39,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function get($value, $purpose)
+    public function get(string $value, string $purpose): Token
     {
         $token = $this->repository->findOneBy(
             [
@@ -64,7 +64,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function findExisting($userClass, $userId, $purpose)
+    public function findExisting(string $userClass, string $userId, string $purpose): ?Token
     {
         $token = $this->repository->findOneBy(
             [
@@ -86,7 +86,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function create(Token $token)
+    public function create(Token $token): void
     {
         $this->manager->persist($token);
         $this->manager->flush($token);
@@ -95,7 +95,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function update(Token $token)
+    public function update(Token $token): void
     {
         $this->manager->persist($token);
         $this->manager->flush($token);
@@ -104,7 +104,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function exists($value, $purpose)
+    public function exists(string $value, string $purpose): bool
     {
         $builder = $this->repository->createQueryBuilder('token');
         $builder
