@@ -39,7 +39,7 @@ class EventDispatcher
      *
      * @return CreateTokenEvent
      */
-    public function createToken(string $purpose, string $user, array $payload): CreateTokenEvent
+    public function createToken(string $purpose, $user, array $payload): CreateTokenEvent
     {
         $this->eventDispatcher->dispatch(
             $event = new CreateTokenEvent($purpose, $user, $payload)
