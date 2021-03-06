@@ -3,34 +3,32 @@ Events
 
 The bundle is dispatching event at some points of the token life time.
 
-> **Note :** Event names are stored in constants located in [TokenEvents](../../TokenEvents.php).
-
 
 ### When creating a token
 
 Whenever you call `Yokai\SecurityTokenBundle\Manager\TokenManagerInterface::create` :
 
-- `TokenEvents::CREATE_TOKEN` : [CreateTokenEvent](../../Event/CreateTokenEvent.php)
-- `TokenEvents::TOKEN_CREATED` : [TokenCreatedEvent](../../Event/TokenCreatedEvent.php)
+- **Before** the token is created : [CreateTokenEvent](../src/Event/CreateTokenEvent.php)
+- **After** the token is created : [TokenCreatedEvent](../src/Event/TokenCreatedEvent.php)
 
 
 ### When retrieving a token
 
 Whenever you call `Yokai\SecurityTokenBundle\Manager\TokenManagerInterface::get` :
 
-- `TokenEvents::TOKEN_NOT_FOUND` : [TokenNotFoundEvent](../../Event/TokenNotFoundEvent.php)
-- `TokenEvents::TOKEN_EXPIRED` : [TokenExpiredEvent](../../Event/TokenExpiredEvent.php)
-- `TokenEvents::TOKEN_ALREADY_CONSUMED` : [TokenAlreadyConsumedEvent](../../Event/TokenAlreadyConsumedEvent.php)
-- `TokenEvents::TOKEN_RETRIEVED` : [TokenRetrievedEvent](../../Event/TokenRetrievedEvent.php)
+- When token is **not found** : [TokenNotFoundEvent](../src/Event/TokenNotFoundEvent.php)
+- When token is **expired** : [TokenExpiredEvent](../src/Event/TokenExpiredEvent.php)
+- When token is **already consumed** : [TokenAlreadyConsumedEvent](../src/Event/TokenAlreadyConsumedEvent.php)
+- When token is **valid** : [TokenRetrievedEvent](../src/Event/TokenRetrievedEvent.php)
 
 
 ### When consuming a token
 
 Whenever you call `Yokai\SecurityTokenBundle\Manager\TokenManagerInterface::consume` :
 
-- `TokenEvents::CONSUME_TOKEN` : [ConsumeTokenEvent](../../Event/ConsumeTokenEvent.php)
-- `TokenEvents::TOKEN_CONSUMED` : [TokenConsumedEvent](../../Event/TokenConsumedEvent.php)
-- `TokenEvents::TOKEN_TOTALLY_CONSUMED` : [TokenTotallyConsumedEvent](../../Event/TokenTotallyConsumedEvent.php)
+- **Before** token is consumed : [ConsumeTokenEvent](../src/Event/ConsumeTokenEvent.php)
+- **After** token is consumed : [TokenConsumedEvent](../src/Event/TokenConsumedEvent.php)
+- **After** token is totally consumed (not usable again) : [TokenTotallyConsumedEvent](../src/Event/TokenTotallyConsumedEvent.php)
 
 
 ### Subscribe to events
@@ -58,7 +56,7 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SecurityTokenEvents\TokenNotFoundEvent::class => 'onTokenNotFound',
@@ -96,4 +94,4 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
 
 ---
 
-« [Archive command](4-archive-command.md) • [README](../../README.md) »
+« [Archive command](4-archive-command.md) • [README](../README.md) »

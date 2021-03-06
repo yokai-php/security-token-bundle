@@ -12,18 +12,19 @@ use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yokai\SecurityTokenBundle\Exception as TokenExceptions;
 use Yokai\SecurityTokenBundle\Manager\TokenManagerInterface;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /** @var TokenManagerInterface */
     private $tokenManager;
     /** @var ManagerRegistry */
     private $doctrine;
+
     public function __construct(TokenManagerInterface $tokenManager, ManagerRegistry $doctrine)
     {
         $this->tokenManager = $tokenManager;

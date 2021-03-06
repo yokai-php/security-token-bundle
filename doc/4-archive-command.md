@@ -13,7 +13,7 @@ $ bin/console yokai:security-token:archive
 The command is using the archivist service to perform the operation.
 
 > **Note :** The default implementation of the service is 
-> [`Yokai\SecurityTokenBundle\Archive\DeleteArchivist`](../../Archive/DeleteArchivist.php).
+> [`Yokai\SecurityTokenBundle\Archive\DeleteArchivist`](../src/Archive/DeleteArchivist.php).
 > This implementation just delete every outdated tokens, based on the `keepUntil` property.
 
 
@@ -30,9 +30,11 @@ use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 
 class AppArchivist implements ArchivistInterface
 {
-    public function archive($purpose = null, \DateTime $before = null)
+    public function archive(string $purpose = null): int
     {
         // whatever you can imagine
+
+        return 0; // how much tokens were archived
     }
 }
 ```

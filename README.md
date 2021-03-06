@@ -27,11 +27,11 @@ Develop your features, the bundle is taking care of the technical implementation
 Documentation
 -------------
 
-- [Installation](Resources/doc/1-installation.md)
-- [Configuration](Resources/doc/2-configuration.md)
-- [Usage](Resources/doc/3-usage.md)
-- [Archive command](Resources/doc/4-archive-command.md)
-- [Events](Resources/doc/5-events.md)
+- [Installation](doc/1-installation.md)
+- [Configuration](doc/2-configuration.md)
+- [Usage](doc/3-usage.md)
+- [Archive command](doc/4-archive-command.md)
+- [Events](doc/5-events.md)
 
 
 MIT License

@@ -26,4 +26,4 @@ return [
 
 ---
 
-« [README](../../README.md) • [Configuration](2-configuration.md) »
+« [README](../README.md) • [Configuration](2-configuration.md) »
