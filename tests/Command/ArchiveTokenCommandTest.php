@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Tests\Command;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -18,6 +19,8 @@ use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
  */
 class ArchiveTokenCommandTest extends KernelTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ArchivistInterface|ObjectProphecy
      */
