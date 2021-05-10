@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
 
@@ -19,6 +20,8 @@ use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
  */
 class DoctrineUserManagerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ManagerRegistry|ObjectProphecy
      */

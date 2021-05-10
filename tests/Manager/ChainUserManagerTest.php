@@ -7,6 +7,7 @@ namespace Yokai\SecurityTokenBundle\Tests\Manager;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\ChainUserManager;
 use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
@@ -20,6 +21,8 @@ use Yokai\SecurityTokenBundle\Tests\Manager\Mock\UserEntity;
  */
 class ChainUserManagerTest extends TestCase
 {
+    use ProphecyTrait;
+
     private function manager($managers): ChainUserManager
     {
         return new ChainUserManager($managers);

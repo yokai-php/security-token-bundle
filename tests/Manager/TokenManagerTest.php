@@ -6,6 +6,7 @@ namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
@@ -35,6 +36,8 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  */
 class TokenManagerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var TokenFactoryInterface|ObjectProphecy
      */
