@@ -31,7 +31,12 @@ class InformationGuesser implements InformationGuesserInterface
      */
     public function get(): array
     {
-        $request = $this->requestStack->getMasterRequest();
+        if (\method_exists($this->requestStack, 'getMainRequest')) {
+            $request = $this->requestStack->getMainRequest();
+        } else {
+            $request = $this->requestStack->getMasterRequest();
+        }
+
         if (!$request) {
             return [];
         }
