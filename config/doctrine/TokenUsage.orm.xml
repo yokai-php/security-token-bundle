@@ -13,8 +13,8 @@
             <generator strategy="IDENTITY"/>
         </id>
 
-        <field name="createdAt"   column="created_at"  type="datetime"   nullable="false"/>
-        <field name="information" column="information" type="json_array" nullable="false"/>
+        <field name="createdAt"   column="created_at"  type="datetime" nullable="false"/>
+        <field name="information" column="information" type="json"     nullable="false"/>
 
         <many-to-one field="token" target-entity="Yokai\SecurityTokenBundle\Entity\Token" inversed-by="usages">
             <join-column name="token_id" on-delete="CASCADE"/>
