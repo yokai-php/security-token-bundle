@@ -70,7 +70,7 @@ class Token
     private $keepUntil;
 
     /**
-     * @var Collection|TokenUsage[]
+     * @var Collection<TokenUsage>
      */
     private $usages;
 

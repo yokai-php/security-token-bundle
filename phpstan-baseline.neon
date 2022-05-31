@@ -15,3 +15,38 @@ parameters:
 			count: 1
 			path: src/DependencyInjection/Configuration.php
 
+		-
+			message: "#^Method Yokai\\\\SecurityTokenBundle\\\\Entity\\\\Token\\:\\:getLastUsage\\(\\) should return Yokai\\\\SecurityTokenBundle\\\\Entity\\\\TokenUsage\\|null but returns mixed\\.$#"
+			count: 1
+			path: src/Entity/Token.php
+
+		-
+			message: "#^Method Yokai\\\\SecurityTokenBundle\\\\Entity\\\\Token\\:\\:getUsages\\(\\) should return array\\<Yokai\\\\SecurityTokenBundle\\\\Entity\\\\TokenUsage\\> but returns array\\.$#"
+			count: 1
+			path: src/Entity/Token.php
+
+		-
+			message: "#^Property Yokai\\\\SecurityTokenBundle\\\\Entity\\\\Token\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/Token.php
+
+		-
+			message: "#^Property Yokai\\\\SecurityTokenBundle\\\\Entity\\\\TokenUsage\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/TokenUsage.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\RequestStack\\:\\:getMasterRequest\\(\\)\\.$#"
+			count: 1
+			path: src/InformationGuesser/InformationGuesser.php
+
+		-
+			message: "#^Cannot cast mixed to string\\.$#"
+			count: 1
+			path: src/Manager/ChainUserManager.php
+
+		-
+			message: "#^Cannot cast mixed to string\\.$#"
+			count: 1
+			path: src/Manager/DoctrineUserManager.php
+

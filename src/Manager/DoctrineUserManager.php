@@ -77,6 +77,8 @@ class DoctrineUserManager implements UserManagerInterface
      */
     public function getId($user): string
     {
+        /** @var object $user */
+        /** @var class-string $class */
         $class = $this->getClass($user);
         $identifiers = $this->getManagerFor($class)->getClassMetadata($class)->getIdentifierValues($user);
 
@@ -90,7 +92,7 @@ class DoctrineUserManager implements UserManagerInterface
     /**
      * Get doctrine object manager for a class.
      *
-     * @param string $class The user class
+     * @param class-string $class The user class
      *
      * @return ObjectManager
      */
