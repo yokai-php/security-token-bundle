@@ -27,9 +27,6 @@ class DeleteArchivist implements ArchivistInterface
         $this->tokenRepository = $tokenRepository;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function archive(string $purpose = null): int
     {
         $builder = $this->tokenRepository->createQueryBuilder('token')

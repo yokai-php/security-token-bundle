@@ -55,9 +55,6 @@ class TokenFactory implements TokenFactoryInterface
         $this->repository = $repository;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function create($user, string $purpose, array $payload = []): Token
     {
         // get configuration for this token purpose

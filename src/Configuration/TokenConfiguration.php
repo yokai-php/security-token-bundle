@@ -41,14 +41,6 @@ class TokenConfiguration
      */
     private $unique;
 
-    /**
-     * @param string                  $purpose
-     * @param TokenGeneratorInterface $generator
-     * @param string                  $duration
-     * @param int                     $usages
-     * @param string                  $keep
-     * @param boolean                 $unique
-     */
     public function __construct(
         string $purpose,
         TokenGeneratorInterface $generator,
@@ -65,49 +57,37 @@ class TokenConfiguration
         $this->unique = $unique;
     }
 
-    /**
-     * @return string
-     */
+    
     public function getPurpose(): string
     {
         return $this->purpose;
     }
 
-    /**
-     * @return TokenGeneratorInterface
-     */
+    
     public function getGenerator(): TokenGeneratorInterface
     {
         return $this->generator;
     }
 
-    /**
-     * @return string
-     */
+    
     public function getDuration(): string
     {
         return $this->duration;
     }
 
-    /**
-     * @return int
-     */
+    
     public function getUsages(): int
     {
         return $this->usages;
     }
 
-    /**
-     * @return string
-     */
+    
     public function getKeep(): string
     {
         return $this->keep;
     }
 
-    /**
-     * @return bool
-     */
+    
     public function isUnique(): bool
     {
         return $this->unique;

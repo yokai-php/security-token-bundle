@@ -44,8 +44,6 @@ class ConsumeTokenEvent extends Event
 
     /**
      * The consumed token
-     *
-     * @return Token
      */
     public function getToken(): Token
     {
@@ -54,8 +52,6 @@ class ConsumeTokenEvent extends Event
 
     /**
      * Date/time at which the token has been consumed
-     *
-     * @return DateTime|null
      */
     public function getAt(): ?DateTime
     {
@@ -64,8 +60,6 @@ class ConsumeTokenEvent extends Event
 
     /**
      * Some context information
-     *
-     * @return array
      */
     public function getInformation(): array
     {

@@ -26,9 +26,6 @@ class ArchiveTokenCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * @inheritDoc
-     */
     protected function configure(): void
     {
         $this
@@ -37,9 +34,6 @@ class ArchiveTokenCommand extends Command
         ;
     }
 
-    /**
-     * @inheritDoc
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var string|null $purpose */

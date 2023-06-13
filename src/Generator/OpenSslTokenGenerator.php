@@ -20,9 +20,6 @@ class OpenSslTokenGenerator implements TokenGeneratorInterface
      */
     private $length;
 
-    /**
-     * @param int $length Token length
-     */
     public function __construct(int $length = self::DEFAULT_LENGTH)
     {
         if (!function_exists('openssl_random_pseudo_bytes')) {
@@ -32,9 +29,6 @@ class OpenSslTokenGenerator implements TokenGeneratorInterface
         $this->length = $length;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function generate(): string
     {
         return rtrim(strtr(base64_encode((string)openssl_random_pseudo_bytes($this->length)), '+/', '-_'), '=');

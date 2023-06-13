@@ -29,8 +29,6 @@ class TokenCreatedEvent extends Event
 
     /**
      * The created token
-     *
-     * @return Token
      */
     public function getToken(): Token
     {

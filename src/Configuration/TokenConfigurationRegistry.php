@@ -12,12 +12,12 @@ use BadMethodCallException;
 class TokenConfigurationRegistry
 {
     /**
-     * @var TokenConfiguration[]
+     * @var array<TokenConfiguration>
      */
     private $configurations;
 
     /**
-     * @param TokenConfiguration[] $configurations
+     * @param array<TokenConfiguration> $configurations
      */
     public function __construct(array $configurations)
     {
@@ -32,7 +32,6 @@ class TokenConfigurationRegistry
      *
      * @param string $purpose Token purpose
      *
-     * @return TokenConfiguration
      * @throws BadMethodCallException
      */
     public function get(string $purpose): TokenConfiguration

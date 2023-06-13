@@ -62,8 +62,6 @@ class CreateTokenEvent extends Event
 
     /**
      * The token payload
-     *
-     * @return array
      */
     public function getPayload(): array
     {

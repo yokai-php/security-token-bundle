@@ -23,7 +23,7 @@ interface TokenManagerInterface
      * @param string $purpose The token purpose
      * @param string $value   The token value
      *
-     * @return Token
+     * @return Token The token from storage
      *
      * @throws TokenNotFoundException if the token cannot be found
      * @throws TokenExpiredException if the token is expired
@@ -38,7 +38,7 @@ interface TokenManagerInterface
      * @param mixed  $user    The user to associate to the token
      * @param array  $payload Some additional payload for the token
      *
-     * @return Token
+     * @return Token The created token
      */
     public function create(string $purpose, $user, array $payload = []): Token;
 
@@ -55,7 +55,7 @@ interface TokenManagerInterface
      *
      * @param Token $token The token
      *
-     * @return mixed
+     * @return mixed The user associated to the provided token
      */
     public function getUser(Token $token);
 }

@@ -16,17 +16,11 @@ use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
  */
 class YokaiSecurityTokenBundle extends Bundle
 {
-    /**
-     * @inheritDoc
-     */
     public function getPath(): string
     {
         return \dirname(__DIR__);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function build(ContainerBuilder $container): void
     {
         $registerTokenConfiguration = new ArgumentRegisterTaggedServicesCompilerPass(
@@ -54,9 +48,6 @@ class YokaiSecurityTokenBundle extends Bundle
         ;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function registerCommands(Application $application): void
     {
         // commands are registered as services

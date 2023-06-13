@@ -14,7 +14,7 @@ interface InformationGuesserInterface
     /**
      * Get information about the execution context.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function get(): array;
 }

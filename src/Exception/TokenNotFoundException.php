@@ -16,8 +16,6 @@ class TokenNotFoundException extends InvalidTokenException
      *
      * @param string $value   The token value
      * @param string $purpose The token purpose
-     *
-     * @return TokenNotFoundException
      */
     public static function create(string $value, string $purpose): self
     {

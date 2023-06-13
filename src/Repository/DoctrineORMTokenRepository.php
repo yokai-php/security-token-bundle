@@ -38,9 +38,6 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
         $this->repository = $repository;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function get(string $value, string $purpose): Token
     {
         $token = $this->repository->findOneBy(
@@ -63,9 +60,6 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
         return $token;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function findExisting(string $userClass, string $userId, string $purpose): ?Token
     {
         $token = $this->repository->findOneBy(
@@ -85,27 +79,18 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
         return $token;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function create(Token $token): void
     {
         $this->manager->persist($token);
         $this->manager->flush($token);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function update(Token $token): void
     {
         $this->manager->persist($token);
         $this->manager->flush($token);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function exists(string $value, string $purpose): bool
     {
         $builder = $this->repository->createQueryBuilder('token');

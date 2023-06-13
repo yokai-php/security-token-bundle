@@ -21,9 +21,6 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  */
 class YokaiSecurityTokenExtension extends Extension
 {
-    /**
-     * @inheritdoc
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
@@ -36,10 +33,7 @@ class YokaiSecurityTokenExtension extends Extension
         $this->registerAutoconfigureAliases($container);
     }
 
-    /**
-     * @param array            $config
-     * @param ContainerBuilder $container
-     */
+    
     private function registerTokens(array $config, ContainerBuilder $container): void
     {
         foreach ($config['tokens'] as $name => $token) {
@@ -55,10 +49,7 @@ class YokaiSecurityTokenExtension extends Extension
         }
     }
 
-    /**
-     * @param array            $config
-     * @param ContainerBuilder $container
-     */
+    
     private function registerAliases(array $config, ContainerBuilder $container): void
     {
         $isTest = $container->getParameter('kernel.environment') === 'test';
@@ -69,9 +60,7 @@ class YokaiSecurityTokenExtension extends Extension
         }
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
+    
     private function registerAutoconfigureAliases(ContainerBuilder $container): void
     {
         $interfaceMap = [
