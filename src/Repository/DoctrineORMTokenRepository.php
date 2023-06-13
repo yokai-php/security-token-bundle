@@ -117,6 +117,9 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
             ->setParameter('purpose', $purpose)
         ;
 
-        return intval($builder->getQuery()->getSingleScalarResult()) > 0;
+        /** @var string|int $result */
+        $result = $builder->getQuery()->getSingleScalarResult();
+
+        return intval($result) > 0;
     }
 }
