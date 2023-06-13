@@ -1,7 +1,7 @@
 YokaiSecurityTokenBundle
 ========================
 
-[![Tests](https://img.shields.io/github/workflow/status/yokai-php/security-token-bundle/Tests?style=flat-square&label=tests)](https://github.com/yokai-php/security-token-bundle/actions)
+[![Tests](https://img.shields.io/github/actions/workflow/status/yokai-php/security-token-bundle/tests.yml?branch=main&style=flat-square&label=tests)](https://github.com/yokai-php/security-token-bundle/actions)
 [![Coverage](https://img.shields.io/codecov/c/github/yokai-php/security-token-bundle?style=flat-square)](https://codecov.io/gh/yokai-php/security-token-bundle)
 [![Contributors](https://img.shields.io/github/contributors/yokai-php/security-token-bundle?style=flat-square)](https://github.com/yokai-php/security-token-bundle/graphs/contributors)
 
