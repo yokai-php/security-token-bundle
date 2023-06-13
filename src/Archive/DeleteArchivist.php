@@ -47,6 +47,9 @@ class DeleteArchivist implements ArchivistInterface
             ;
         }
 
-        return intval($builder->getQuery()->execute());
+        /** @var int|string $result */
+        $result = $builder->getQuery()->execute();
+
+        return intval($result);
     }
 }
