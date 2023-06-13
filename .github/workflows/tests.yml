@@ -24,6 +24,8 @@ jobs:
           - php-version: 8.1
             symfony-version: 6.1.*
     steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
       - name: "Setup env & install dependencies"
         uses: ./.github/actions/install
         with:
@@ -36,6 +38,8 @@ jobs:
     name: "PhpStan"
     runs-on: ubuntu-latest
     steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
       - name: "Setup env & install dependencies"
         uses: ./.github/actions/install
         with:
@@ -48,6 +52,8 @@ jobs:
     name: "Checkstyle"
     runs-on: ubuntu-latest
     steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
       - name: "Setup env & install dependencies"
         uses: ./.github/actions/install
         with:
@@ -60,6 +66,8 @@ jobs:
     name: "Code coverage"
     runs-on: ubuntu-latest
     steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
       - name: "Setup env & install dependencies"
         uses: ./.github/actions/install
         with:
