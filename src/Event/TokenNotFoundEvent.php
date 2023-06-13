@@ -35,8 +35,6 @@ class TokenNotFoundEvent extends Event
 
     /**
      * The token purpose
-     *
-     * @return string
      */
     public function getPurpose(): string
     {
@@ -45,8 +43,6 @@ class TokenNotFoundEvent extends Event
 
     /**
      * The token value
-     *
-     * @return string
      */
     public function getValue(): string
     {

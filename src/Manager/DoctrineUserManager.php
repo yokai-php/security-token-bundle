@@ -28,9 +28,6 @@ class DoctrineUserManager implements UserManagerInterface
         $this->doctrine = $doctrine;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function supportsClass(string $class): bool
     {
         try {
@@ -42,9 +39,6 @@ class DoctrineUserManager implements UserManagerInterface
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function supportsUser($user): bool
     {
         return $this->supportsClass(
@@ -52,17 +46,11 @@ class DoctrineUserManager implements UserManagerInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
     public function get(string $class, string $id)
     {
         return $this->getManagerFor($class)->find($class, $id);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getClass($user): string
     {
         /** @var object $user */
@@ -72,9 +60,6 @@ class DoctrineUserManager implements UserManagerInterface
         return $class;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getId($user): string
     {
         /** @var object $user */
@@ -93,8 +78,6 @@ class DoctrineUserManager implements UserManagerInterface
      * Get doctrine object manager for a class.
      *
      * @param class-string $class The user class
-     *
-     * @return ObjectManager
      */
     private function getManagerFor(string $class): ObjectManager
     {

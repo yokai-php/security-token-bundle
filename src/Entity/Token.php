@@ -40,7 +40,7 @@ class Token
     private $purpose;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $payload = [];
 
@@ -50,7 +50,7 @@ class Token
     private $createdAt;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $createdInformation = [];
 
@@ -75,15 +75,9 @@ class Token
     private $usages;
 
     /**
-     * @param class-string $userClass
-     * @param string       $userId
-     * @param string       $value
-     * @param string       $purpose
-     * @param string       $validDuration
-     * @param string       $keepDuration
-     * @param int          $allowedUsages
-     * @param array        $payload
-     * @param array        $information
+     * @param class-string         $userClass
+     * @param array<string, mixed> $payload
+     * @param array<string, mixed> $information
      */
     public function __construct(
         string $userClass,
@@ -109,9 +103,6 @@ class Token
         $this->usages = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -125,81 +116,54 @@ class Token
         return $this->userClass;
     }
 
-    /**
-     * @return string
-     */
     public function getUserId(): string
     {
         return $this->userId;
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @return string
-     */
     public function getPurpose(): string
     {
         return $this->purpose;
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getPayload(): array
     {
         return $this->payload;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return array
-     */
     public function getCreatedInformation(): array
     {
         return $this->createdInformation;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getExpiresAt(): DateTime
     {
         return $this->expiresAt;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getKeepUntil(): DateTime
     {
         return $this->keepUntil;
     }
 
-    /**
-     * @return bool
-     */
     public function isExpired(): bool
     {
         return $this->expiresAt < new DateTime();
     }
 
-    /**
-     * @return bool
-     */
     public function isConsumed(): bool
     {
         $allowed = $this->getAllowedUsages();
@@ -210,42 +174,30 @@ class Token
         return $this->getCountUsages() >= $allowed;
     }
 
-    /**
-     * @return int
-     */
     public function getAllowedUsages(): int
     {
         return $this->allowedUsages;
     }
 
-    /**
-     * @return int
-     */
     public function getCountUsages(): int
     {
         return count($this->usages);
     }
 
     /**
-     * @return TokenUsage[]
+     * @return array<TokenUsage>
      */
     public function getUsages(): array
     {
         return $this->usages->toArray();
     }
 
-    /**
-     * @return TokenUsage|null
-     */
     public function getLastUsage(): ?TokenUsage
     {
         return $this->usages->last();
     }
 
     /**
-     * @param array         $information
-     * @param DateTime|null $date
-     *
      * @throws LogicException
      */
     public function consume(array $information, DateTime $date = null): void

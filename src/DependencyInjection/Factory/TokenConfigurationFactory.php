@@ -15,15 +15,6 @@ use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
  */
 class TokenConfigurationFactory
 {
-    /**
-     * @param string           $purpose
-     * @param string           $generator
-     * @param string           $duration
-     * @param int              $usages
-     * @param string           $keep
-     * @param boolean          $unique
-     * @param ContainerBuilder $container
-     */
     public static function create(
         string $purpose,
         string $generator,
@@ -54,7 +45,7 @@ class TokenConfigurationFactory
                 $duration,
                 $usages,
                 $keep,
-                $unique
+                $unique,
             ]
         );
 

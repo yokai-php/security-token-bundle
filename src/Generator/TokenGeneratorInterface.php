@@ -14,7 +14,7 @@ interface TokenGeneratorInterface
     /**
      * The generated token string.
      *
-     * @return string
+     * @return string The generated token value
      */
     public function generate(): string;
 }

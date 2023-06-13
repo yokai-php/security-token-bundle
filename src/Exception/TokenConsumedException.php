@@ -17,8 +17,6 @@ class TokenConsumedException extends InvalidTokenException
      * @param string $value   Token value
      * @param string $purpose Token purpose
      * @param int    $usages  Count usages
-     *
-     * @return TokenConsumedException
      */
     public static function create(string $value, string $purpose, int $usages): self
     {

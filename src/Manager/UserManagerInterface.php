@@ -16,7 +16,7 @@ interface UserManagerInterface
      *
      * @param class-string $class The user class
      *
-     * @return boolean
+     * @return bool Whether the provided class is supported
      */
     public function supportsClass(string $class): bool;
 
@@ -25,7 +25,7 @@ interface UserManagerInterface
      *
      * @param mixed $user The user
      *
-     * @return boolean
+     * @return bool Whether the provided user is supported
      */
     public function supportsUser($user): bool;
 
@@ -35,7 +35,7 @@ interface UserManagerInterface
      * @param class-string $class The user class
      * @param string       $id    The user id
      *
-     * @return mixed
+     * @return mixed The user for the provided information
      */
     public function get(string $class, string $id);
 
@@ -44,7 +44,7 @@ interface UserManagerInterface
      *
      * @param mixed $user The user
      *
-     * @return class-string
+     * @return class-string The class of the provided user
      */
     public function getClass($user): string;
 
@@ -53,7 +53,7 @@ interface UserManagerInterface
      *
      * @param mixed $user The user
      *
-     * @return string
+     * @return string The id of the provided user
      */
     public function getId($user): string;
 }

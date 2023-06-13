@@ -97,7 +97,7 @@ class DependencyInjectionTest extends TestCase
     public function it_parse_configuration_as_expected(string $resource, array $tokens, array $aliases): void
     {
         // for test purpose, all services are switched to public
-        $this->container->addCompilerPass(new class implements CompilerPassInterface {
+        $this->container->addCompilerPass(new class() implements CompilerPassInterface {
             public function process(ContainerBuilder $container)
             {
                 $container->findDefinition('yokai_security_token.configuration_registry')->setPublic(true);
@@ -141,7 +141,7 @@ class DependencyInjectionTest extends TestCase
                 $loader = new Loader\YamlFileLoader($this->container, $locator);
                 break;
 
-            //todo nice to have : support more configuration format
+                //todo nice to have : support more configuration format
 
             default:
                 throw new \InvalidArgumentException('File ' . $path . ' is not supported.');

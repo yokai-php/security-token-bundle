@@ -24,9 +24,6 @@ class ChainUserManager implements UserManagerInterface
         $this->managers = $managers;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function supportsClass(string $class): bool
     {
         try {
@@ -38,9 +35,6 @@ class ChainUserManager implements UserManagerInterface
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function supportsUser($user): bool
     {
         try {
@@ -52,25 +46,16 @@ class ChainUserManager implements UserManagerInterface
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function get(string $class, string $id)
     {
         return $this->getManagerForClass($class)->get($class, $id);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getClass($user): string
     {
         return $this->getManagerForUser($user)->getClass($user);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getId($user): string
     {
         return $this->getManagerForUser($user)->getId($user);
@@ -81,7 +66,6 @@ class ChainUserManager implements UserManagerInterface
      *
      * @param class-string $class The user class
      *
-     * @return UserManagerInterface
      * @throws \InvalidArgumentException
      */
     private function getManagerForClass(string $class): UserManagerInterface
@@ -110,7 +94,6 @@ class ChainUserManager implements UserManagerInterface
      *
      * @param mixed $user A user
      *
-     * @return UserManagerInterface
      * @throws \InvalidArgumentException
      */
     private function getManagerForUser($user): UserManagerInterface

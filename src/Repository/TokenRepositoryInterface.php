@@ -22,7 +22,7 @@ interface TokenRepositoryInterface
      * @param string $value   The token value
      * @param string $purpose The token purpose
      *
-     * @return Token
+     * @return Token The token object from storage
      *
      * @throws TokenNotFoundException if the token cannot be found
      * @throws TokenExpiredException if the token is expired
@@ -37,7 +37,7 @@ interface TokenRepositoryInterface
      * @param string $userId    The user identifier
      * @param string $purpose   The token purpose
      *
-     * @return Token|null
+     * @return Token|null The token object from storage of null if not found
      */
     public function findExisting(string $userClass, string $userId, string $purpose): ?Token;
 
@@ -47,7 +47,7 @@ interface TokenRepositoryInterface
      * @param string $value   A token value
      * @param string $purpose A token purpose
      *
-     * @return bool
+     * @return bool Whether that token exists
      */
     public function exists(string $value, string $purpose): bool;
 

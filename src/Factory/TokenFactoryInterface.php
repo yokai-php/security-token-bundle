@@ -20,7 +20,7 @@ interface TokenFactoryInterface
      * @param string $purpose The token purpose
      * @param array  $payload The token payload
      *
-     * @return Token
+     * @return Token The created token
      */
     public function create($user, string $purpose, array $payload = []): Token;
 }

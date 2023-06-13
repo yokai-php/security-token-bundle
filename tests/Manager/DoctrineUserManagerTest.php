@@ -60,7 +60,7 @@ class DoctrineUserManagerTest extends TestCase
 
     protected function user($id)
     {
-        return new class ($id) {
+        return new class($id) {
             private $id;
 
             public function __construct($id)

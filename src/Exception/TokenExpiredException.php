@@ -19,8 +19,6 @@ class TokenExpiredException extends InvalidTokenException
      * @param string   $value   The token value
      * @param string   $purpose The token purpose
      * @param DateTime $date    The token expiration date
-     *
-     * @return TokenExpiredException
      */
     public static function create(string $value, string $purpose, DateTime $date): self
     {

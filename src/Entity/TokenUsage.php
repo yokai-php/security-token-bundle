@@ -24,14 +24,12 @@ class TokenUsage
     private $createdAt;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $information = [];
 
     /**
-     * @param Token         $token
-     * @param array         $information
-     * @param DateTime|null $createdAt
+     * @param array<string, mixed> $information
      */
     public function __construct(Token $token, array $information, DateTime $createdAt = null)
     {
@@ -40,32 +38,23 @@ class TokenUsage
         $this->createdAt = $createdAt ?: new DateTime();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Token
-     */
     public function getToken(): Token
     {
         return $this->token;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getInformation(): array
     {

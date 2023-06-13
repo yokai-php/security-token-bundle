@@ -29,8 +29,6 @@ class TokenConsumedEvent extends Event
 
     /**
      * The consumed token
-     *
-     * @return Token
      */
     public function getToken(): Token
     {

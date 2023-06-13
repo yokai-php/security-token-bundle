@@ -13,9 +13,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('yokai_security_token');
@@ -32,9 +29,6 @@ class Configuration implements ConfigurationInterface
         return $builder;
     }
 
-    /**
-     * @return NodeDefinition
-     */
     private function getTokensNode(): NodeDefinition
     {
         $builder = new TreeBuilder('tokens');
@@ -66,9 +60,6 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    /**
-     * @return NodeDefinition
-     */
     private function getServicesNode(): NodeDefinition
     {
         $builder = new TreeBuilder('services');

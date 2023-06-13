@@ -29,8 +29,6 @@ class TokenRetrievedEvent extends Event
 
     /**
      * The retrieved token
-     *
-     * @return Token
      */
     public function getToken(): Token
     {
