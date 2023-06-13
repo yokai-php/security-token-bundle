@@ -57,37 +57,31 @@ class TokenConfiguration
         $this->unique = $unique;
     }
 
-    
     public function getPurpose(): string
     {
         return $this->purpose;
     }
 
-    
     public function getGenerator(): TokenGeneratorInterface
     {
         return $this->generator;
     }
 
-    
     public function getDuration(): string
     {
         return $this->duration;
     }
 
-    
     public function getUsages(): int
     {
         return $this->usages;
     }
 
-    
     public function getKeep(): string
     {
         return $this->keep;
     }
 
-    
     public function isUnique(): bool
     {
         return $this->unique;

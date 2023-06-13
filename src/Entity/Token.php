@@ -179,7 +179,6 @@ class Token
         return $this->allowedUsages;
     }
 
-    
     public function getCountUsages(): int
     {
         return count($this->usages);

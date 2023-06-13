@@ -33,7 +33,6 @@ class YokaiSecurityTokenExtension extends Extension
         $this->registerAutoconfigureAliases($container);
     }
 
-    
     private function registerTokens(array $config, ContainerBuilder $container): void
     {
         foreach ($config['tokens'] as $name => $token) {
@@ -49,7 +48,6 @@ class YokaiSecurityTokenExtension extends Extension
         }
     }
 
-    
     private function registerAliases(array $config, ContainerBuilder $container): void
     {
         $isTest = $container->getParameter('kernel.environment') === 'test';
@@ -60,7 +58,6 @@ class YokaiSecurityTokenExtension extends Extension
         }
     }
 
-    
     private function registerAutoconfigureAliases(ContainerBuilder $container): void
     {
         $interfaceMap = [

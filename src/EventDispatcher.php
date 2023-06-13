@@ -33,7 +33,7 @@ class EventDispatcher
     }
 
     /**
-     * @param mixed  $user
+     * @param mixed $user
      */
     public function createToken(string $purpose, $user, array $payload): CreateTokenEvent
     {
@@ -44,7 +44,6 @@ class EventDispatcher
         return $event;
     }
 
-    
     public function tokenCreated(Token $token): TokenCreatedEvent
     {
         $this->eventDispatcher->dispatch(
@@ -54,7 +53,6 @@ class EventDispatcher
         return $event;
     }
 
-    
     public function consumeToken(Token $token, DateTime $at = null, array $information = []): ConsumeTokenEvent
     {
         $this->eventDispatcher->dispatch(
@@ -64,7 +62,6 @@ class EventDispatcher
         return $event;
     }
 
-    
     public function tokenConsumed(Token $token): TokenConsumedEvent
     {
         $this->eventDispatcher->dispatch(
@@ -84,7 +81,6 @@ class EventDispatcher
         return $event;
     }
 
-    
     public function tokenNotFound(string $purpose, string $value): TokenNotFoundEvent
     {
         $this->eventDispatcher->dispatch(
@@ -94,7 +90,6 @@ class EventDispatcher
         return $event;
     }
 
-    
     public function tokenExpired(string $purpose, string $value): TokenExpiredEvent
     {
         $this->eventDispatcher->dispatch(
@@ -104,7 +99,6 @@ class EventDispatcher
         return $event;
     }
 
-    
     public function tokenAlreadyConsumed(string $purpose, string $value): TokenAlreadyConsumedEvent
     {
         $this->eventDispatcher->dispatch(
@@ -114,7 +108,6 @@ class EventDispatcher
         return $event;
     }
 
-    
     public function tokenRetrieved(Token $token): TokenRetrievedEvent
     {
         $this->eventDispatcher->dispatch(

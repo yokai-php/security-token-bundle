@@ -60,7 +60,6 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    
     private function getServicesNode(): NodeDefinition
     {
         $builder = new TreeBuilder('services');
