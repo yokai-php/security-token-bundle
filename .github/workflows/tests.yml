@@ -45,6 +45,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           symfony-version: ${{ matrix.symfony-version }}
+          doctrine-version: ${{ matrix.doctrine-version }}
       - name: "Run tests with phpunit/phpunit"
         run: vendor/bin/phpunit
 
