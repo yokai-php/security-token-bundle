@@ -31,10 +31,10 @@ jobs:
           - php-version: '8.2'
             symfony-version: '6.4.*'
             doctrine-version: '^3.0'
-          - php-version: '8.1'
+          - php-version: '8.2'
             symfony-version: '^7.0'
             doctrine-version: '^2.7'
-          - php-version: '8.2'
+          - php-version: '8.3'
             symfony-version: '^7.0'
             doctrine-version: '^3.0'
     steps:
