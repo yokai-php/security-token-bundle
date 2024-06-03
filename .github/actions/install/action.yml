@@ -9,6 +9,9 @@ on:
       symfony-version:
         required: true
         type: string
+      doctrine-version:
+        required: true
+        type: string
       coverage-mode:
         required: false
         type: string
@@ -29,4 +32,5 @@ runs:
       shell: bash
       run: |
         composer require --no-update "symfony/framework-bundle:${{ inputs.symfony-version }}"
+        composer require --no-update "doctrine/orm:${{ inputs.doctrine-version }}"
         composer update --no-interaction --no-progress --no-suggest

@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\ChainUserManager;
 use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
 use Yokai\SecurityTokenBundle\Tests\Manager\Mock\UserDocument;
@@ -21,8 +19,6 @@ use Yokai\SecurityTokenBundle\Tests\Manager\Mock\UserEntity;
  */
 class ChainUserManagerTest extends TestCase
 {
-    use ProphecyTrait;
-
     private function manager($managers): ChainUserManager
     {
         return new ChainUserManager($managers);
@@ -30,56 +26,50 @@ class ChainUserManagerTest extends TestCase
 
     private function entityManager(): UserManagerInterface
     {
-        /** @var UserManagerInterface|ObjectProphecy $manager */
-        $manager = $this->prophesize(UserManagerInterface::class);
-
-        $manager->supportsClass(Argument::any())
-            ->will(function (array $args) {
-                return $args[0] === UserEntity::class;
+        /** @var MockObject<UserManagerInterface> $manager */
+        $manager = $this->createMock(UserManagerInterface::class);
+        $manager->method('supportsClass')
+            ->willReturnCallback(function ($class) {
+                return $class === UserEntity::class;
             });
-
-        $manager->supportsUser(Argument::any())
-            ->will(function (array $args) {
-                return $args[0] instanceof UserEntity;
+        $manager->method('supportsUser')
+            ->willReturnCallback(function ($object) {
+                return $object instanceof UserEntity;
             });
-
-        $manager->getClass(Argument::type(UserEntity::class))
+        $manager->method('getClass')
+            ->with(self::isInstanceOf(UserEntity::class))
             ->willReturn(UserEntity::class);
-
-        $manager->getId(Argument::type(UserEntity::class))
+        $manager->method('getId')
             ->willReturn('increment');
-
-        $manager->get(UserEntity::class, Argument::type('string'))
+        $manager->method('get')
+            ->with(UserEntity::class, self::isType('string'))
             ->willReturn(new UserEntity());
 
-        return $manager->reveal();
+        return $manager;
     }
 
     private function documentManager(): UserManagerInterface
     {
-        /** @var UserManagerInterface|ObjectProphecy $manager */
-        $manager = $this->prophesize(UserManagerInterface::class);
-
-        $manager->supportsClass(Argument::any())
-            ->will(function (array $args) {
-                return $args[0] === UserDocument::class;
+        /** @var MockObject<UserManagerInterface> $manager */
+        $manager = $this->createMock(UserManagerInterface::class);
+        $manager->method('supportsClass')
+            ->willReturnCallback(function ($class) {
+                return $class === UserDocument::class;
             });
-
-        $manager->supportsUser(Argument::any())
-            ->will(function (array $args) {
-                return $args[0] instanceof UserDocument;
+        $manager->method('supportsUser')
+            ->willReturnCallback(function ($object) {
+                return $object instanceof UserDocument;
             });
-
-        $manager->getClass(Argument::type(UserDocument::class))
+        $manager->method('getClass')
+            ->with(self::isInstanceOf(UserDocument::class))
             ->willReturn(UserDocument::class);
-
-        $manager->getId(Argument::type(UserDocument::class))
+        $manager->method('getId')
             ->willReturn('uuid');
-
-        $manager->get(UserDocument::class, Argument::type('string'))
+        $manager->method('get')
+            ->with(UserDocument::class, self::isType('string'))
             ->willReturn(new UserDocument());
 
-        return $manager->reveal();
+        return $manager;
     }
 
     /**

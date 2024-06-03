@@ -15,16 +15,22 @@ jobs:
         include:
           - php-version: '7.4'
             symfony-version: '4.4.*'
-          - php-version: '8.2'
-            symfony-version: '4.4.*'
+            doctrine-version: '^2.7'
           - php-version: '7.4'
             symfony-version: '5.4.*'
-          - php-version: '8.2'
-            symfony-version: '5.4.*'
+            doctrine-version: '^2.7'
           - php-version: '8.1'
-            symfony-version: '6.3.*'
+            symfony-version: '6.4.*'
+            doctrine-version: '^2.7'
           - php-version: '8.2'
-            symfony-version: '6.3.*'
+            symfony-version: '6.4.*'
+            doctrine-version: '^3.0'
+          - php-version: '8.2'
+            symfony-version: '^7.0'
+            doctrine-version: '^2.7'
+          - php-version: '8.3'
+            symfony-version: '^7.0'
+            doctrine-version: '^3.0'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -33,6 +39,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           symfony-version: ${{ matrix.symfony-version }}
+          doctrine-version: ${{ matrix.doctrine-version }}
       - name: "Run tests with phpunit/phpunit"
         run: vendor/bin/phpunit
 
@@ -46,7 +53,8 @@ jobs:
         uses: ./.github/actions/install
         with:
           php-version: '8.1'
-          symfony-version: '6.1.*'
+          symfony-version: '6.4.*'
+          doctrine-version: '^3.0'
       - name: "Run static analyzis with phpstan/phpstan"
         run: vendor/bin/phpstan analyze
 
@@ -60,7 +68,8 @@ jobs:
         uses: ./.github/actions/install
         with:
           php-version: '8.1'
-          symfony-version: '6.1.*'
+          symfony-version: '6.4.*'
+          doctrine-version: '^3.0'
       - name: "Run checkstyle with symplify/easy-coding-standard"
         run: vendor/bin/ecs
 
@@ -74,7 +83,8 @@ jobs:
         uses: ./.github/actions/install
         with:
           php-version: '8.1'
-          symfony-version: '6.1.*'
+          symfony-version: '6.4.*'
+          doctrine-version: '^3.0'
           coverage-mode: 'xdebug'
       - name: "Run tests with phpunit/phpunit"
         env:

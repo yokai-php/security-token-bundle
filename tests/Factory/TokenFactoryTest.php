@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Yokai\SecurityTokenBundle\Tests\Factory;
 
 use DateTime;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfigurationRegistry;
 use Yokai\SecurityTokenBundle\Entity\Token;
@@ -24,28 +23,26 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  */
 class TokenFactoryTest extends TestCase
 {
-    use ProphecyTrait;
-
     /**
-     * @var InformationGuesserInterface|ObjectProphecy
+     * @var MockObject<InformationGuesserInterface>
      */
     private $informationGuesser;
 
     /**
-     * @var UserManagerInterface|ObjectProphecy
+     * @var MockObject<UserManagerInterface>
      */
     private $userManager;
 
     /**
-     * @var TokenRepositoryInterface|ObjectProphecy
+     * @var MockObject<TokenRepositoryInterface>
      */
     private $repository;
 
     protected function setUp(): void
     {
-        $this->informationGuesser = $this->prophesize(InformationGuesserInterface::class);
-        $this->userManager = $this->prophesize(UserManagerInterface::class);
-        $this->repository = $this->prophesize(TokenRepositoryInterface::class);
+        $this->informationGuesser = $this->createMock(InformationGuesserInterface::class);
+        $this->userManager = $this->createMock(UserManagerInterface::class);
+        $this->repository = $this->createMock(TokenRepositoryInterface::class);
     }
 
     protected function tearDown(): void
@@ -61,9 +58,9 @@ class TokenFactoryTest extends TestCase
     {
         return new TokenFactory(
             new TokenConfigurationRegistry($configuration),
-            $this->informationGuesser->reveal(),
-            $this->userManager->reveal(),
-            $this->repository->reveal()
+            $this->informationGuesser,
+            $this->userManager,
+            $this->repository
         );
     }
 
@@ -104,53 +101,37 @@ class TokenFactoryTest extends TestCase
             new TokenConfiguration('test-3', $generator3, '+2 minute', 1, '+1 month', true),
         ];
 
-        $this->repository->findExisting('string', 'u1', 'test-1')
-            ->shouldNotBeCalled();
-        $this->repository->findExisting('string', 'u2', 'test-2')
-            ->shouldNotBeCalled();
-        $this->repository->findExisting('string', 'u3', 'test-3')
-            ->shouldBeCalledTimes(1)
+        $this->repository->expects(self::once())
+            ->method('findExisting')
+            ->with('string', 'u3', 'test-3')
             ->willReturn($token3FromRepository);
 
-        $this->repository->exists('existtoken-1', 'test-1')
-            ->shouldBeCalledTimes(1)
-            ->willReturn(true);
-        $this->repository->exists('uniquetoken-1', 'test-1')
-            ->shouldBeCalledTimes(1)
-            ->willReturn(false);
-        $this->repository->exists('existtoken-2', 'test-2')
-            ->shouldBeCalledTimes(1)
-            ->willReturn(true);
-        $this->repository->exists('uniquetoken-2', 'test-2')
-            ->shouldBeCalledTimes(1)
-            ->willReturn(false);
-        $this->repository->exists('existtoken-3', 'test-3')
-            ->shouldNotBeCalled();
-        $this->repository->exists('uniquetoken-3', 'test-3')
-            ->shouldNotBeCalled();
+        $this->repository->expects(self::exactly(4))
+            ->method('exists')
+            ->willReturnCallback(function (string $purpose) {
+                return \substr($purpose, 0, 10) === 'existtoken';
+            });
 
-        $this->userManager->getClass($user1)
-            ->shouldBeCalledTimes(1)
-            ->willReturn('string');
-        $this->userManager->getClass($user2)
-            ->shouldBeCalledTimes(1)
-            ->willReturn('string');
-        $this->userManager->getClass($user3)
-            ->shouldBeCalledTimes(1)
-            ->willReturn('string');
+        $this->userManager->expects(self::exactly(3))
+            ->method('getClass')
+            ->with(self::isType('string'))
+            ->willReturnMap([
+                [$user1, 'string'],
+                [$user2, 'string'],
+                [$user3, 'string'],
+            ]);
 
-        $this->userManager->getId($user1)
-            ->shouldBeCalledTimes(1)
-            ->willReturn('u1');
-        $this->userManager->getId($user2)
-            ->shouldBeCalledTimes(1)
-            ->willReturn('u2');
-        $this->userManager->getId($user3)
-            ->shouldBeCalledTimes(1)
-            ->willReturn('u3');
+        $this->userManager->expects(self::exactly(3))
+            ->method('getId')
+            ->with(self::isType('string'))
+            ->willReturnMap([
+                [$user1, 'u1'],
+                [$user2, 'u2'],
+                [$user3, 'u3'],
+            ]);
 
-        $this->informationGuesser->get()
-            ->shouldBeCalledTimes(2)
+        $this->informationGuesser->expects(self::exactly(2))
+            ->method('get')
             ->willReturn(['some', 'precious', 'information']);
 
         $token1 = $this->factory($configuration)->create($user1, 'test-1');

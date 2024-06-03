@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Tests\Command;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -19,10 +18,8 @@ use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
  */
 class ArchiveTokenCommandTest extends KernelTestCase
 {
-    use ProphecyTrait;
-
     /**
-     * @var ArchivistInterface|ObjectProphecy
+     * @var MockObject<ArchivistInterface>
      */
     private $archivist;
 
@@ -33,10 +30,10 @@ class ArchiveTokenCommandTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        $this->archivist = $this->prophesize(ArchivistInterface::class);
+        $this->archivist = $this->createMock(ArchivistInterface::class);
 
         self::bootKernel();
-        self::$kernel->getContainer()->set('yokai_security_token.archivist', $this->archivist->reveal());
+        self::$kernel->getContainer()->set('yokai_security_token.archivist', $this->archivist);
 
         $this->application = new Application(self::$kernel);
     }
@@ -75,8 +72,9 @@ class ArchiveTokenCommandTest extends KernelTestCase
     {
         $command = $this->command();
 
-        $this->archivist->archive(null)
-            ->shouldBeCalledTimes(1)
+        $this->archivist->expects(self::once())
+            ->method('archive')
+            ->with(null)
             ->willReturn(10);
 
         $output = $this->runCommand($command);
@@ -91,8 +89,9 @@ class ArchiveTokenCommandTest extends KernelTestCase
     {
         $command = $this->command();
 
-        $this->archivist->archive('init_password')
-            ->shouldBeCalledTimes(1)
+        $this->archivist->expects(self::once())
+            ->method('archive')
+            ->with('init_password')
             ->willReturn(10);
 
         $output = $this->runCommand($command, ['purpose' => 'init_password']);
