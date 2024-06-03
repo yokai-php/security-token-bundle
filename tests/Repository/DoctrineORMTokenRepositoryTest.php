@@ -6,9 +6,8 @@ namespace Yokai\SecurityTokenBundle\Tests\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
@@ -22,22 +21,20 @@ use Yokai\SecurityTokenBundle\Repository\DoctrineORMTokenRepository;
  */
 class DoctrineORMTokenRepositoryTest extends TestCase
 {
-    use ProphecyTrait;
-
     /**
-     * @var EntityManager|ObjectProphecy
+     * @var MockObject<EntityManager>
      */
     private $manager;
 
     /**
-     * @var EntityRepository|ObjectProphecy
+     * @var MockObject<EntityRepository>
      */
     private $repository;
 
     protected function setUp(): void
     {
-        $this->manager = $this->prophesize(EntityManager::class);
-        $this->repository = $this->prophesize(EntityRepository::class);
+        $this->manager = $this->createMock(EntityManager::class);
+        $this->repository = $this->createMock(EntityRepository::class);
     }
 
     protected function tearDown(): void
@@ -50,7 +47,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
 
     protected function repository(): DoctrineORMTokenRepository
     {
-        return new DoctrineORMTokenRepository($this->manager->reveal(), $this->repository->reveal());
+        return new DoctrineORMTokenRepository($this->manager, $this->repository);
     }
 
     /**
@@ -60,8 +57,9 @@ class DoctrineORMTokenRepositoryTest extends TestCase
     {
         $this->expectException(TokenNotFoundException::class);
 
-        $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
-            ->shouldBeCalledTimes(1)
+        $this->repository->expects(self::once())
+            ->method('findOneBy')
+            ->with(['value' => 'unique', 'purpose' => 'init_password'])
             ->willReturn(null);
 
         $this->repository()->get('unique', 'init_password');
@@ -76,8 +74,9 @@ class DoctrineORMTokenRepositoryTest extends TestCase
 
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '-1 day', '+1 month', 1, []);
 
-        $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
-            ->shouldBeCalledTimes(1)
+        $this->repository->expects(self::once())
+            ->method('findOneBy')
+            ->with(['value' => 'unique', 'purpose' => 'init_password'])
             ->willReturn($token);
 
         $this->repository()->get('unique', 'init_password');
@@ -93,8 +92,9 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1);
         $token->consume(['info'], new \DateTime());
 
-        $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
-            ->shouldBeCalledTimes(1)
+        $this->repository->expects(self::once())
+            ->method('findOneBy')
+            ->with(['value' => 'unique', 'purpose' => 'init_password'])
             ->willReturn($token);
 
         $this->repository()->get('unique', 'init_password');
@@ -111,8 +111,9 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $token->consume(['info'], new \DateTime());
         $token->consume(['info'], new \DateTime());
 
-        $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
-            ->shouldBeCalledTimes(1)
+        $this->repository->expects(self::once())
+            ->method('findOneBy')
+            ->with(['value' => 'unique', 'purpose' => 'init_password'])
             ->willReturn($token);
 
         $this->repository()->get('unique', 'init_password');
@@ -125,8 +126,9 @@ class DoctrineORMTokenRepositoryTest extends TestCase
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
-        $this->repository->findOneBy(['value' => 'unique', 'purpose' => 'init_password'])
-            ->shouldBeCalledTimes(1)
+        $this->repository->expects(self::once())
+            ->method('findOneBy')
+            ->with(['value' => 'unique', 'purpose' => 'init_password'])
             ->willReturn($token);
 
         $got = $this->repository()->get('unique', 'init_password');
@@ -141,10 +143,12 @@ class DoctrineORMTokenRepositoryTest extends TestCase
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
-        $this->manager->persist($token)
-            ->shouldBeCalledTimes(1);
-        $this->manager->flush($token)
-            ->shouldBeCalledTimes(1);
+        $this->manager->expects(self::once())
+            ->method('persist')
+            ->with($token);
+        $this->manager->expects(self::once())
+            ->method('flush')
+            ->with($token);
 
         $this->repository()->create($token);
     }
@@ -156,10 +160,12 @@ class DoctrineORMTokenRepositoryTest extends TestCase
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
-        $this->manager->persist($token)
-            ->shouldBeCalledTimes(1);
-        $this->manager->flush($token)
-            ->shouldBeCalledTimes(1);
+        $this->manager->expects(self::once())
+            ->method('persist')
+            ->with($token);
+        $this->manager->expects(self::once())
+            ->method('flush')
+            ->with($token);
 
         $this->repository()->update($token);
     }

@@ -8,9 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
 
 /**
@@ -20,28 +19,26 @@ use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
  */
 class DoctrineUserManagerTest extends TestCase
 {
-    use ProphecyTrait;
-
     /**
-     * @var ManagerRegistry|ObjectProphecy
+     * @var MockObject<ManagerRegistry>
      */
     private $registry;
 
     /**
-     * @var EntityManagerInterface|ObjectProphecy
+     * @var MockObject<EntityManagerInterface>
      */
     private $objectManager;
 
     /**
-     * @var ClassMetadata|ObjectProphecy
+     * @var MockObject<ClassMetadata>
      */
     private $classMetadata;
 
     protected function setUp(): void
     {
-        $this->registry = $this->prophesize(ManagerRegistry::class);
-        $this->objectManager = $this->prophesize(ObjectManager::class);
-        $this->classMetadata = $this->prophesize(ClassMetadata::class);
+        $this->registry = $this->createMock(ManagerRegistry::class);
+        $this->objectManager = $this->createMock(ObjectManager::class);
+        $this->classMetadata = $this->createMock(ClassMetadata::class);
     }
 
     protected function tearDown(): void
@@ -55,7 +52,7 @@ class DoctrineUserManagerTest extends TestCase
 
     protected function manager(): DoctrineUserManager
     {
-        return new DoctrineUserManager($this->registry->reveal());
+        return new DoctrineUserManager($this->registry);
     }
 
     protected function user($id)
@@ -82,8 +79,9 @@ class DoctrineUserManagerTest extends TestCase
     {
         $user = $this->user('jdoe');
 
-        $this->registry->getManagerForClass(get_class($user))
-            ->willReturn($this->objectManager->reveal());
+        $this->registry->method('getManagerForClass')
+            ->with(get_class($user))
+            ->willReturn($this->objectManager);
 
         $manager = $this->manager();
         self::assertTrue($manager->supportsClass(get_class($user)));
@@ -97,7 +95,8 @@ class DoctrineUserManagerTest extends TestCase
     {
         $user = $this->user('jdoe');
 
-        $this->registry->getManagerForClass(get_class($user))
+        $this->registry->method('getManagerForClass')
+            ->with(get_class($user))
             ->willReturn(null);
 
         $manager = $this->manager();
@@ -112,12 +111,14 @@ class DoctrineUserManagerTest extends TestCase
     {
         $expected = $this->user('jdoe');
 
-        $this->registry->getManagerForClass(get_class($expected))
-            ->shouldBeCalledTimes(1)
-            ->willReturn($this->objectManager->reveal());
+        $this->registry->expects(self::once())
+            ->method('getManagerForClass')
+            ->with(get_class($expected))
+            ->willReturn($this->objectManager);
 
-        $this->objectManager->find(get_class($expected), 'jdoe')
-            ->shouldBeCalledTimes(1)
+        $this->objectManager->expects(self::once())
+            ->method('find')
+            ->with(get_class($expected), 'jdoe')
             ->willReturn($expected);
 
         $user = $this->manager()->get(get_class($expected), 'jdoe');
@@ -144,16 +145,19 @@ class DoctrineUserManagerTest extends TestCase
     {
         $expected = $this->user('jdoe');
 
-        $this->registry->getManagerForClass(get_class($expected))
-            ->shouldBeCalledTimes(1)
-            ->willReturn($this->objectManager->reveal());
+        $this->registry->expects(self::once())
+            ->method('getManagerForClass')
+            ->with(get_class($expected))
+            ->willReturn($this->objectManager);
 
-        $this->objectManager->getClassMetadata(get_class($expected))
-            ->shouldBeCalledTimes(1)
-            ->willReturn($this->classMetadata->reveal());
+        $this->objectManager->expects(self::once())
+            ->method('getClassMetadata')
+            ->with(get_class($expected))
+            ->willReturn($this->classMetadata);
 
-        $this->classMetadata->getIdentifierValues($expected)
-            ->shouldBeCalledTimes(1)
+        $this->classMetadata->expects(self::once())
+            ->method('getIdentifierValues')
+            ->with($expected)
             ->willReturn(['id' => 'jdoe']);
 
         $id = $this->manager()->getId($expected);
