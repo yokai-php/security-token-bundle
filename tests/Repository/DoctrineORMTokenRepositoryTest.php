@@ -146,9 +146,14 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $this->manager->expects(self::once())
             ->method('persist')
             ->with($token);
-        $this->manager->expects(self::once())
-            ->method('flush')
-            ->with($token);
+        if ((new \ReflectionMethod(EntityManager::class, 'flush'))->getNumberOfParameters() > 0) {
+            $this->manager->expects(self::once())
+                ->method('flush')
+                ->with($token);
+        } else {
+            $this->manager->expects(self::once())
+                ->method('flush');
+        }
 
         $this->repository()->create($token);
     }
@@ -163,9 +168,14 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $this->manager->expects(self::once())
             ->method('persist')
             ->with($token);
-        $this->manager->expects(self::once())
-            ->method('flush')
-            ->with($token);
+        if ((new \ReflectionMethod(EntityManager::class, 'flush'))->getNumberOfParameters() > 0) {
+            $this->manager->expects(self::once())
+                ->method('flush')
+                ->with($token);
+        } else {
+            $this->manager->expects(self::once())
+                ->method('flush');
+        }
 
         $this->repository()->update($token);
     }
