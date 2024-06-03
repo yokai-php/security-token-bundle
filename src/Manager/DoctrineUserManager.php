@@ -54,9 +54,8 @@ class DoctrineUserManager implements UserManagerInterface
     public function getClass($user): string
     {
         /** @var object $user */
-        /** @var class-string $class */
         if ($user instanceof Proxy) {
-            $class = \get_parent_class(\get_class($user));
+            $class = \get_parent_class(\get_class($user)) ?: \get_class($user);
         } else {
             $class = \get_class($user);
         }
