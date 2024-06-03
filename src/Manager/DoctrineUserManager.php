@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Manager;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use Doctrine\Persistence\Proxy;
 
 /**
  * User manager for doctrine entities.
@@ -54,13 +54,8 @@ class DoctrineUserManager implements UserManagerInterface
     public function getClass($user): string
     {
         /** @var object $user */
-        if ($user instanceof Proxy) {
-            $class = \get_parent_class(\get_class($user)) ?: \get_class($user);
-        } else {
-            $class = \get_class($user);
-        }
 
-        return $class;
+        return ClassUtils::getClass($user);
     }
 
     public function getId($user): string
