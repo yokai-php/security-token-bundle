@@ -42,7 +42,10 @@ final class ChainUserManagerTest extends TestCase
         $manager->method('getId')
             ->willReturn('increment');
         $manager->method('get')
-            ->with(UserEntity::class, self::isType('string'))
+            ->with(
+                UserEntity::class,
+                \method_exists(self::class, 'isString') ? self::isString() : self::isType('string'),
+            )
             ->willReturn(new UserEntity());
 
         return $manager;
@@ -66,13 +69,16 @@ final class ChainUserManagerTest extends TestCase
         $manager->method('getId')
             ->willReturn('uuid');
         $manager->method('get')
-            ->with(UserDocument::class, self::isType('string'))
+            ->with(
+                UserDocument::class,
+                \method_exists(self::class, 'isString') ? self::isString() : self::isType('string'),
+            )
             ->willReturn(new UserDocument());
 
         return $manager;
     }
 
-    public function testIt_supports_same_classes_as_managers(): void
+    public function test_it_supports_same_classes_as_managers(): void
     {
         $entityManager = $this->entityManager();
         $documentManager = $this->documentManager();
@@ -97,7 +103,7 @@ final class ChainUserManagerTest extends TestCase
         self::assertFalse($userEmptyManager->supportsClass($document));
     }
 
-    public function testIt_supports_same_users_as_managers(): void
+    public function test_it_supports_same_users_as_managers(): void
     {
         $entityManager = $this->entityManager();
         $documentManager = $this->documentManager();
@@ -122,7 +128,7 @@ final class ChainUserManagerTest extends TestCase
         self::assertFalse($userEmptyManager->supportsUser($document));
     }
 
-    public function testIt_get_user_class_from_appropriate_manager(): void
+    public function test_it_get_user_class_from_appropriate_manager(): void
     {
         $entity = new UserEntity();
         $document = new UserDocument();
@@ -132,7 +138,7 @@ final class ChainUserManagerTest extends TestCase
         self::assertSame(UserDocument::class, $userCompleteManager->getClass($document));
     }
 
-    public function testIt_get_user_id_from_appropriate_manager()
+    public function test_it_get_user_id_from_appropriate_manager()
     {
         $entity = new UserEntity();
         $document = new UserDocument();
@@ -142,7 +148,7 @@ final class ChainUserManagerTest extends TestCase
         self::assertSame('uuid', $userCompleteManager->getId($document));
     }
 
-    public function testIt_get_user_from_appropriate_manager(): void
+    public function test_it_get_user_from_appropriate_manager(): void
     {
         $userCompleteManager = $this->manager([$this->entityManager(), $this->documentManager()]);
         self::assertInstanceOf(UserEntity::class, $userCompleteManager->get(UserEntity::class, '9999'));
@@ -152,7 +158,7 @@ final class ChainUserManagerTest extends TestCase
         );
     }
 
-    public function testIt_throw_exception_on_get_user_class_without_appropriate_manager(): void
+    public function test_it_throw_exception_on_get_user_class_without_appropriate_manager(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -160,7 +166,7 @@ final class ChainUserManagerTest extends TestCase
         $userCompleteManager->getClass(new \stdClass());
     }
 
-    public function testIt_throw_exception_on_get_user_id_without_appropriate_manager(): void
+    public function test_it_throw_exception_on_get_user_id_without_appropriate_manager(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -168,7 +174,7 @@ final class ChainUserManagerTest extends TestCase
         $userCompleteManager->getId(new \stdClass());
     }
 
-    public function testIt_throw_exception_on_get_user_without_appropriate_manager(): void
+    public function test_it_throw_exception_on_get_user_without_appropriate_manager(): void
     {
         $this->expectException(InvalidArgumentException::class);
 

@@ -14,7 +14,7 @@ use Yokai\SecurityTokenBundle\Generator\OpenSslTokenGenerator;
  */
 final class OpenSslTokenGeneratorTest extends TestCase
 {
-    public function testIt_generate_unique_token(): void
+    public function test_it_generate_unique_token(): void
     {
         $generator = new OpenSslTokenGenerator();
 
