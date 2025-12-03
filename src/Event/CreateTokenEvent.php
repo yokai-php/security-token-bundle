@@ -24,14 +24,14 @@ final class CreateTokenEvent extends Event
     private $user;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $payload;
 
     /**
-     * @param string $purpose The token purpose
-     * @param mixed  $user    The associated user
-     * @param array  $payload The token payload
+     * @param string               $purpose The token purpose
+     * @param mixed                $user    The associated user
+     * @param array<string, mixed> $payload The token payload
      */
     public function __construct(string $purpose, $user, array $payload)
     {
@@ -62,6 +62,8 @@ final class CreateTokenEvent extends Event
 
     /**
      * The token payload
+     *
+     * @return array<string, mixed>
      */
     public function getPayload(): array
     {
@@ -71,7 +73,7 @@ final class CreateTokenEvent extends Event
     /**
      * Replace token payload
      *
-     * @param array $payload The new payload value
+     * @param array<string, mixed> $payload The new payload value
      */
     public function setPayload(array $payload): void
     {
@@ -81,7 +83,7 @@ final class CreateTokenEvent extends Event
     /**
      * Add payload information to token
      *
-     * @param array $payload Some payload to add
+     * @param array<string, mixed> $payload Some payload to add
      */
     public function addPayload(array $payload): void
     {

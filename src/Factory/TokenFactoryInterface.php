@@ -16,9 +16,9 @@ interface TokenFactoryInterface
     /**
      * Create a new token.
      *
-     * @param mixed  $user    The to associated to the token
-     * @param string $purpose The token purpose
-     * @param array  $payload The token payload
+     * @param mixed                $user    The to associated to the token
+     * @param string               $purpose The token purpose
+     * @param array<string, mixed> $payload The token payload
      *
      * @return Token The created token
      */

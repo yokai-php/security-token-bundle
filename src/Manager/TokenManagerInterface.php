@@ -34,9 +34,9 @@ interface TokenManagerInterface
     /**
      * Create a token.
      *
-     * @param string $purpose The token purpose
-     * @param mixed  $user    The user to associate to the token
-     * @param array  $payload Some additional payload for the token
+     * @param string               $purpose The token purpose
+     * @param mixed                $user    The user to associate to the token
+     * @param array<string, mixed> $payload Some additional payload for the token
      *
      * @return Token The created token
      */

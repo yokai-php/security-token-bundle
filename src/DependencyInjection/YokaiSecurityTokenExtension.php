@@ -18,11 +18,14 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * @phpstan-import-type Config from Configuration
  */
 final class YokaiSecurityTokenExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
+        /** @var Config $config */
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
@@ -33,6 +36,9 @@ final class YokaiSecurityTokenExtension extends Extension
         $this->registerAutoconfigureAliases($container);
     }
 
+    /**
+     * @param Config $config
+     */
     private function registerTokens(array $config, ContainerBuilder $container): void
     {
         foreach ($config['tokens'] as $name => $token) {
@@ -48,10 +54,11 @@ final class YokaiSecurityTokenExtension extends Extension
         }
     }
 
+    /**
+     * @param Config $config
+     */
     private function registerAliases(array $config, ContainerBuilder $container): void
     {
-        $isTest = $container->getParameter('kernel.environment') === 'test';
-
         foreach ($config['services'] as $name => $service) {
             $alias = $container->setAlias(\sprintf('yokai_security_token.%s', $name), $service);
             $alias->setPublic(true);
