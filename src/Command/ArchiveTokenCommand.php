@@ -15,14 +15,9 @@ use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
  */
 final class ArchiveTokenCommand extends Command
 {
-    /**
-     * @var ArchivistInterface
-     */
-    private $archivist;
-
-    public function __construct(ArchivistInterface $archivist)
-    {
-        $this->archivist = $archivist;
+    public function __construct(
+        private readonly ArchivistInterface $archivist,
+    ) {
         parent::__construct();
     }
 
@@ -45,6 +40,6 @@ final class ArchiveTokenCommand extends Command
             \sprintf('<info>Successfully archived <comment>%d</comment> security token(s).</info>', $count),
         );
 
-        return 0;
+        return self::SUCCESS;
     }
 }

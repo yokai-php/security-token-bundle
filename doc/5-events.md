@@ -69,7 +69,7 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
     {
         $this->logger->warning(
             'Security token was not found',
-            ['purpose' => $event->getPurpose(), 'value' => $event->getValue()]
+            ['purpose' => $event->purpose, 'value' => $event->value]
         );
     }
 
@@ -77,7 +77,7 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
     {
         $this->logger->warning(
             'Security token was expired',
-            ['purpose' => $event->getPurpose(), 'value' => $event->getValue()]
+            ['purpose' => $event->purpose, 'value' => $event->value]
         );
     }
 
@@ -85,7 +85,7 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
     {
         $this->logger->warning(
             'Security token was already consumed',
-            ['purpose' => $event->getPurpose(), 'value' => $event->getValue()]
+            ['purpose' => $event->purpose, 'value' => $event->value]
         );
     }
 }

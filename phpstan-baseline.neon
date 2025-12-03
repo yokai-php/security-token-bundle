@@ -1,22 +1,10 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Property Yokai\\SecurityTokenBundle\\Entity\\Token\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: src/Entity/Token.php
-
-		-
 			message: '#^Property Yokai\\SecurityTokenBundle\\Entity\\Token\:\:\$id is never written, only read\.$#'
 			identifier: property.onlyRead
 			count: 1
 			path: src/Entity/Token.php
-
-		-
-			message: '#^Property Yokai\\SecurityTokenBundle\\Entity\\TokenUsage\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: src/Entity/TokenUsage.php
 
 		-
 			message: '#^Property Yokai\\SecurityTokenBundle\\Entity\\TokenUsage\:\:\$id is never written, only read\.$#'

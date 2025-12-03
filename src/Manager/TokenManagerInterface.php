@@ -40,7 +40,7 @@ interface TokenManagerInterface
      *
      * @return Token The created token
      */
-    public function create(string $purpose, $user, array $payload = []): Token;
+    public function create(string $purpose, mixed $user, array $payload = []): Token;
 
     /**
      * Consume a token.
@@ -57,5 +57,5 @@ interface TokenManagerInterface
      *
      * @return mixed The user associated to the provided token
      */
-    public function getUser(Token $token);
+    public function getUser(Token $token): mixed;
 }

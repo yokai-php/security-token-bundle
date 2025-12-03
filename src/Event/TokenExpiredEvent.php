@@ -13,39 +13,15 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class TokenExpiredEvent extends Event
 {
-    /**
-     * @var string
-     */
-    private $purpose;
-
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @param string $purpose The token purpose
-     * @param string $value   The token value
-     */
-    public function __construct(string $purpose, string $value)
-    {
-        $this->purpose = $purpose;
-        $this->value = $value;
-    }
-
-    /**
-     * The token purpose
-     */
-    public function getPurpose(): string
-    {
-        return $this->purpose;
-    }
-
-    /**
-     * The token value
-     */
-    public function getValue(): string
-    {
-        return $this->value;
+    public function __construct(
+        /**
+         * The token purpose
+         */
+        public readonly string $purpose,
+        /**
+         * The token value
+         */
+        public readonly string $value,
+    ) {
     }
 }

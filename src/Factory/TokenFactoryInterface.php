@@ -22,5 +22,5 @@ interface TokenFactoryInterface
      *
      * @return Token The created token
      */
-    public function create($user, string $purpose, array $payload = []): Token;
+    public function create(mixed $user, string $purpose, array $payload = []): Token;
 }

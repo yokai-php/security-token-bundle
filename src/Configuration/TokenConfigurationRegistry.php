@@ -12,19 +12,20 @@ use BadMethodCallException;
 final class TokenConfigurationRegistry
 {
     /**
-     * @var array<TokenConfiguration>
+     * @var array<string, TokenConfiguration>
      */
-    private $configurations;
+    private readonly array $configurations;
 
     /**
-     * @param array<TokenConfiguration> $configurations
+     * @param list<TokenConfiguration> $configurations
      */
     public function __construct(array $configurations)
     {
-        $this->configurations = [];
+        $indexedConfigurations = [];
         foreach ($configurations as $configuration) {
-            $this->configurations[$configuration->getPurpose()] = $configuration;
+            $indexedConfigurations[$configuration->purpose] = $configuration;
         }
+        $this->configurations = $indexedConfigurations;
     }
 
     /**
@@ -36,12 +37,9 @@ final class TokenConfigurationRegistry
      */
     public function get(string $purpose): TokenConfiguration
     {
-        if (!isset($this->configurations[$purpose])) {
-            throw new BadMethodCallException(
+        return $this->configurations[$purpose]
+            ?? throw new BadMethodCallException(
                 \sprintf('There is no configured security token on "%s" purpose.', $purpose),
             );
-        }
-
-        return $this->configurations[$purpose];
     }
 }

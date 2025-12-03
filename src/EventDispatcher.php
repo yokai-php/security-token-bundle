@@ -22,21 +22,15 @@ use Yokai\SecurityTokenBundle\Event\TokenTotallyConsumedEvent;
  */
 final class EventDispatcher
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     /**
-     * @param mixed                $user
      * @param array<string, mixed> $payload
      */
-    public function createToken(string $purpose, $user, array $payload): CreateTokenEvent
+    public function createToken(string $purpose, mixed $user, array $payload): CreateTokenEvent
     {
         $this->eventDispatcher->dispatch(
             $event = new CreateTokenEvent($purpose, $user, $payload),

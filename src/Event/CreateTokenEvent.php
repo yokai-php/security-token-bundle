@@ -13,51 +13,21 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class CreateTokenEvent extends Event
 {
-    /**
-     * @var string
-     */
-    private $purpose;
-
-    /**
-     * @var mixed
-     */
-    private $user;
-
-    /**
-     * @var array<string, mixed>
-     */
-    private $payload;
-
-    /**
-     * @param string               $purpose The token purpose
-     * @param mixed                $user    The associated user
-     * @param array<string, mixed> $payload The token payload
-     */
-    public function __construct(string $purpose, $user, array $payload)
-    {
-        $this->purpose = $purpose;
-        $this->user = $user;
-        $this->payload = $payload;
-    }
-
-    /**
-     * The token purpose
-     *
-     * @return string
-     */
-    public function getPurpose()
-    {
-        return $this->purpose;
-    }
-
-    /**
-     * The associated user
-     *
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
+    public function __construct(
+        /**
+         * The token purpose
+         */
+        public readonly string $purpose,
+        /**
+         * The associated user
+         */
+        public readonly mixed $user,
+        /**
+         * The token payload
+         * @var array<string, mixed>
+         */
+        private array $payload,
+    ) {
     }
 
     /**

@@ -17,45 +17,15 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  */
 final class TokenFactory implements TokenFactoryInterface
 {
-    /**
-     * @var TokenConfigurationRegistry
-     */
-    private $registry;
-
-    /**
-     * @var InformationGuesserInterface
-     */
-    private $informationGuesser;
-
-    /**
-     * @var UserManagerInterface
-     */
-    private $userManager;
-
-    /**
-     * @var TokenRepositoryInterface
-     */
-    private $repository;
-
-    /**
-     * @param TokenConfigurationRegistry  $registry           The configuration registry
-     * @param InformationGuesserInterface $informationGuesser The information guesser
-     * @param UserManagerInterface        $userManager        The user manager
-     * @param TokenRepositoryInterface    $repository         The token repository
-     */
     public function __construct(
-        TokenConfigurationRegistry $registry,
-        InformationGuesserInterface $informationGuesser,
-        UserManagerInterface $userManager,
-        TokenRepositoryInterface $repository,
+        private readonly TokenConfigurationRegistry $registry,
+        private readonly InformationGuesserInterface $informationGuesser,
+        private readonly UserManagerInterface $userManager,
+        private readonly TokenRepositoryInterface $repository,
     ) {
-        $this->registry = $registry;
-        $this->informationGuesser = $informationGuesser;
-        $this->userManager = $userManager;
-        $this->repository = $repository;
     }
 
-    public function create($user, string $purpose, array $payload = []): Token
+    public function create(mixed $user, string $purpose, array $payload = []): Token
     {
         // get configuration for this token purpose
         $configuration = $this->registry->get($purpose);
@@ -65,7 +35,7 @@ final class TokenFactory implements TokenFactoryInterface
         $userId = $this->userManager->getId($user);
 
         // if configuration for this token tells that it can only exists one Token for this user
-        if ($configuration->isUnique()) {
+        if ($configuration->unique) {
             $token = $this->repository->findExisting($userClass, $userId, $purpose);
 
             // a token already exists for this user and this purpose, return it
@@ -77,17 +47,19 @@ final class TokenFactory implements TokenFactoryInterface
         // enforce token uniqueness
         // generate a value while it exists already
         do {
-            $value = $configuration->getGenerator()->generate();
+            $value = $configuration->generator->generate();
         } while ($this->repository->exists($value, $purpose));
 
-        // extract configuration values
-        $duration = $configuration->getDuration();
-        $keep = $configuration->getKeep();
-        $usages = $configuration->getUsages();
-
-        // extract context information
-        $information = $this->informationGuesser->get();
-
-        return new Token($userClass, $userId, $value, $purpose, $duration, $keep, $usages, $payload, $information);
+        return new Token(
+            userClass: $userClass,
+            userId: $userId,
+            value: $value,
+            purpose: $purpose,
+            validDuration: $configuration->duration,
+            keepDuration: $configuration->keep,
+            allowedUsages: $configuration->usages,
+            payload: $payload,
+            information: $this->informationGuesser->get(),
+        );
     }
 }
