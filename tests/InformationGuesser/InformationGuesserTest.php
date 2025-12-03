@@ -21,7 +21,7 @@ final class InformationGuesserTest extends TestCase
         return new InformationGuesser($requestStack);
     }
 
-    public function testIt_return_empty_array_if_no_master_request(): void
+    public function test_it_return_empty_array_if_no_master_request(): void
     {
         $requestStack = new RequestStack();
 
@@ -30,7 +30,7 @@ final class InformationGuesserTest extends TestCase
         self::assertSame([], $info);
     }
 
-    public function testIt_return_array_with_ip_from_master_request(): void
+    public function test_it_return_array_with_ip_from_master_request(): void
     {
         $requestStack = new RequestStack();
         $requestStack->push(new Request([], [], [], [], [], ['REMOTE_ADDR' => '88.88.88.88']));

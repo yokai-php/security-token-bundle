@@ -41,6 +41,7 @@ final class ArchiveTokenCommandTest extends KernelTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+        \restore_exception_handler();
 
         unset(
             $this->archivist,
@@ -65,7 +66,7 @@ final class ArchiveTokenCommandTest extends KernelTestCase
         return $tester->getDisplay();
     }
 
-    public function testIt_archive_every_token_when_run_without_options_with_confirmation(): void
+    public function test_it_archive_every_token_when_run_without_options_with_confirmation(): void
     {
         $command = $this->command();
 
@@ -79,7 +80,7 @@ final class ArchiveTokenCommandTest extends KernelTestCase
         self::assertStringContainsString('Successfully archived 10 security token(s).', $output);
     }
 
-    public function testIt_archive_partial_tokens_when_run_with_options(): void
+    public function test_it_archive_partial_tokens_when_run_with_options(): void
     {
         $command = $this->command();
 

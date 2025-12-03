@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -85,10 +86,8 @@ final class DependencyInjectionTest extends TestCase
         $bundle->build($this->container);
     }
 
-    /**
-     * @dataProvider configurationProvider
-     */
-    public function testIt_parse_configuration_as_expected(string $resource, array $tokens, array $aliases): void
+    #[DataProvider('configurationProvider')]
+    public function test_it_parse_configuration_as_expected(string $resource, array $tokens, array $aliases): void
     {
         // for test purpose, all services are switched to public
         $this->container->addCompilerPass(new class implements CompilerPassInterface {
@@ -144,7 +143,7 @@ final class DependencyInjectionTest extends TestCase
         $loader->load($resource);
     }
 
-    public function configurationProvider(): Generator
+    public static function configurationProvider(): Generator
     {
         $defaultAliases = [
             'yokai_security_token.information_guesser' => 'yokai_security_token.default_information_guesser',
@@ -154,7 +153,7 @@ final class DependencyInjectionTest extends TestCase
             'yokai_security_token.archivist' => 'yokai_security_token.delete_archivist',
         ];
 
-        foreach ($this->formatProvider() as $format) {
+        foreach (self::formatProvider() as $format) {
             $format = $format[0];
 
             yield $format . ' - none' => [
@@ -205,7 +204,7 @@ final class DependencyInjectionTest extends TestCase
         }
     }
 
-    public function formatProvider(): Generator
+    public static function formatProvider(): Generator
     {
         yield ['yml'];
     }

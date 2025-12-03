@@ -90,7 +90,7 @@ final class TokenManagerTest extends TestCase
         );
     }
 
-    public function testIt_dispatch_not_found_exceptions_on_get_token_from_repository(): void
+    public function test_it_dispatch_not_found_exceptions_on_get_token_from_repository(): void
     {
         $this->expectException(TokenNotFoundException::class);
 
@@ -111,7 +111,7 @@ final class TokenManagerTest extends TestCase
         $this->manager()->get('forgot_password', 'unique-token');
     }
 
-    public function testIt_dispatch_expired_exceptions_on_get_token_from_repository(): void
+    public function test_it_dispatch_expired_exceptions_on_get_token_from_repository(): void
     {
         $this->expectException(TokenExpiredException::class);
 
@@ -132,7 +132,7 @@ final class TokenManagerTest extends TestCase
         $this->manager()->get('forgot_password', 'unique-token');
     }
 
-    public function testIt_dispatch_used_exceptions_on_get_token_from_repository(): void
+    public function test_it_dispatch_used_exceptions_on_get_token_from_repository(): void
     {
         $this->expectException(TokenConsumedException::class);
 
@@ -153,7 +153,7 @@ final class TokenManagerTest extends TestCase
         $this->manager()->get('forgot_password', 'unique-token');
     }
 
-    public function testIt_get_token_from_repository(): void
+    public function test_it_get_token_from_repository(): void
     {
         $this->repository->expects(self::once())
             ->method('get')
@@ -173,7 +173,7 @@ final class TokenManagerTest extends TestCase
         self::assertSame($expected, $token);
     }
 
-    public function testIt_create_unique_token(): void
+    public function test_it_create_unique_token(): void
     {
         $expectedToken = new Token(
             'string',
@@ -215,7 +215,7 @@ final class TokenManagerTest extends TestCase
         self::assertSame($expectedToken, $token);
     }
 
-    public function testIt_consume_token(): void
+    public function test_it_consume_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month');
 
@@ -252,7 +252,7 @@ final class TokenManagerTest extends TestCase
         self::assertInstanceOf(\DateTime::class, $usage->getCreatedAt());
     }
 
-    public function testIt_extract_user_from_token(): void
+    public function test_it_extract_user_from_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 1, []);
 

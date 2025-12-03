@@ -50,7 +50,7 @@ final class DoctrineORMTokenRepositoryTest extends TestCase
         return new DoctrineORMTokenRepository($this->manager, $this->repository);
     }
 
-    public function testIt_throw_exception_if_token_not_found(): void
+    public function test_it_throw_exception_if_token_not_found(): void
     {
         $this->expectException(TokenNotFoundException::class);
 
@@ -62,7 +62,7 @@ final class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->get('unique', 'init_password');
     }
 
-    public function testIt_throw_exception_if_token_expired(): void
+    public function test_it_throw_exception_if_token_expired(): void
     {
         $this->expectException(TokenExpiredException::class);
 
@@ -76,7 +76,7 @@ final class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->get('unique', 'init_password');
     }
 
-    public function testIt_throw_exception_if_token_used_single_time(): void
+    public function test_it_throw_exception_if_token_used_single_time(): void
     {
         $this->expectException(TokenConsumedException::class);
 
@@ -91,7 +91,7 @@ final class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->get('unique', 'init_password');
     }
 
-    public function testIt_throw_exception_if_token_used_multiple_times(): void
+    public function test_it_throw_exception_if_token_used_multiple_times(): void
     {
         $this->expectException(TokenConsumedException::class);
 
@@ -107,7 +107,7 @@ final class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->get('unique', 'init_password');
     }
 
-    public function testIt_get_valid_token(): void
+    public function test_it_get_valid_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
@@ -121,7 +121,7 @@ final class DoctrineORMTokenRepositoryTest extends TestCase
         self::assertSame($token, $got);
     }
 
-    public function testIt_create_token(): void
+    public function test_it_create_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
@@ -140,7 +140,7 @@ final class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->create($token);
     }
 
-    public function testIt_update_token(): void
+    public function test_it_update_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 

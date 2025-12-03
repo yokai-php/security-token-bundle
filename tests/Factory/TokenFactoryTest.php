@@ -64,21 +64,33 @@ final class TokenFactoryTest extends TestCase
         );
     }
 
-    public function testIt_create_token_according_to_configuration(): void
+    public function test_it_create_token_according_to_configuration(): void
     {
         $generator1 = $this->createMock(TokenGeneratorInterface::class);
-        $generator1->method('generate')
-            ->will($this->onConsecutiveCalls('existtoken-1', 'uniquetoken-1'));
+        $generator1->expects($matcher = $this->atMost(2))
+            ->method('generate')
+            ->willReturnCallback(fn() => match ($matcher->numberOfInvocations()) {
+                1 => 'existtoken-1',
+                2 => 'uniquetoken-1',
+            });
         $user1 = 'user-1';
 
         $generator2 = $this->createMock(TokenGeneratorInterface::class);
-        $generator2->method('generate')
-            ->will($this->onConsecutiveCalls('existtoken-2', 'uniquetoken-2'));
+        $generator2->expects($matcher = $this->atMost(2))
+            ->method('generate')
+            ->willReturnCallback(fn() => match ($matcher->numberOfInvocations()) {
+                1 => 'existtoken-2',
+                2 => 'uniquetoken-2',
+            });
         $user2 = 'user-2';
 
         $generator3 = $this->createMock(TokenGeneratorInterface::class);
-        $generator3->method('generate')
-            ->will($this->onConsecutiveCalls('existtoken-3', 'uniquetoken-3'));
+        $generator3->expects($matcher = $this->atMost(2))
+            ->method('generate')
+            ->willReturnCallback(fn() => match ($matcher->numberOfInvocations()) {
+                1 => 'existtoken-3',
+                2 => 'uniquetoken-3',
+            });
         $user3 = 'user-3';
         $token3FromRepository = new Token(
             'string',
@@ -111,7 +123,7 @@ final class TokenFactoryTest extends TestCase
 
         $this->userManager->expects(self::exactly(3))
             ->method('getClass')
-            ->with(self::isType('string'))
+            ->with(\method_exists(self::class, 'isString') ? self::isString() : self::isType('string'))
             ->willReturnMap([
                 [$user1, 'string'],
                 [$user2, 'string'],
@@ -120,7 +132,7 @@ final class TokenFactoryTest extends TestCase
 
         $this->userManager->expects(self::exactly(3))
             ->method('getId')
-            ->with(self::isType('string'))
+            ->with(\method_exists(self::class, 'isString') ? self::isString() : self::isType('string'))
             ->willReturnMap([
                 [$user1, 'u1'],
                 [$user2, 'u2'],

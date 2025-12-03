@@ -14,7 +14,7 @@ use Yokai\SecurityTokenBundle\Entity\Token;
  */
 final class TokenTest extends TestCase
 {
-    public function testIt_allow_limited_usage_token(): void
+    public function test_it_allow_limited_usage_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 2);
         self::assertFalse($token->isConsumed());
@@ -29,7 +29,7 @@ final class TokenTest extends TestCase
         self::assertSame([2], $token->getLastUsage()->getInformation());
     }
 
-    public function testIt_allow_unlimited_usage_token(): void
+    public function test_it_allow_unlimited_usage_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 0);
         self::assertFalse($token->isConsumed());

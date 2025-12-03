@@ -72,7 +72,7 @@ final class DoctrineUserManagerTest extends TestCase
         };
     }
 
-    public function testIt_supports_doctrine_entities(): void
+    public function test_it_supports_doctrine_entities(): void
     {
         $user = $this->user('jdoe');
 
@@ -85,7 +85,7 @@ final class DoctrineUserManagerTest extends TestCase
         self::assertTrue($manager->supportsUser($user));
     }
 
-    public function testIt_do_not_supports_objects_out_of_doctrine(): void
+    public function test_it_do_not_supports_objects_out_of_doctrine(): void
     {
         $user = $this->user('jdoe');
 
@@ -98,7 +98,7 @@ final class DoctrineUserManagerTest extends TestCase
         self::assertFalse($manager->supportsUser($user));
     }
 
-    public function testIt_get_user(): void
+    public function test_it_get_user(): void
     {
         $expected = $this->user('jdoe');
 
@@ -117,7 +117,7 @@ final class DoctrineUserManagerTest extends TestCase
         self::assertSame($expected, $user);
     }
 
-    public function testIt_get_user_class(): void
+    public function test_it_get_user_class(): void
     {
         $expected = $this->user('jdoe');
 
@@ -126,7 +126,7 @@ final class DoctrineUserManagerTest extends TestCase
         self::assertSame(\get_class($expected), $class);
     }
 
-    public function testIt_get_user_id(): void
+    public function test_it_get_user_id(): void
     {
         $expected = $this->user('jdoe');
 
