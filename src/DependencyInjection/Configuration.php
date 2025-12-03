@@ -64,7 +64,7 @@ final class Configuration implements ConfigurationInterface
             ->prototype('array')
                 ->children()
                     ->scalarNode('generator')
-                        ->defaultValue('yokai_security_token.open_ssl_token_generator')
+                        ->defaultValue('yokai_security_token.bin2hex_token_generator')
                     ->end()
                     ->scalarNode('duration')
                         ->defaultValue('+2 days')

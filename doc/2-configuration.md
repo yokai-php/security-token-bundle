@@ -20,7 +20,7 @@ Each token can have following options :
 
 Default values fallback to :
 
-- `generator` : [`yokai_security_token.open_ssl_token_generator`](../src/Generator/OpenSslTokenGenerator.php)
+- `generator` : [`yokai_security_token.bin2hex_token_generator`](../src/Generator/Bin2HexTokenGenerator.php)
 - `duration` : `+2 days`
 - `usages` : `1`
 - `keep` : `+1 month`
