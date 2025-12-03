@@ -14,65 +14,41 @@ use LogicException;
  */
 class Token
 {
-    /**
-     * @var int|null
-     */
-    private $id;
+    private int|null $id;
 
     /**
      * @var class-string
      */
-    private $userClass;
+    private string $userClass;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
-    /**
-     * @var string
-     */
-    private $purpose;
+    private string $purpose;
 
     /**
      * @var array<string, mixed>
      */
-    private $payload = [];
+    private array $payload;
 
-    /**
-     * @var DateTime
-     */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
      * @var array<string, mixed>
      */
-    private $createdInformation = [];
+    private array $createdInformation;
 
-    /**
-     * @var integer
-     */
-    private $allowedUsages;
+    private int $allowedUsages;
 
-    /**
-     * @var DateTime
-     */
-    private $expiresAt;
+    private DateTime $expiresAt;
 
-    /**
-     * @var DateTime
-     */
-    private $keepUntil;
+    private DateTime $keepUntil;
 
     /**
      * @var Collection<int, TokenUsage>
      */
-    private $usages;
+    private Collection $usages;
 
     /**
      * @param class-string         $userClass
@@ -188,7 +164,7 @@ class Token
     }
 
     /**
-     * @return array<TokenUsage>
+     * @return array<int, TokenUsage>
      */
     public function getUsages(): array
     {

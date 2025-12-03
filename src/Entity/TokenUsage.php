@@ -8,25 +8,16 @@ use DateTime;
 
 class TokenUsage
 {
-    /**
-     * @var int|null
-     */
-    private $id;
+    private int|null $id;
 
-    /**
-     * @var Token
-     */
-    private $token;
+    private Token $token;
 
-    /**
-     * @var DateTime
-     */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
      * @var array<string, mixed>
      */
-    private $information = [];
+    private array $information = [];
 
     /**
      * @param array<string, mixed> $information

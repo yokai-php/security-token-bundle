@@ -14,24 +14,11 @@ use Yokai\SecurityTokenBundle\Entity\Token;
  */
 final class TokenTotallyConsumedEvent extends Event
 {
-    /**
-     * @var Token
-     */
-    private $token;
-
-    /**
-     * @param Token $token The totally consumed token
-     */
-    public function __construct(Token $token)
-    {
-        $this->token = $token;
-    }
-
-    /**
-     * The totally consumed token
-     */
-    public function getToken(): Token
-    {
-        return $this->token;
+    public function __construct(
+        /**
+         * The consumed token
+         */
+        public readonly Token $token,
+    ) {
     }
 }

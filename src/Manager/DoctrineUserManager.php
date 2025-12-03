@@ -15,17 +15,12 @@ use Doctrine\Persistence\ObjectManager;
  */
 final class DoctrineUserManager implements UserManagerInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    /**
-     * @param ManagerRegistry $doctrine The doctrine registry
-     */
-    public function __construct(ManagerRegistry $doctrine)
-    {
-        $this->doctrine = $doctrine;
+    public function __construct(
+        /**
+         * @var ManagerRegistry $doctrine The doctrine registry
+         */
+        private readonly ManagerRegistry $doctrine,
+    ) {
     }
 
     public function supportsClass(string $class): bool
@@ -39,7 +34,7 @@ final class DoctrineUserManager implements UserManagerInterface
         return true;
     }
 
-    public function supportsUser($user): bool
+    public function supportsUser(mixed $user): bool
     {
         return $this->supportsClass(
             $this->getClass($user),
@@ -51,14 +46,14 @@ final class DoctrineUserManager implements UserManagerInterface
         return $this->getManagerFor($class)->find($class, $id);
     }
 
-    public function getClass($user): string
+    public function getClass(mixed $user): string
     {
         /** @var object $user */
 
         return ClassUtils::getClass($user);
     }
 
-    public function getId($user): string
+    public function getId(mixed $user): string
     {
         /** @var object $user */
         /** @var class-string $class */

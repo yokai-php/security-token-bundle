@@ -15,17 +15,12 @@ use Yokai\SecurityTokenBundle\Entity\Token;
  */
 final class DeleteArchivist implements ArchivistInterface
 {
-    /**
-     * @var EntityRepository<Token>
-     */
-    private $tokenRepository;
-
-    /**
-     * @param EntityRepository<Token> $tokenRepository The token entity repository
-     */
-    public function __construct(EntityRepository $tokenRepository)
-    {
-        $this->tokenRepository = $tokenRepository;
+    public function __construct(
+        /**
+         * @var EntityRepository<Token> The token entity repository
+         */
+        private readonly EntityRepository $tokenRepository,
+    ) {
     }
 
     public function archive(string|null $purpose = null): int

@@ -27,7 +27,7 @@ interface UserManagerInterface
      *
      * @return bool Whether the provided user is supported
      */
-    public function supportsUser($user): bool;
+    public function supportsUser(mixed $user): bool;
 
     /**
      * Get user of certain class with certain id.
@@ -46,7 +46,7 @@ interface UserManagerInterface
      *
      * @return class-string The class of the provided user
      */
-    public function getClass($user): string;
+    public function getClass(mixed $user): string;
 
     /**
      * Get the id of a user.
@@ -55,5 +55,5 @@ interface UserManagerInterface
      *
      * @return string The id of the provided user
      */
-    public function getId($user): string;
+    public function getId(mixed $user): string;
 }

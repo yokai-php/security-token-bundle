@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Repository;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
@@ -18,24 +18,17 @@ use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
  */
 final class DoctrineORMTokenRepository implements TokenRepositoryInterface
 {
-    /**
-     * @var EntityManager
-     */
-    private $manager;
-
-    /**
-     * @var EntityRepository<Token>
-     */
-    private $repository;
-
-    /**
-     * @param EntityManager           $manager    The token entity manager
-     * @param EntityRepository<Token> $repository The token entity repository
-     */
-    public function __construct(EntityManager $manager, EntityRepository $repository)
-    {
-        $this->manager = $manager;
-        $this->repository = $repository;
+    public function __construct(
+        /**
+         * The token entity manager
+         */
+        private readonly EntityManagerInterface $manager,
+        /**
+         * The token entity repository
+         * @var EntityRepository<Token>
+         */
+        private readonly EntityRepository $repository,
+    ) {
     }
 
     public function get(string $value, string $purpose): Token

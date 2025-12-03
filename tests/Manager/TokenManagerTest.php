@@ -101,8 +101,8 @@ final class TokenManagerTest extends TestCase
 
         $notFoundEvent = self::callback(function ($event) {
             return $event instanceof TokenNotFoundEvent
-                && $event->getPurpose() === 'forgot_password'
-                && $event->getValue() === 'unique-token';
+                && $event->purpose === 'forgot_password'
+                && $event->value === 'unique-token';
         });
         $this->eventDispatcher->expects(self::once())
             ->method('dispatch')
@@ -122,8 +122,8 @@ final class TokenManagerTest extends TestCase
 
         $expiredEvent = self::callback(function ($event) {
             return $event instanceof TokenExpiredEvent
-                && $event->getPurpose() === 'forgot_password'
-                && $event->getValue() === 'unique-token';
+                && $event->purpose === 'forgot_password'
+                && $event->value === 'unique-token';
         });
         $this->eventDispatcher->expects(self::once())
             ->method('dispatch')
@@ -143,8 +143,8 @@ final class TokenManagerTest extends TestCase
 
         $alreadyConsumedEvent = self::callback(function ($event) {
             return $event instanceof TokenAlreadyConsumedEvent
-                && $event->getPurpose() === 'forgot_password'
-                && $event->getValue() === 'unique-token';
+                && $event->purpose === 'forgot_password'
+                && $event->value === 'unique-token';
         });
         $this->eventDispatcher->expects(self::once())
             ->method('dispatch')
@@ -162,7 +162,7 @@ final class TokenManagerTest extends TestCase
 
         $retrievedEvent = self::callback(function ($event) use ($expected) {
             return $event instanceof TokenRetrievedEvent
-                && $event->getToken() === $expected;
+                && $event->token === $expected;
         });
         $this->eventDispatcher->expects(self::once())
             ->method('dispatch')
@@ -198,11 +198,11 @@ final class TokenManagerTest extends TestCase
 
         $events = self::callback(function ($event) use ($expectedToken) {
             $isCreateTokenEvent = $event instanceof CreateTokenEvent
-                && $event->getPurpose() === 'forgot_password'
-                && $event->getUser() === 'john-doe'
+                && $event->purpose === 'forgot_password'
+                && $event->user === 'john-doe'
                 && $event->getPayload() === ['payload', 'information'];
             $isCreatedTokenEvent = $event instanceof TokenCreatedEvent
-                && $event->getToken() === $expectedToken;
+                && $event->token === $expectedToken;
 
             return $isCreateTokenEvent || $isCreatedTokenEvent;
         });
@@ -229,12 +229,12 @@ final class TokenManagerTest extends TestCase
 
         $events = self::callback(function ($event) use ($token) {
             $isConsumeEvent = $event instanceof ConsumeTokenEvent
-                && $event->getToken() === $token
-                && $event->getInformation() === ['some', 'precious', 'information'];
+                && $event->token === $token
+                && $event->information === ['some', 'precious', 'information'];
             $isConsumedEvent = $event instanceof TokenConsumedEvent
-                && $event->getToken() === $token;
+                && $event->token === $token;
             $isTotallyConsumedEvent = $event instanceof TokenTotallyConsumedEvent
-                && $event->getToken() === $token;
+                && $event->token === $token;
 
             return $isConsumeEvent || $isConsumedEvent || $isTotallyConsumedEvent;
         });

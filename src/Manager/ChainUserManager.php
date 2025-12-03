@@ -11,17 +11,12 @@ namespace Yokai\SecurityTokenBundle\Manager;
  */
 final class ChainUserManager implements UserManagerInterface
 {
-    /**
-     * @var iterable<UserManagerInterface>
-     */
-    private $managers;
-
-    /**
-     * @param iterable<UserManagerInterface> $managers A list of user managers
-     */
-    public function __construct(iterable $managers)
-    {
-        $this->managers = $managers;
+    public function __construct(
+        /**
+         * @var iterable<UserManagerInterface> $managers A list of user managers
+         */
+        private readonly iterable $managers,
+    ) {
     }
 
     public function supportsClass(string $class): bool
@@ -35,7 +30,7 @@ final class ChainUserManager implements UserManagerInterface
         return true;
     }
 
-    public function supportsUser($user): bool
+    public function supportsUser(mixed $user): bool
     {
         try {
             $this->getManagerForUser($user);
@@ -51,12 +46,12 @@ final class ChainUserManager implements UserManagerInterface
         return $this->getManagerForClass($class)->get($class, $id);
     }
 
-    public function getClass($user): string
+    public function getClass(mixed $user): string
     {
         return $this->getManagerForUser($user)->getClass($user);
     }
 
-    public function getId($user): string
+    public function getId(mixed $user): string
     {
         return $this->getManagerForUser($user)->getId($user);
     }
@@ -96,7 +91,7 @@ final class ChainUserManager implements UserManagerInterface
      *
      * @throws \InvalidArgumentException
      */
-    private function getManagerForUser($user): UserManagerInterface
+    private function getManagerForUser(mixed $user): UserManagerInterface
     {
         $tries = [];
 

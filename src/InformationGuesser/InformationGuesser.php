@@ -13,23 +13,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 final class InformationGuesser implements InformationGuesserInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @param RequestStack $requestStack The request stack
-     */
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private RequestStack $requestStack,
+    ) {
     }
 
     public function get(): array
     {
         $request = $this->requestStack->getMainRequest();
-        if (!$request) {
+        if ($request === null) {
             return [];
         }
 

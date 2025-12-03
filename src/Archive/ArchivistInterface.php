@@ -16,7 +16,7 @@ interface ArchivistInterface
      *
      * @param string|null $purpose The token purpose
      *
-     * @return integer
+     * @return int Count archived tokens
      */
     public function archive(string|null $purpose = null): int;
 }

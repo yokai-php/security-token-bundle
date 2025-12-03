@@ -110,10 +110,10 @@ final class DependencyInjectionTest extends TestCase
             $token = $this->container->get('yokai_security_token.configuration_registry')->get($tokenId);
 
             self::assertInstanceOf(TokenConfiguration::class, $token);
-            self::assertInstanceOf($tokenConfig['generator'], $token->getGenerator());
-            self::assertSame($tokenId, $token->getPurpose());
-            self::assertSame($tokenConfig['duration'], $token->getDuration());
-            self::assertSame($tokenConfig['usages'], $token->getUsages());
+            self::assertInstanceOf($tokenConfig['generator'], $token->generator);
+            self::assertSame($tokenId, $token->purpose);
+            self::assertSame($tokenConfig['duration'], $token->duration);
+            self::assertSame($tokenConfig['usages'], $token->usages);
         }
 
         foreach ($aliases as $alias => $expectedId) {

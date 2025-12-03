@@ -19,50 +19,13 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  */
 final class TokenManager implements TokenManagerInterface
 {
-    /**
-     * @var TokenFactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var TokenRepositoryInterface
-     */
-    private $repository;
-
-    /**
-     * @var InformationGuesserInterface
-     */
-    private $informationGuesser;
-
-    /**
-     * @var UserManagerInterface
-     */
-    private $userManager;
-
-    /**
-     * @var EventDispatcher
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param TokenFactoryInterface       $factory            The token factory
-     * @param TokenRepositoryInterface    $repository         The token repository
-     * @param InformationGuesserInterface $informationGuesser The information guesser
-     * @param UserManagerInterface        $userManager        The user manager
-     * @param EventDispatcher             $eventDispatcher    The event dispatcher
-     */
     public function __construct(
-        TokenFactoryInterface $factory,
-        TokenRepositoryInterface $repository,
-        InformationGuesserInterface $informationGuesser,
-        UserManagerInterface $userManager,
-        EventDispatcher $eventDispatcher,
+        private readonly TokenFactoryInterface $factory,
+        private readonly TokenRepositoryInterface $repository,
+        private readonly InformationGuesserInterface $informationGuesser,
+        private readonly UserManagerInterface $userManager,
+        private readonly EventDispatcher $eventDispatcher,
     ) {
-        $this->factory = $factory;
-        $this->repository = $repository;
-        $this->informationGuesser = $informationGuesser;
-        $this->userManager = $userManager;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function get(string $purpose, string $value): Token
@@ -88,7 +51,7 @@ final class TokenManager implements TokenManagerInterface
         return $token;
     }
 
-    public function create(string $purpose, $user, array $payload = []): Token
+    public function create(string $purpose, mixed $user, array $payload = []): Token
     {
         $event = $this->eventDispatcher->createToken($purpose, $user, $payload);
 
@@ -105,7 +68,7 @@ final class TokenManager implements TokenManagerInterface
     {
         $event = $this->eventDispatcher->consumeToken($token, $at, $this->informationGuesser->get());
 
-        $token->consume($event->getInformation(), $at);
+        $token->consume($event->information, $at);
 
         $this->repository->update($token);
 
@@ -115,7 +78,7 @@ final class TokenManager implements TokenManagerInterface
         }
     }
 
-    public function getUser(Token $token)
+    public function getUser(Token $token): mixed
     {
         return $this->userManager->get($token->getUserClass(), $token->getUserId());
     }
