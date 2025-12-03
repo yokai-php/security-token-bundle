@@ -108,10 +108,18 @@ class ChainUserManager implements UserManagerInterface
             $tries[] = get_class($manager);
         }
 
-        if (is_object($user) && !method_exists($user, '__toString')) {
-            $userAsString = sprintf('%s::%s', get_class($user), spl_object_hash($user));
+        if (is_object($user)) {
+            if (!method_exists($user, '__toString')) {
+                $userAsString = sprintf('%s::%s', get_class($user), spl_object_hash($user));
+            } else {
+                $userAsString = (string)$user;
+            }
         } else {
-            $userAsString = (string)$user;
+            if (is_scalar($user)) {
+                $userAsString = (string)$user;
+            } else {
+                $userAsString = get_debug_type($user);
+            }
         }
 
         throw new \InvalidArgumentException(

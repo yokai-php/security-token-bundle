@@ -44,7 +44,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
             [
                 'value' => $value,
                 'purpose' => $purpose,
-            ]
+            ],
         );
 
         if (!$token instanceof Token) {
@@ -67,7 +67,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
                 'userClass' => $userClass,
                 'userId' => $userId,
                 'purpose' => $purpose,
-            ]
+            ],
         );
         if (!$token instanceof Token) {
             return null;
@@ -81,14 +81,12 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
 
     public function create(Token $token): void
     {
-        $this->manager->persist($token);
-        $this->manager->flush($token);
+        $this->save($token);
     }
 
     public function update(Token $token): void
     {
-        $this->manager->persist($token);
-        $this->manager->flush($token);
+        $this->save($token);
     }
 
     public function exists(string $value, string $purpose): bool
@@ -106,5 +104,11 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
         $result = $builder->getQuery()->getSingleScalarResult();
 
         return intval($result) > 0;
+    }
+
+    private function save(Token $token): void
+    {
+        $this->manager->persist($token);
+        $this->manager->flush();
     }
 }

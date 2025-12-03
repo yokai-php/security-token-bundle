@@ -31,7 +31,7 @@ class TokenUsage
     /**
      * @param array<string, mixed> $information
      */
-    public function __construct(Token $token, array $information, DateTime $createdAt = null)
+    public function __construct(Token $token, array $information, DateTime|null $createdAt = null)
     {
         $this->token = $token;
         $this->information = $information;

@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Tests\Manager;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Event\ConsumeTokenEvent;
@@ -36,40 +34,38 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  */
 class TokenManagerTest extends TestCase
 {
-    use ProphecyTrait;
-
     /**
-     * @var TokenFactoryInterface|ObjectProphecy
+     * @var MockObject<TokenFactoryInterface
      */
     private $factory;
 
     /**
-     * @var TokenRepositoryInterface|ObjectProphecy
+     * @var MockObject<TokenRepositoryInterface>
      */
     private $repository;
 
     /**
-     * @var InformationGuesserInterface|ObjectProphecy
+     * @var MockObject<InformationGuesserInterface>
      */
     private $informationGuesser;
 
     /**
-     * @var UserManagerInterface|ObjectProphecy
+     * @var MockObject<UserManagerInterface>
      */
     private $userManager;
 
     /**
-     * @var EventDispatcherInterface|ObjectProphecy
+     * @var MockObject<EventDispatcherInterface>
      */
     private $eventDispatcher;
 
     protected function setUp(): void
     {
-        $this->factory = $this->prophesize(TokenFactoryInterface::class);
-        $this->repository = $this->prophesize(TokenRepositoryInterface::class);
-        $this->informationGuesser = $this->prophesize(InformationGuesserInterface::class);
-        $this->userManager = $this->prophesize(UserManagerInterface::class);
-        $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $this->factory = $this->createMock(TokenFactoryInterface::class);
+        $this->repository = $this->createMock(TokenRepositoryInterface::class);
+        $this->informationGuesser = $this->createMock(InformationGuesserInterface::class);
+        $this->userManager = $this->createMock(UserManagerInterface::class);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
     }
 
     protected function tearDown(): void
@@ -86,11 +82,11 @@ class TokenManagerTest extends TestCase
     protected function manager(): TokenManager
     {
         return new TokenManager(
-            $this->factory->reveal(),
-            $this->repository->reveal(),
-            $this->informationGuesser->reveal(),
-            $this->userManager->reveal(),
-            new EventDispatcher($this->eventDispatcher->reveal())
+            $this->factory,
+            $this->repository,
+            $this->informationGuesser,
+            $this->userManager,
+            new EventDispatcher($this->eventDispatcher)
         );
     }
 
@@ -101,17 +97,19 @@ class TokenManagerTest extends TestCase
     {
         $this->expectException(TokenNotFoundException::class);
 
-        $this->repository->get('unique-token', 'forgot_password')
-            ->shouldBeCalledTimes(1)
-            ->willThrow(TokenNotFoundException::create('unique-token', 'forgot_password'));
+        $this->repository->expects(self::once())
+            ->method('get')
+            ->with('unique-token', 'forgot_password')
+            ->willThrowException(TokenNotFoundException::create('unique-token', 'forgot_password'));
 
-        $notFoundEvent = Argument::allOf(
-            Argument::type(TokenNotFoundEvent::class),
-            Argument::which('getPurpose', 'forgot_password'),
-            Argument::which('getValue', 'unique-token')
-        );
-        $this->eventDispatcher->dispatch($notFoundEvent)
-            ->shouldBeCalledTimes(1);
+        $notFoundEvent = self::callback(function ($event) {
+            return $event instanceof TokenNotFoundEvent
+                && $event->getPurpose() === 'forgot_password'
+                && $event->getValue() === 'unique-token';
+        });
+        $this->eventDispatcher->expects(self::once())
+            ->method('dispatch')
+            ->with($notFoundEvent);
 
         $this->manager()->get('forgot_password', 'unique-token');
     }
@@ -123,17 +121,19 @@ class TokenManagerTest extends TestCase
     {
         $this->expectException(TokenExpiredException::class);
 
-        $this->repository->get('unique-token', 'forgot_password')
-            ->shouldBeCalledTimes(1)
-            ->willThrow(TokenExpiredException::create('unique-token', 'forgot_password', new \DateTime()));
+        $this->repository->expects(self::once())
+            ->method('get')
+            ->with('unique-token', 'forgot_password')
+            ->willThrowException(TokenExpiredException::create('unique-token', 'forgot_password', new \DateTime()));
 
-        $expiredEvent = Argument::allOf(
-            Argument::type(TokenExpiredEvent::class),
-            Argument::which('getPurpose', 'forgot_password'),
-            Argument::which('getValue', 'unique-token')
-        );
-        $this->eventDispatcher->dispatch($expiredEvent)
-            ->shouldBeCalledTimes(1);
+        $expiredEvent = self::callback(function ($event) {
+            return $event instanceof TokenExpiredEvent
+                && $event->getPurpose() === 'forgot_password'
+                && $event->getValue() === 'unique-token';
+        });
+        $this->eventDispatcher->expects(self::once())
+            ->method('dispatch')
+            ->with($expiredEvent);
 
         $this->manager()->get('forgot_password', 'unique-token');
     }
@@ -145,17 +145,19 @@ class TokenManagerTest extends TestCase
     {
         $this->expectException(TokenConsumedException::class);
 
-        $this->repository->get('unique-token', 'forgot_password')
-            ->shouldBeCalledTimes(1)
-            ->willThrow(TokenConsumedException::create('unique-token', 'forgot_password', 3));
+        $this->repository->expects(self::once())
+            ->method('get')
+            ->with('unique-token', 'forgot_password')
+            ->willThrowException(TokenConsumedException::create('unique-token', 'forgot_password', 3));
 
-        $alreadyConsumedEvent = Argument::allOf(
-            Argument::type(TokenAlreadyConsumedEvent::class),
-            Argument::which('getPurpose', 'forgot_password'),
-            Argument::which('getValue', 'unique-token')
-        );
-        $this->eventDispatcher->dispatch($alreadyConsumedEvent)
-            ->shouldBeCalledTimes(1);
+        $alreadyConsumedEvent = self::callback(function ($event) {
+            return $event instanceof TokenAlreadyConsumedEvent
+                && $event->getPurpose() === 'forgot_password'
+                && $event->getValue() === 'unique-token';
+        });
+        $this->eventDispatcher->expects(self::once())
+            ->method('dispatch')
+            ->with($alreadyConsumedEvent);
 
         $this->manager()->get('forgot_password', 'unique-token');
     }
@@ -165,16 +167,18 @@ class TokenManagerTest extends TestCase
      */
     public function it_get_token_from_repository(): void
     {
-        $this->repository->get('unique-token', 'forgot_password')
-            ->shouldBeCalledTimes(1)
-            ->willReturn($expected = $this->prophesize(Token::class)->reveal());
+        $this->repository->expects(self::once())
+            ->method('get')
+            ->with('unique-token', 'forgot_password')
+            ->willReturn($expected = $this->createMock(Token::class));
 
-        $retrievedEvent = Argument::allOf(
-            Argument::type(TokenRetrievedEvent::class),
-            Argument::which('getToken', $expected)
-        );
-        $this->eventDispatcher->dispatch($retrievedEvent)
-            ->shouldBeCalledTimes(1);
+        $retrievedEvent = self::callback(function ($event) use ($expected) {
+            return $event instanceof TokenRetrievedEvent
+                && $event->getToken() === $expected;
+        });
+        $this->eventDispatcher->expects(self::once())
+            ->method('dispatch')
+            ->with($retrievedEvent);
 
         $token = $this->manager()->get('forgot_password', 'unique-token');
 
@@ -198,28 +202,28 @@ class TokenManagerTest extends TestCase
             ['created', 'information']
         );
 
-        $this->factory->create('john-doe', 'forgot_password', ['payload', 'information'])
-            ->shouldBeCalledTimes(1)
+        $this->factory->expects(self::once())
+            ->method('create')
+            ->with('john-doe', 'forgot_password', ['payload', 'information'])
             ->willReturn($expectedToken);
 
-        $this->repository->create($expectedToken)
-            ->shouldBeCalledTimes(1);
+        $this->repository->expects(self::once())
+            ->method('create')
+            ->with($expectedToken);
 
-        $createEvent = Argument::allOf(
-            Argument::type(CreateTokenEvent::class),
-            Argument::which('getPurpose', 'forgot_password'),
-            Argument::which('getUser', 'john-doe'),
-            Argument::which('getPayload', ['payload', 'information'])
-        );
-        $this->eventDispatcher->dispatch($createEvent)
-            ->shouldBeCalledTimes(1);
+        $events = self::callback(function ($event) use ($expectedToken) {
+            $isCreateTokenEvent = $event instanceof CreateTokenEvent
+                && $event->getPurpose() === 'forgot_password'
+                && $event->getUser() === 'john-doe'
+                && $event->getPayload() === ['payload', 'information'];
+            $isCreatedTokenEvent = $event instanceof TokenCreatedEvent
+                && $event->getToken() === $expectedToken;
 
-        $createdEvent = Argument::allOf(
-            Argument::type(TokenCreatedEvent::class),
-            Argument::which('getToken', $expectedToken)
-        );
-        $this->eventDispatcher->dispatch($createdEvent)
-            ->shouldBeCalledTimes(1);
+            return $isCreateTokenEvent || $isCreatedTokenEvent;
+        });
+        $this->eventDispatcher->expects(self::exactly(2))
+            ->method('dispatch')
+            ->with($events);
 
         $token = $this->manager()->create('forgot_password', 'john-doe', ['payload', 'information']);
 
@@ -233,34 +237,28 @@ class TokenManagerTest extends TestCase
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month');
 
-        $this->informationGuesser->get()
-            ->shouldBeCalledTimes(1)
+        $this->informationGuesser->expects(self::once())
+            ->method('get')
             ->willReturn(['some', 'precious', 'information']);
 
-        $this->repository->update($token)
-            ->shouldBeCalledTimes(1);
+        $this->repository->expects(self::once())
+            ->method('update')
+            ->with($token);
 
-        $consumeEvent = Argument::allOf(
-            Argument::type(ConsumeTokenEvent::class),
-            Argument::which('getToken', $token),
-            Argument::which('getInformation', ['some', 'precious', 'information'])
-        );
-        $this->eventDispatcher->dispatch($consumeEvent)
-            ->shouldBeCalledTimes(1);
+        $events = self::callback(function ($event) use ($token) {
+            $isConsumeEvent = $event instanceof ConsumeTokenEvent
+                && $event->getToken() === $token
+                && $event->getInformation() === ['some', 'precious', 'information'];
+            $isConsumedEvent = $event instanceof TokenConsumedEvent
+                && $event->getToken() === $token;
+            $isTotallyConsumedEvent = $event instanceof TokenTotallyConsumedEvent
+                && $event->getToken() === $token;
 
-        $consumedEvent = Argument::allOf(
-            Argument::type(TokenConsumedEvent::class),
-            Argument::which('getToken', $token)
-        );
-        $this->eventDispatcher->dispatch($consumedEvent)
-            ->shouldBeCalledTimes(1);
-
-        $totallyConsumedEvent = Argument::allOf(
-            Argument::type(TokenTotallyConsumedEvent::class),
-            Argument::which('getToken', $token)
-        );
-        $this->eventDispatcher->dispatch($totallyConsumedEvent)
-            ->shouldBeCalledTimes(1);
+            return $isConsumeEvent || $isConsumedEvent || $isTotallyConsumedEvent;
+        });
+        $this->eventDispatcher->expects(self::exactly(3))
+            ->method('dispatch')
+            ->with($events);
 
         $this->manager()->consume($token);
 
@@ -279,8 +277,9 @@ class TokenManagerTest extends TestCase
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 1, []);
 
-        $this->userManager->get('string', 'jdoe')
-            ->shouldBeCalledTimes(1)
+        $this->userManager->expects(self::once())
+            ->method('get')
+            ->with('string', 'jdoe')
             ->willReturn('john doe');
 
         $user = $this->manager()->getUser($token);

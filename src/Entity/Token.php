@@ -70,7 +70,7 @@ class Token
     private $keepUntil;
 
     /**
-     * @var Collection<TokenUsage>
+     * @var Collection<int, TokenUsage>
      */
     private $usages;
 
@@ -192,15 +192,15 @@ class Token
         return $this->usages->toArray();
     }
 
-    public function getLastUsage(): ?TokenUsage
+    public function getLastUsage(): TokenUsage|null
     {
-        return $this->usages->last();
+        return $this->usages->last() ?: null;
     }
 
     /**
      * @throws LogicException
      */
-    public function consume(array $information, DateTime $date = null): void
+    public function consume(array $information, DateTime|null $date = null): void
     {
         if ($this->isConsumed()) {
             throw new LogicException(

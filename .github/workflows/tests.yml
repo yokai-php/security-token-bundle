@@ -14,13 +14,15 @@ jobs:
       matrix:
         include:
           - php-version: '8.1'
-            symfony-version: '5.4.*'
+            symfony-version: '6.4.*'
+          - php-version: '8.4'
+            symfony-version: '6.4.*'
           - php-version: '8.2'
-            symfony-version: '5.4.*'
-          - php-version: '8.1'
-            symfony-version: '6.3.*'
-          - php-version: '8.2'
-            symfony-version: '6.3.*'
+            symfony-version: '7.4.*'
+          - php-version: '8.4'
+            symfony-version: '7.4.*'
+          - php-version: '8.4'
+            symfony-version: '8.0.*'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -41,8 +43,8 @@ jobs:
       - name: "Setup env & install dependencies"
         uses: ./.github/actions/install
         with:
-          php-version: '8.1'
-          symfony-version: '6.1.*'
+          php-version: '8.4'
+          symfony-version: '8.0.*'
       - name: "Run static analyzis with phpstan/phpstan"
         run: vendor/bin/phpstan analyze
 
@@ -55,8 +57,8 @@ jobs:
       - name: "Setup env & install dependencies"
         uses: ./.github/actions/install
         with:
-          php-version: '8.1'
-          symfony-version: '6.1.*'
+          php-version: '8.4'
+          symfony-version: '8.0.*'
       - name: "Run checkstyle with symplify/easy-coding-standard"
         run: vendor/bin/ecs
 
@@ -69,8 +71,8 @@ jobs:
       - name: "Setup env & install dependencies"
         uses: ./.github/actions/install
         with:
-          php-version: '8.1'
-          symfony-version: '6.1.*'
+          php-version: '8.4'
+          symfony-version: '8.0.*'
           coverage-mode: 'xdebug'
       - name: "Run tests with phpunit/phpunit"
         env:
