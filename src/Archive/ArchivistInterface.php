@@ -18,5 +18,5 @@ interface ArchivistInterface
      *
      * @return integer
      */
-    public function archive(string $purpose = null): int;
+    public function archive(string|null $purpose = null): int;
 }

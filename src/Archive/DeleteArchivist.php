@@ -27,7 +27,7 @@ class DeleteArchivist implements ArchivistInterface
         $this->tokenRepository = $tokenRepository;
     }
 
-    public function archive(string $purpose = null): int
+    public function archive(string|null $purpose = null): int
     {
         $builder = $this->tokenRepository->createQueryBuilder('token')
             ->delete($this->tokenRepository->getClassName(), 'token');

@@ -109,11 +109,6 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
     private function save(Token $token): void
     {
         $this->manager->persist($token);
-
-        if ((new \ReflectionMethod($this->manager, 'flush'))->getNumberOfParameters() > 0) {
-            $this->manager->flush($token);
-        } else {
-            $this->manager->flush();
-        }
+        $this->manager->flush();
     }
 }

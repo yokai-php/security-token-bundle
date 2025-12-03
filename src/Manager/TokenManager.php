@@ -101,7 +101,7 @@ class TokenManager implements TokenManagerInterface
         return $token;
     }
 
-    public function consume(Token $token, DateTime $at = null): void
+    public function consume(Token $token, DateTime|null $at = null): void
     {
         $event = $this->eventDispatcher->consumeToken($token, $at, $this->informationGuesser->get());
 

@@ -69,7 +69,15 @@ class DoctrineUserManager implements UserManagerInterface
             throw new \InvalidArgumentException('Entities with composite ids are not supported');
         }
 
-        return (string) reset($identifiers);
+        $identifier = reset($identifiers);
+        if (is_scalar($identifier)
+            || $identifier === null
+            || (is_object($identifier) && method_exists($identifier, '__toString'))
+        ) {
+            return (string)$identifier;
+        }
+
+        throw new \InvalidArgumentException('Entities with non stringable ids are not supported');
     }
 
     /**

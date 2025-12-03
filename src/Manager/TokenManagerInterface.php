@@ -48,7 +48,7 @@ interface TokenManagerInterface
      * @param Token         $token The token to consume
      * @param DateTime|null $at    The date/time at which the token was consumed (defaults to now)
      */
-    public function consume(Token $token, DateTime $at = null): void;
+    public function consume(Token $token, DateTime|null $at = null): void;
 
     /**
      * Get the user associated to a token.

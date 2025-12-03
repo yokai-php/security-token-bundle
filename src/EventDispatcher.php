@@ -53,7 +53,7 @@ class EventDispatcher
         return $event;
     }
 
-    public function consumeToken(Token $token, DateTime $at = null, array $information = []): ConsumeTokenEvent
+    public function consumeToken(Token $token, DateTime|null $at = null, array $information = []): ConsumeTokenEvent
     {
         $this->eventDispatcher->dispatch(
             $event = new ConsumeTokenEvent($token, $at, $information)
@@ -71,7 +71,6 @@ class EventDispatcher
         return $event;
     }
 
-    
     public function tokenTotallyConsumed(Token $token): TokenTotallyConsumedEvent
     {
         $this->eventDispatcher->dispatch(
