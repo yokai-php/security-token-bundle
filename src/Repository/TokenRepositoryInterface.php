@@ -39,7 +39,7 @@ interface TokenRepositoryInterface
      *
      * @return Token|null The token object from storage of null if not found
      */
-    public function findExisting(string $userClass, string $userId, string $purpose): ?Token;
+    public function findExisting(string $userClass, string $userId, string $purpose): Token|null;
 
     /**
      * Tell whether or not it exists a token for given purpose and value.

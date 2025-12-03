@@ -13,7 +13,7 @@ use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class ArchiveTokenCommand extends Command
+final class ArchiveTokenCommand extends Command
 {
     /**
      * @var ArchivistInterface
@@ -42,7 +42,7 @@ class ArchiveTokenCommand extends Command
         $count = $this->archivist->archive($purpose);
 
         $output->writeln(
-            sprintf('<info>Successfully archived <comment>%d</comment> security token(s).</info>', $count)
+            \sprintf('<info>Successfully archived <comment>%d</comment> security token(s).</info>', $count),
         );
 
         return 0;

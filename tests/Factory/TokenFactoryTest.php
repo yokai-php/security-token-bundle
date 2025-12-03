@@ -21,7 +21,7 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  *
  * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class TokenFactoryTest extends TestCase
+final class TokenFactoryTest extends TestCase
 {
     /**
      * @var MockObject<InformationGuesserInterface>
@@ -50,7 +50,7 @@ class TokenFactoryTest extends TestCase
         unset(
             $this->informationGuesser,
             $this->userManager,
-            $this->repository
+            $this->repository,
         );
     }
 
@@ -60,14 +60,11 @@ class TokenFactoryTest extends TestCase
             new TokenConfigurationRegistry($configuration),
             $this->informationGuesser,
             $this->userManager,
-            $this->repository
+            $this->repository,
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_create_token_according_to_configuration(): void
+    public function testIt_create_token_according_to_configuration(): void
     {
         $generator1 = $this->createMock(TokenGeneratorInterface::class);
         $generator1->method('generate')
@@ -92,7 +89,7 @@ class TokenFactoryTest extends TestCase
             '+1 month',
             1,
             [],
-            []
+            [],
         );
 
         $configuration = [

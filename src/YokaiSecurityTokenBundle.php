@@ -14,7 +14,7 @@ use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class YokaiSecurityTokenBundle extends Bundle
+final class YokaiSecurityTokenBundle extends Bundle
 {
     public function getPath(): string
     {
@@ -27,18 +27,18 @@ class YokaiSecurityTokenBundle extends Bundle
             'yokai_security_token.configuration_registry',
             'yokai_security_token.configuration',
             null,
-            0
+            0,
         );
         $registerUserManager = new ArgumentRegisterTaggedServicesCompilerPass(
             'yokai_security_token.user_manager',
             'yokai_security_token.user_manager',
             UserManagerInterface::class,
-            0
+            0,
         );
         $registerEntityMapping = DoctrineOrmMappingsPass::createXmlMappingDriver(
-            [realpath(__DIR__ . '/../config/doctrine') => 'Yokai\SecurityTokenBundle\Entity'],
+            [\realpath(__DIR__ . '/../config/doctrine') => 'Yokai\SecurityTokenBundle\Entity'],
             ['doctrine.orm.entity_manager'],
-            false
+            false,
         );
 
         $container

@@ -19,7 +19,7 @@ use Yokai\SecurityTokenBundle\Repository\DoctrineORMTokenRepository;
  *
  * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class DoctrineORMTokenRepositoryTest extends TestCase
+final class DoctrineORMTokenRepositoryTest extends TestCase
 {
     /**
      * @var MockObject<EntityManager>
@@ -41,7 +41,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
     {
         unset(
             $this->manager,
-            $this->repository
+            $this->repository,
         );
     }
 
@@ -50,10 +50,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         return new DoctrineORMTokenRepository($this->manager, $this->repository);
     }
 
-    /**
-     * @test
-     */
-    public function it_throw_exception_if_token_not_found(): void
+    public function testIt_throw_exception_if_token_not_found(): void
     {
         $this->expectException(TokenNotFoundException::class);
 
@@ -65,10 +62,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->get('unique', 'init_password');
     }
 
-    /**
-     * @test
-     */
-    public function it_throw_exception_if_token_expired(): void
+    public function testIt_throw_exception_if_token_expired(): void
     {
         $this->expectException(TokenExpiredException::class);
 
@@ -82,10 +76,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->get('unique', 'init_password');
     }
 
-    /**
-     * @test
-     */
-    public function it_throw_exception_if_token_used_single_time(): void
+    public function testIt_throw_exception_if_token_used_single_time(): void
     {
         $this->expectException(TokenConsumedException::class);
 
@@ -100,10 +91,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->get('unique', 'init_password');
     }
 
-    /**
-     * @test
-     */
-    public function it_throw_exception_if_token_used_multiple_times(): void
+    public function testIt_throw_exception_if_token_used_multiple_times(): void
     {
         $this->expectException(TokenConsumedException::class);
 
@@ -119,10 +107,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->get('unique', 'init_password');
     }
 
-    /**
-     * @test
-     */
-    public function it_get_valid_token(): void
+    public function testIt_get_valid_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
@@ -136,10 +121,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         self::assertSame($token, $got);
     }
 
-    /**
-     * @test
-     */
-    public function it_create_token(): void
+    public function testIt_create_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 
@@ -158,10 +140,7 @@ class DoctrineORMTokenRepositoryTest extends TestCase
         $this->repository()->create($token);
     }
 
-    /**
-     * @test
-     */
-    public function it_update_token(): void
+    public function testIt_update_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique', 'init_password', '+1 day', '+1 month', 1, []);
 

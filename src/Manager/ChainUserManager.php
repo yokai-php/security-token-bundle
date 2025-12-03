@@ -9,7 +9,7 @@ namespace Yokai\SecurityTokenBundle\Manager;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class ChainUserManager implements UserManagerInterface
+final class ChainUserManager implements UserManagerInterface
 {
     /**
      * @var iterable<UserManagerInterface>
@@ -77,15 +77,15 @@ class ChainUserManager implements UserManagerInterface
                 return $manager;
             }
 
-            $tries[] = get_class($manager);
+            $tries[] = \get_class($manager);
         }
 
         throw new \InvalidArgumentException(
-            sprintf(
+            \sprintf(
                 'Class "%s" is not supported by any UserManager. Tried "%s".',
                 $class,
-                implode('", "', $tries)
-            )
+                \implode('", "', $tries),
+            ),
         );
     }
 
@@ -105,29 +105,29 @@ class ChainUserManager implements UserManagerInterface
                 return $manager;
             }
 
-            $tries[] = get_class($manager);
+            $tries[] = \get_class($manager);
         }
 
-        if (is_object($user)) {
-            if (!method_exists($user, '__toString')) {
-                $userAsString = sprintf('%s::%s', get_class($user), spl_object_hash($user));
+        if (\is_object($user)) {
+            if (!\method_exists($user, '__toString')) {
+                $userAsString = \sprintf('%s::%s', \get_class($user), \spl_object_hash($user));
             } else {
                 $userAsString = (string)$user;
             }
         } else {
-            if (is_scalar($user)) {
+            if (\is_scalar($user)) {
                 $userAsString = (string)$user;
             } else {
-                $userAsString = get_debug_type($user);
+                $userAsString = \get_debug_type($user);
             }
         }
 
         throw new \InvalidArgumentException(
-            sprintf(
+            \sprintf(
                 'User "%s" is not supported by any UserManager. Tried "%s".',
                 $userAsString,
-                implode('", "', $tries)
-            )
+                \implode('", "', $tries),
+            ),
         );
     }
 }

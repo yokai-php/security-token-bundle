@@ -12,7 +12,7 @@ use Yokai\SecurityTokenBundle\Entity\Token;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenRetrievedEvent extends Event
+final class TokenRetrievedEvent extends Event
 {
     /**
      * @var Token

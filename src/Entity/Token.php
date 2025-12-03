@@ -88,7 +88,7 @@ class Token
         string $keepDuration,
         int $allowedUsages = 1,
         array $payload = [],
-        array $information = []
+        array $information = [],
     ) {
         $this->userClass = $userClass;
         $this->userId = $userId;
@@ -103,7 +103,7 @@ class Token
         $this->usages = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }
@@ -181,7 +181,7 @@ class Token
 
     public function getCountUsages(): int
     {
-        return count($this->usages);
+        return \count($this->usages);
     }
 
     /**
@@ -204,7 +204,7 @@ class Token
     {
         if ($this->isConsumed()) {
             throw new LogicException(
-                sprintf('Token "%d" is already consumed.', $this->id)
+                \sprintf('Token "%d" is already consumed.', $this->id),
             );
         }
 

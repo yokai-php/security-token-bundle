@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class Kernel extends BaseKernel
+final class Kernel extends BaseKernel
 {
     public function registerBundles(): iterable
     {
@@ -33,11 +33,11 @@ class Kernel extends BaseKernel
 
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir() . '/' . BaseKernel::VERSION . '/cache/' . $this->environment;
+        return \sys_get_temp_dir() . '/' . BaseKernel::VERSION . '/cache/' . $this->environment;
     }
 
     public function getLogDir(): string
     {
-        return sys_get_temp_dir() . '/' . BaseKernel::VERSION . '/logs';
+        return \sys_get_temp_dir() . '/' . BaseKernel::VERSION . '/logs';
     }
 }

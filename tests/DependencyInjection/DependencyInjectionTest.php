@@ -33,7 +33,7 @@ use Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle;
  *
  * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class DependencyInjectionTest extends TestCase
+final class DependencyInjectionTest extends TestCase
 {
     /**
      * @var ContainerBuilder
@@ -60,7 +60,7 @@ class DependencyInjectionTest extends TestCase
         $this->container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
         $this->container->setDefinition(
             'doctrine.orm.default_metadata_driver',
-            new Definition(MappingDriverChain::class)
+            new Definition(MappingDriverChain::class),
         );
         $this->container->setDefinition('doctrine.orm.default_configuration', new Definition(Configuration::class));
         $this->container->setDefinition('request_stack', new Definition(RequestStack::class));
@@ -78,7 +78,7 @@ class DependencyInjectionTest extends TestCase
         ];
         foreach ($mocks as $id => $class) {
             $service = $this->createMock($class);
-            $this->container->setDefinition($id, new Definition(get_class($service)));
+            $this->container->setDefinition($id, new Definition(\get_class($service)));
         }
 
         $this->container->registerExtension($bundle->getContainerExtension());
@@ -86,13 +86,12 @@ class DependencyInjectionTest extends TestCase
     }
 
     /**
-     * @test
      * @dataProvider configurationProvider
      */
-    public function it_parse_configuration_as_expected(string $resource, array $tokens, array $aliases): void
+    public function testIt_parse_configuration_as_expected(string $resource, array $tokens, array $aliases): void
     {
         // for test purpose, all services are switched to public
-        $this->container->addCompilerPass(new class() implements CompilerPassInterface {
+        $this->container->addCompilerPass(new class implements CompilerPassInterface {
             public function process(ContainerBuilder $container)
             {
                 $container->findDefinition('yokai_security_token.configuration_registry')->setPublic(true);
@@ -121,7 +120,7 @@ class DependencyInjectionTest extends TestCase
         foreach ($aliases as $alias => $expectedId) {
             self::assertTrue(
                 $this->container->has($alias),
-                "An alias named \"$alias\" exists."
+                "An alias named \"$alias\" exists.",
             );
         }
     }
@@ -131,7 +130,7 @@ class DependencyInjectionTest extends TestCase
         $locator = new FileLocator(__DIR__ . '/configuration/');
         $path = $locator->locate($resource);
 
-        switch (pathinfo($path, PATHINFO_EXTENSION)) {
+        switch (\pathinfo($path, PATHINFO_EXTENSION)) {
             case 'yml':
                 $loader = new Loader\YamlFileLoader($this->container, $locator);
                 break;

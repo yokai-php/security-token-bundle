@@ -13,7 +13,7 @@ use Doctrine\Persistence\ObjectManager;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class DoctrineUserManager implements UserManagerInterface
+final class DoctrineUserManager implements UserManagerInterface
 {
     /**
      * @var ManagerRegistry
@@ -42,7 +42,7 @@ class DoctrineUserManager implements UserManagerInterface
     public function supportsUser($user): bool
     {
         return $this->supportsClass(
-            $this->getClass($user)
+            $this->getClass($user),
         );
     }
 
@@ -65,14 +65,14 @@ class DoctrineUserManager implements UserManagerInterface
         $class = $this->getClass($user);
         $identifiers = $this->getManagerFor($class)->getClassMetadata($class)->getIdentifierValues($user);
 
-        if (count($identifiers) > 1) {
+        if (\count($identifiers) > 1) {
             throw new \InvalidArgumentException('Entities with composite ids are not supported');
         }
 
-        $identifier = reset($identifiers);
-        if (is_scalar($identifier)
+        $identifier = \reset($identifiers);
+        if (\is_scalar($identifier)
             || $identifier === null
-            || (is_object($identifier) && method_exists($identifier, '__toString'))
+            || (\is_object($identifier) && \method_exists($identifier, '__toString'))
         ) {
             return (string)$identifier;
         }
@@ -91,10 +91,10 @@ class DoctrineUserManager implements UserManagerInterface
 
         if ($manager === null) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Class "%s" seems not to be a managed Doctrine entity. Did you forget to map it?',
-                    $class
-                )
+                    $class,
+                ),
             );
         }
 

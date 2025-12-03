@@ -11,7 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenExpiredEvent extends Event
+final class TokenExpiredEvent extends Event
 {
     /**
      * @var string

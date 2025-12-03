@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class InformationGuesser implements InformationGuesserInterface
+final class InformationGuesser implements InformationGuesserInterface
 {
     /**
      * @var RequestStack
@@ -35,7 +35,7 @@ class InformationGuesser implements InformationGuesserInterface
 
         return [
             'ip' => $request->getClientIp(),
-            'host' => gethostname(),
+            'host' => \gethostname(),
         ];
     }
 }

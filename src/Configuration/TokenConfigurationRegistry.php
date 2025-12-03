@@ -9,7 +9,7 @@ use BadMethodCallException;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenConfigurationRegistry
+final class TokenConfigurationRegistry
 {
     /**
      * @var array<TokenConfiguration>
@@ -38,7 +38,7 @@ class TokenConfigurationRegistry
     {
         if (!isset($this->configurations[$purpose])) {
             throw new BadMethodCallException(
-                sprintf('There is no configured security token on "%s" purpose.', $purpose)
+                \sprintf('There is no configured security token on "%s" purpose.', $purpose),
             );
         }
 

@@ -21,7 +21,7 @@
         "phpunit/phpunit": "^9.5",
         "symfony/yaml": "^6.4|^7.4|^8.0",
         "phpstan/phpstan": "^1.7",
-        "symplify/easy-coding-standard": "^11.3"
+        "symplify/easy-coding-standard": "^13.0"
     },
     "autoload": {
         "psr-4": { "Yokai\\SecurityTokenBundle\\": "src/" }
