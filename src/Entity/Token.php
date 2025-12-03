@@ -144,6 +144,9 @@ class Token
         return $this->createdAt;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getCreatedInformation(): array
     {
         return $this->createdInformation;
@@ -198,6 +201,8 @@ class Token
     }
 
     /**
+     * @param array<string, mixed> $information
+     *
      * @throws LogicException
      */
     public function consume(array $information, DateTime|null $date = null): void

@@ -6,6 +6,7 @@ namespace Yokai\SecurityTokenBundle\Archive;
 
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Yokai\SecurityTokenBundle\Entity\Token;
 
 /**
  * This archivist is removing all outdated tokens based on the `keepUntil` property.
@@ -15,12 +16,12 @@ use Doctrine\ORM\EntityRepository;
 final class DeleteArchivist implements ArchivistInterface
 {
     /**
-     * @var EntityRepository
+     * @var EntityRepository<Token>
      */
     private $tokenRepository;
 
     /**
-     * @param EntityRepository $tokenRepository The token entity repository
+     * @param EntityRepository<Token> $tokenRepository The token entity repository
      */
     public function __construct(EntityRepository $tokenRepository)
     {

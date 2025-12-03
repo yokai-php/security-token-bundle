@@ -33,7 +33,8 @@ final class EventDispatcher
     }
 
     /**
-     * @param mixed $user
+     * @param mixed                $user
+     * @param array<string, mixed> $payload
      */
     public function createToken(string $purpose, $user, array $payload): CreateTokenEvent
     {
@@ -53,6 +54,9 @@ final class EventDispatcher
         return $event;
     }
 
+    /**
+     * @param array<string, mixed> $information
+     */
     public function consumeToken(Token $token, DateTime|null $at = null, array $information = []): ConsumeTokenEvent
     {
         $this->eventDispatcher->dispatch(

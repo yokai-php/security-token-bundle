@@ -24,13 +24,13 @@ final class DoctrineORMTokenRepository implements TokenRepositoryInterface
     private $manager;
 
     /**
-     * @var EntityRepository
+     * @var EntityRepository<Token>
      */
     private $repository;
 
     /**
-     * @param EntityManager    $manager    The token entity manager
-     * @param EntityRepository $repository The token entity repository
+     * @param EntityManager           $manager    The token entity manager
+     * @param EntityRepository<Token> $repository The token entity repository
      */
     public function __construct(EntityManager $manager, EntityRepository $repository)
     {

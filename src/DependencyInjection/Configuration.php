@@ -4,15 +4,37 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
+ *
+ * @phpstan-type Config array{
+ *      tokens: array<
+ *          array{
+ *              generator: string,
+ *              duration: string,
+ *              usages: int,
+ *              keep: string,
+ *              unique: bool,
+ *          },
+ *      >,
+ *      services: array{
+ *          information_guesser: string,
+ *          token_factory: string,
+ *          token_repository: string,
+ *          token_manager: string,
+ *          archivist: string,
+ *      },
+ *  }
  */
 final class Configuration implements ConfigurationInterface
 {
+    /**
+     * @return TreeBuilder<'array'>
+     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('yokai_security_token');
@@ -29,7 +51,10 @@ final class Configuration implements ConfigurationInterface
         return $builder;
     }
 
-    private function getTokensNode(): NodeDefinition
+    /**
+     * @return ArrayNodeDefinition<TreeBuilder<'array'>>
+     */
+    private function getTokensNode(): ArrayNodeDefinition
     {
         $builder = new TreeBuilder('tokens');
         $node = $builder->getRootNode();
@@ -60,7 +85,10 @@ final class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    private function getServicesNode(): NodeDefinition
+    /**
+     * @return ArrayNodeDefinition<TreeBuilder<'array'>>
+     */
+    private function getServicesNode(): ArrayNodeDefinition
     {
         $builder = new TreeBuilder('services');
         $node = $builder->getRootNode();
