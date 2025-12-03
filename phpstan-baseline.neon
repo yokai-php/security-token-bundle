@@ -45,3 +45,8 @@ parameters:
 			count: 1
 			path: src/Manager/DoctrineUserManager.php
 
+		-
+			message: "#^Method Doctrine\\\\ORM\\\\EntityManager\\:\\:flush\\(\\) invoked with 1 parameter, 0 required\\.$#"
+			count: 1
+			path: src/Repository/DoctrineORMTokenRepository.php
+

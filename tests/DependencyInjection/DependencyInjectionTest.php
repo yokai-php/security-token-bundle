@@ -10,8 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Generator;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ProphecySubjectInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -23,7 +21,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
 use Yokai\SecurityTokenBundle\Factory\TokenFactoryInterface;
-use Yokai\SecurityTokenBundle\Generator\OpenSslTokenGenerator;
 use Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Manager\TokenManagerInterface;
@@ -38,8 +35,6 @@ use Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle;
  */
 class DependencyInjectionTest extends TestCase
 {
-    use ProphecyTrait;
-
     /**
      * @var ContainerBuilder
      */
@@ -60,7 +55,7 @@ class DependencyInjectionTest extends TestCase
         $this->container->setParameter('kernel.debug', true);
         $this->container->setParameter('kernel.bundles', $bundles);
         $this->container->setParameter('kernel.environment', 'test');
-        $this->container->set('logger', $this->prophesize(LoggerInterface::class)->reveal());
+        $this->container->set('logger', $this->createMock(LoggerInterface::class));
         $this->container->setDefinition('doctrine', new Definition(ManagerRegistry::class));
         $this->container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
         $this->container->setDefinition(
@@ -82,7 +77,7 @@ class DependencyInjectionTest extends TestCase
             'archivist_mock' => ArchivistInterface::class,
         ];
         foreach ($mocks as $id => $class) {
-            $service = $this->prophesize($class)->reveal();
+            $service = $this->createMock($class);
             $this->container->setDefinition($id, new Definition(get_class($service)));
         }
 
@@ -173,12 +168,12 @@ class DependencyInjectionTest extends TestCase
                 'names.' . $format,
                 [
                     'security_password_init' => [
-                        'generator' => OpenSslTokenGenerator::class,
+                        'generator' => TokenGeneratorInterface::class,
                         'duration' => '+2 days',
                         'usages' => 1,
                     ],
                     'security_password_reset' => [
-                        'generator' => OpenSslTokenGenerator::class,
+                        'generator' => TokenGeneratorInterface::class,
                         'duration' => '+2 days',
                         'usages' => 1,
                     ],
@@ -190,12 +185,12 @@ class DependencyInjectionTest extends TestCase
                 'full.' . $format,
                 [
                     'security_password_init' => [
-                        'generator' => ProphecySubjectInterface::class,
+                        'generator' => TokenGeneratorInterface::class,
                         'duration' => '+1 month',
                         'usages' => 2,
                     ],
                     'security_password_reset' => [
-                        'generator' => ProphecySubjectInterface::class,
+                        'generator' => TokenGeneratorInterface::class,
                         'duration' => '+2 monthes',
                         'usages' => 3,
                     ],
