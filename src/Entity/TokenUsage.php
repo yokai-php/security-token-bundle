@@ -38,7 +38,7 @@ class TokenUsage
         $this->createdAt = $createdAt ?: new DateTime();
     }
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }

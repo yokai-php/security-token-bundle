@@ -11,7 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenAlreadyConsumedEvent extends Event
+final class TokenAlreadyConsumedEvent extends Event
 {
     /**
      * @var string

@@ -12,12 +12,9 @@ use Yokai\SecurityTokenBundle\Generator\OpenSslTokenGenerator;
  *
  * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class OpenSslTokenGeneratorTest extends TestCase
+final class OpenSslTokenGeneratorTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_generate_unique_token(): void
+    public function testIt_generate_unique_token(): void
     {
         $generator = new OpenSslTokenGenerator();
 
@@ -27,6 +24,6 @@ class OpenSslTokenGeneratorTest extends TestCase
             $tokens[] = $generator->generate();
         }
 
-        self::assertSame(array_unique($tokens), $tokens);
+        self::assertSame(\array_unique($tokens), $tokens);
     }
 }

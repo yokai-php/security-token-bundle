@@ -19,7 +19,7 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class YokaiSecurityTokenExtension extends Extension
+final class YokaiSecurityTokenExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -43,7 +43,7 @@ class YokaiSecurityTokenExtension extends Extension
                 $token['usages'],
                 $token['keep'],
                 $token['unique'],
-                $container
+                $container,
             );
         }
     }
@@ -53,7 +53,7 @@ class YokaiSecurityTokenExtension extends Extension
         $isTest = $container->getParameter('kernel.environment') === 'test';
 
         foreach ($config['services'] as $name => $service) {
-            $alias = $container->setAlias(sprintf('yokai_security_token.%s', $name), $service);
+            $alias = $container->setAlias(\sprintf('yokai_security_token.%s', $name), $service);
             $alias->setPublic(true);
         }
     }
@@ -70,7 +70,7 @@ class YokaiSecurityTokenExtension extends Extension
         ];
 
         foreach ($interfaceMap as $service => $interface) {
-            $container->setAlias($interface, sprintf('yokai_security_token.%s', $service));
+            $container->setAlias($interface, \sprintf('yokai_security_token.%s', $service));
         }
     }
 }

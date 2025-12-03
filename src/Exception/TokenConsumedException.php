@@ -9,7 +9,7 @@ namespace Yokai\SecurityTokenBundle\Exception;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenConsumedException extends InvalidTokenException
+final class TokenConsumedException extends InvalidTokenException
 {
     /**
      * Create an instance of this class.
@@ -21,12 +21,12 @@ class TokenConsumedException extends InvalidTokenException
     public static function create(string $value, string $purpose, int $usages): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'The "%s" token with value "%s" was used times "%s".',
                 $purpose,
                 $value,
-                $usages
-            )
+                $usages,
+            ),
         );
     }
 }

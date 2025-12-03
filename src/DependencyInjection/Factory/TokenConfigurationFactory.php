@@ -13,7 +13,7 @@ use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenConfigurationFactory
+final class TokenConfigurationFactory
 {
     public static function create(
         string $purpose,
@@ -22,18 +22,18 @@ class TokenConfigurationFactory
         int $usages,
         string $keep,
         bool $unique,
-        ContainerBuilder $container
+        ContainerBuilder $container,
     ): void {
-        $id = sprintf('yokai_security_token.configuration.%s', $purpose);
+        $id = \sprintf('yokai_security_token.configuration.%s', $purpose);
 
         if ($container->hasDefinition($id)) {
             throw new BadMethodCallException(
-                sprintf(
+                \sprintf(
                     'Cannot register service for security token on "%s" purpose.' .
                     ' A service with id "%s" is already registered.',
                     $purpose,
-                    $id
-                )
+                    $id,
+                ),
             );
         }
 
@@ -46,7 +46,7 @@ class TokenConfigurationFactory
                 $usages,
                 $keep,
                 $unique,
-            ]
+            ],
         );
 
         $definition->addTag('yokai_security_token.configuration');

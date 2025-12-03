@@ -11,7 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class CreateTokenEvent extends Event
+final class CreateTokenEvent extends Event
 {
     /**
      * @var string
@@ -85,6 +85,6 @@ class CreateTokenEvent extends Event
      */
     public function addPayload(array $payload): void
     {
-        $this->payload = array_merge($this->payload, $payload);
+        $this->payload = \array_merge($this->payload, $payload);
     }
 }

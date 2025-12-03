@@ -16,7 +16,7 @@ use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class DoctrineORMTokenRepository implements TokenRepositoryInterface
+final class DoctrineORMTokenRepository implements TokenRepositoryInterface
 {
     /**
      * @var EntityManager
@@ -60,7 +60,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
         return $token;
     }
 
-    public function findExisting(string $userClass, string $userId, string $purpose): ?Token
+    public function findExisting(string $userClass, string $userId, string $purpose): Token|null
     {
         $token = $this->repository->findOneBy(
             [
@@ -103,7 +103,7 @@ class DoctrineORMTokenRepository implements TokenRepositoryInterface
         /** @var string|int $result */
         $result = $builder->getQuery()->getSingleScalarResult();
 
-        return intval($result) > 0;
+        return \intval($result) > 0;
     }
 
     private function save(Token $token): void

@@ -13,7 +13,7 @@ use Yokai\SecurityTokenBundle\Entity\Token;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class ConsumeTokenEvent extends Event
+final class ConsumeTokenEvent extends Event
 {
     /**
      * @var Token
@@ -35,7 +35,7 @@ class ConsumeTokenEvent extends Event
      * @param DateTime|null $at          Date/time at which the token has been consumed
      * @param array         $information Some context information
      */
-    public function __construct(Token $token, ?DateTime $at, array $information)
+    public function __construct(Token $token, DateTime|null $at, array $information)
     {
         $this->token = $token;
         $this->at = $at;
@@ -53,7 +53,7 @@ class ConsumeTokenEvent extends Event
     /**
      * Date/time at which the token has been consumed
      */
-    public function getAt(): ?DateTime
+    public function getAt(): DateTime|null
     {
         return $this->at;
     }

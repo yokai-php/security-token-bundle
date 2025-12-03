@@ -32,7 +32,7 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  *
  * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class TokenManagerTest extends TestCase
+final class TokenManagerTest extends TestCase
 {
     /**
      * @var MockObject<TokenFactoryInterface
@@ -75,7 +75,7 @@ class TokenManagerTest extends TestCase
             $this->repository,
             $this->informationGuesser,
             $this->userManager,
-            $this->eventDispatcher
+            $this->eventDispatcher,
         );
     }
 
@@ -86,14 +86,11 @@ class TokenManagerTest extends TestCase
             $this->repository,
             $this->informationGuesser,
             $this->userManager,
-            new EventDispatcher($this->eventDispatcher)
+            new EventDispatcher($this->eventDispatcher),
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_dispatch_not_found_exceptions_on_get_token_from_repository(): void
+    public function testIt_dispatch_not_found_exceptions_on_get_token_from_repository(): void
     {
         $this->expectException(TokenNotFoundException::class);
 
@@ -114,10 +111,7 @@ class TokenManagerTest extends TestCase
         $this->manager()->get('forgot_password', 'unique-token');
     }
 
-    /**
-     * @test
-     */
-    public function it_dispatch_expired_exceptions_on_get_token_from_repository(): void
+    public function testIt_dispatch_expired_exceptions_on_get_token_from_repository(): void
     {
         $this->expectException(TokenExpiredException::class);
 
@@ -138,10 +132,7 @@ class TokenManagerTest extends TestCase
         $this->manager()->get('forgot_password', 'unique-token');
     }
 
-    /**
-     * @test
-     */
-    public function it_dispatch_used_exceptions_on_get_token_from_repository(): void
+    public function testIt_dispatch_used_exceptions_on_get_token_from_repository(): void
     {
         $this->expectException(TokenConsumedException::class);
 
@@ -162,10 +153,7 @@ class TokenManagerTest extends TestCase
         $this->manager()->get('forgot_password', 'unique-token');
     }
 
-    /**
-     * @test
-     */
-    public function it_get_token_from_repository(): void
+    public function testIt_get_token_from_repository(): void
     {
         $this->repository->expects(self::once())
             ->method('get')
@@ -185,10 +173,7 @@ class TokenManagerTest extends TestCase
         self::assertSame($expected, $token);
     }
 
-    /**
-     * @test
-     */
-    public function it_create_unique_token(): void
+    public function testIt_create_unique_token(): void
     {
         $expectedToken = new Token(
             'string',
@@ -199,7 +184,7 @@ class TokenManagerTest extends TestCase
             '+1 month',
             1,
             ['payload', 'information'],
-            ['created', 'information']
+            ['created', 'information'],
         );
 
         $this->factory->expects(self::once())
@@ -230,10 +215,7 @@ class TokenManagerTest extends TestCase
         self::assertSame($expectedToken, $token);
     }
 
-    /**
-     * @test
-     */
-    public function it_consume_token(): void
+    public function testIt_consume_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month');
 
@@ -270,10 +252,7 @@ class TokenManagerTest extends TestCase
         self::assertInstanceOf(\DateTime::class, $usage->getCreatedAt());
     }
 
-    /**
-     * @test
-     */
-    public function it_extract_user_from_token(): void
+    public function testIt_extract_user_from_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 1, []);
 

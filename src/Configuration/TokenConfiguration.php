@@ -9,7 +9,7 @@ use Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface;
 /**
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenConfiguration
+final class TokenConfiguration
 {
     /**
      * @var string
@@ -47,7 +47,7 @@ class TokenConfiguration
         string $duration,
         int $usages,
         string $keep,
-        bool $unique
+        bool $unique,
     ) {
         $this->purpose = $purpose;
         $this->generator = $generator;

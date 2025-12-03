@@ -17,7 +17,7 @@ use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
  *
  * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class DoctrineUserManagerTest extends TestCase
+final class DoctrineUserManagerTest extends TestCase
 {
     /**
      * @var MockObject<ManagerRegistry>
@@ -46,7 +46,7 @@ class DoctrineUserManagerTest extends TestCase
         unset(
             $this->registry,
             $this->objectManager,
-            $this->classMetadata
+            $this->classMetadata,
         );
     }
 
@@ -72,87 +72,72 @@ class DoctrineUserManagerTest extends TestCase
         };
     }
 
-    /**
-     * @test
-     */
-    public function it_supports_doctrine_entities(): void
+    public function testIt_supports_doctrine_entities(): void
     {
         $user = $this->user('jdoe');
 
         $this->registry->method('getManagerForClass')
-            ->with(get_class($user))
+            ->with(\get_class($user))
             ->willReturn($this->objectManager);
 
         $manager = $this->manager();
-        self::assertTrue($manager->supportsClass(get_class($user)));
+        self::assertTrue($manager->supportsClass(\get_class($user)));
         self::assertTrue($manager->supportsUser($user));
     }
 
-    /**
-     * @test
-     */
-    public function it_do_not_supports_objects_out_of_doctrine(): void
+    public function testIt_do_not_supports_objects_out_of_doctrine(): void
     {
         $user = $this->user('jdoe');
 
         $this->registry->method('getManagerForClass')
-            ->with(get_class($user))
+            ->with(\get_class($user))
             ->willReturn(null);
 
         $manager = $this->manager();
-        self::assertFalse($manager->supportsClass(get_class($user)));
+        self::assertFalse($manager->supportsClass(\get_class($user)));
         self::assertFalse($manager->supportsUser($user));
     }
 
-    /**
-     * @test
-     */
-    public function it_get_user(): void
+    public function testIt_get_user(): void
     {
         $expected = $this->user('jdoe');
 
         $this->registry->expects(self::once())
             ->method('getManagerForClass')
-            ->with(get_class($expected))
+            ->with(\get_class($expected))
             ->willReturn($this->objectManager);
 
         $this->objectManager->expects(self::once())
             ->method('find')
-            ->with(get_class($expected), 'jdoe')
+            ->with(\get_class($expected), 'jdoe')
             ->willReturn($expected);
 
-        $user = $this->manager()->get(get_class($expected), 'jdoe');
+        $user = $this->manager()->get(\get_class($expected), 'jdoe');
 
         self::assertSame($expected, $user);
     }
 
-    /**
-     * @test
-     */
-    public function it_get_user_class(): void
+    public function testIt_get_user_class(): void
     {
         $expected = $this->user('jdoe');
 
         $class = $this->manager()->getClass($expected);
 
-        self::assertSame(get_class($expected), $class);
+        self::assertSame(\get_class($expected), $class);
     }
 
-    /**
-     * @test
-     */
-    public function it_get_user_id(): void
+    public function testIt_get_user_id(): void
     {
         $expected = $this->user('jdoe');
 
         $this->registry->expects(self::once())
             ->method('getManagerForClass')
-            ->with(get_class($expected))
+            ->with(\get_class($expected))
             ->willReturn($this->objectManager);
 
         $this->objectManager->expects(self::once())
             ->method('getClassMetadata')
-            ->with(get_class($expected))
+            ->with(\get_class($expected))
             ->willReturn($this->classMetadata);
 
         $this->classMetadata->expects(self::once())

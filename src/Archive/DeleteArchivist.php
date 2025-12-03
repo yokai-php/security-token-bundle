@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class DeleteArchivist implements ArchivistInterface
+final class DeleteArchivist implements ArchivistInterface
 {
     /**
      * @var EntityRepository
@@ -47,6 +47,6 @@ class DeleteArchivist implements ArchivistInterface
         /** @var int|string $result */
         $result = $builder->getQuery()->execute();
 
-        return intval($result);
+        return \intval($result);
     }
 }

@@ -15,7 +15,7 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenFactory implements TokenFactoryInterface
+final class TokenFactory implements TokenFactoryInterface
 {
     /**
      * @var TokenConfigurationRegistry
@@ -47,7 +47,7 @@ class TokenFactory implements TokenFactoryInterface
         TokenConfigurationRegistry $registry,
         InformationGuesserInterface $informationGuesser,
         UserManagerInterface $userManager,
-        TokenRepositoryInterface $repository
+        TokenRepositoryInterface $repository,
     ) {
         $this->registry = $registry;
         $this->informationGuesser = $informationGuesser;

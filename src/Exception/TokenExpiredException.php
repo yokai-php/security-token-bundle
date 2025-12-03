@@ -11,7 +11,7 @@ use DateTime;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenExpiredException extends InvalidTokenException
+final class TokenExpiredException extends InvalidTokenException
 {
     /**
      * Create an instance of this class.
@@ -23,12 +23,12 @@ class TokenExpiredException extends InvalidTokenException
     public static function create(string $value, string $purpose, DateTime $date): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'The "%s" token with value "%s" is expired since "%s".',
                 $purpose,
                 $value,
-                $date->format(DateTime::ISO8601)
-            )
+                $date->format(DateTime::ISO8601),
+            ),
         );
     }
 }

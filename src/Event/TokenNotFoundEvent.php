@@ -11,7 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class TokenNotFoundEvent extends Event
+final class TokenNotFoundEvent extends Event
 {
     /**
      * @var string

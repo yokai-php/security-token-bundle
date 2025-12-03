@@ -12,12 +12,9 @@ use Yokai\SecurityTokenBundle\Entity\Token;
  *
  * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class TokenTest extends TestCase
+final class TokenTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_allow_limited_usage_token(): void
+    public function testIt_allow_limited_usage_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 2);
         self::assertFalse($token->isConsumed());
@@ -32,10 +29,7 @@ class TokenTest extends TestCase
         self::assertSame([2], $token->getLastUsage()->getInformation());
     }
 
-    /**
-     * @test
-     */
-    public function it_allow_unlimited_usage_token(): void
+    public function testIt_allow_unlimited_usage_token(): void
     {
         $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month', 0);
         self::assertFalse($token->isConsumed());

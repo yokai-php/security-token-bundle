@@ -16,7 +16,7 @@ use Yokai\SecurityTokenBundle\Archive\ArchivistInterface;
  *
  * phpcs:ignoreFile PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class ArchiveTokenCommandTest extends KernelTestCase
+final class ArchiveTokenCommandTest extends KernelTestCase
 {
     /**
      * @var MockObject<ArchivistInterface>
@@ -44,7 +44,7 @@ class ArchiveTokenCommandTest extends KernelTestCase
 
         unset(
             $this->archivist,
-            $this->application
+            $this->application,
         );
     }
 
@@ -65,10 +65,7 @@ class ArchiveTokenCommandTest extends KernelTestCase
         return $tester->getDisplay();
     }
 
-    /**
-     * @test
-     */
-    public function it_archive_every_token_when_run_without_options_with_confirmation(): void
+    public function testIt_archive_every_token_when_run_without_options_with_confirmation(): void
     {
         $command = $this->command();
 
@@ -82,10 +79,7 @@ class ArchiveTokenCommandTest extends KernelTestCase
         self::assertStringContainsString('Successfully archived 10 security token(s).', $output);
     }
 
-    /**
-     * @test
-     */
-    public function it_archive_partial_tokens_when_run_with_options(): void
+    public function testIt_archive_partial_tokens_when_run_with_options(): void
     {
         $command = $this->command();
 
