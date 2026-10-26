@@ -21,8 +21,8 @@ class DoctrineTokenLifecycleTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        self::bootKernel();
-        $container = self::$kernel->getContainer();
+        $kernel = self::bootKernel();
+        $container = $kernel->getContainer();
         $this->manager = $container->get('doctrine')->getManager();
         $this->tokens = $container->get('yokai_security_token.token_manager');
         (new SchemaTool($this->manager))->createSchema($this->manager->getMetadataFactory()->getAllMetadata());
