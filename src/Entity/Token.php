@@ -200,7 +200,7 @@ class Token
     /**
      * @throws LogicException
      */
-    public function consume(array $information, DateTime $date = null): void
+    public function consume(array $information, ?DateTime $date = null): void
     {
         if ($this->isConsumed()) {
             throw new LogicException(
