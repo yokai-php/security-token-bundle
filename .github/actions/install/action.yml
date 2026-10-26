@@ -30,6 +30,8 @@ runs:
         php-version: ${{ inputs.php-version }}
     - name: "Install dependencies with composer"
       shell: bash
+      env:
+        COMPOSER_NO_SECURITY_BLOCKING: '1'
       run: |
         composer require --no-update "symfony/framework-bundle:${{ inputs.symfony-version }}"
         composer require --no-update "doctrine/orm:${{ inputs.doctrine-version }}"
