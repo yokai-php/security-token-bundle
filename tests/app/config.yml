@@ -9,9 +9,8 @@ doctrine:
         driver:   pdo_sqlite
         charset:  UTF8
         memory: true
-        logging: false
     orm:
-        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
 yokai_security_token:

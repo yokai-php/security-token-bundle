@@ -11,6 +11,7 @@ jobs:
     name: "PHPUnit"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
           - php-version: '7.4'
@@ -29,6 +30,9 @@ jobs:
             symfony-version: '^7.0'
             doctrine-version: '^2.7'
           - php-version: '8.3'
+            symfony-version: '^7.0'
+            doctrine-version: '^3.0'
+          - php-version: '8.4'
             symfony-version: '^7.0'
             doctrine-version: '^3.0'
     steps:
