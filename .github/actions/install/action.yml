@@ -1,21 +1,18 @@
 name: Prepare env & install dependencies
 
-on:
-  workflow_call:
-    inputs:
-      php-version:
-        required: true
-        type: string
-      symfony-version:
-        required: true
-        type: string
-      coverage-mode:
-        required: false
-        type: string
-        default: 'none'
-    secrets:
-      token:
-        required: true
+description: Set up PHP and install the dependencies for a Symfony version
+
+inputs:
+  php-version:
+    description: PHP version to install
+    required: true
+  symfony-version:
+    description: Symfony framework bundle version constraint
+    required: true
+  coverage-mode:
+    description: Coverage driver to enable
+    required: false
+    default: 'none'
 
 runs:
   using: "composite"
@@ -29,4 +26,9 @@ runs:
       shell: bash
       run: |
         composer require --no-update "symfony/framework-bundle:${{ inputs.symfony-version }}"
-        composer update --no-interaction --no-progress --no-suggest
+        # Symfony 8.0 has no patched release; keep testing compatibility with this series.
+        # This exception applies only to the CI installation, not to package consumers.
+        if [[ "${{ inputs.symfony-version }}" == "8.0.*" ]]; then
+          composer config --json audit.ignore '{"PKSA-jvt1-tggb-8w72": "Allow Symfony 8.0 compatibility tests in CI"}'
+        fi
+        composer update --no-interaction --no-progress
