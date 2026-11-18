@@ -28,8 +28,8 @@ final class YokaiSecurityTokenExtension extends Extension
         /** @var Config $config */
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
-        $loader->load('services.xml');
+        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+        $loader->load('services.php');
 
         $this->registerTokens($config, $container);
         $this->registerAliases($config, $container);

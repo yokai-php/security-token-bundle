@@ -91,7 +91,7 @@ final class DependencyInjectionTest extends TestCase
     {
         // for test purpose, all services are switched to public
         $this->container->addCompilerPass(new class implements CompilerPassInterface {
-            public function process(ContainerBuilder $container)
+            public function process(ContainerBuilder $container): void
             {
                 $container->findDefinition('yokai_security_token.configuration_registry')->setPublic(true);
                 $container->findDefinition('yokai_security_token.default_information_guesser')->setPublic(true);
