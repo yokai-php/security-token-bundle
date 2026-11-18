@@ -30,5 +30,12 @@ runs:
       env:
         COMPOSER_NO_SECURITY_BLOCKING: '1'
       run: |
-        composer require --no-update "symfony/framework-bundle:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/config:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/console:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/dependency-injection:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/framework-bundle:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/http-foundation:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/http-kernel:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/event-dispatcher:${{ inputs.symfony-version }}" --dev
+        composer require --quiet --no-update "symfony/yaml:${{ inputs.symfony-version }}" --dev
         composer update --no-interaction --no-progress --no-suggest
