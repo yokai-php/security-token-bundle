@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Yokai\SecurityTokenBundle\Tests\Generator;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Yokai\SecurityTokenBundle\Generator\Bin2HexTokenGenerator;
 use PHPUnit\Framework\TestCase;
+use Yokai\SecurityTokenBundle\Generator\Bin2HexTokenGenerator;
 
 final class Bin2HexTokenGeneratorTest extends TestCase
 {
