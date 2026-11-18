@@ -54,7 +54,7 @@ final class ArchiveTokenCommandTest extends KernelTestCase
         return $this->application->get('yokai:security-token:archive');
     }
 
-    protected function runCommand(Command $command, array $options = []): string
+    protected function executeArchiveCommand(Command $command, array $options = []): string
     {
         $input = ['command' => $command->getName()];
         foreach ($options as $name => $value) {
@@ -75,7 +75,7 @@ final class ArchiveTokenCommandTest extends KernelTestCase
             ->with(null)
             ->willReturn(10);
 
-        $output = $this->runCommand($command);
+        $output = $this->executeArchiveCommand($command);
 
         self::assertStringContainsString('Successfully archived 10 security token(s).', $output);
     }
@@ -89,7 +89,7 @@ final class ArchiveTokenCommandTest extends KernelTestCase
             ->with('init_password')
             ->willReturn(10);
 
-        $output = $this->runCommand($command, ['purpose' => 'init_password']);
+        $output = $this->executeArchiveCommand($command, ['purpose' => 'init_password']);
 
         self::assertStringContainsString('Successfully archived 10 security token(s).', $output);
     }
