@@ -134,7 +134,7 @@ final class DependencyInjectionTest extends TestCase
                 $loader = new Loader\YamlFileLoader($this->container, $locator);
                 break;
 
-                //todo nice to have : support more configuration format
+                // todo nice to have : support more configuration format
 
             default:
                 throw new \InvalidArgumentException('File ' . $path . ' is not supported.');
