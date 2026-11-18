@@ -24,11 +24,15 @@ runs:
         php-version: ${{ inputs.php-version }}
     - name: "Install dependencies with composer"
       shell: bash
+      env:
+        COMPOSER_NO_SECURITY_BLOCKING: '1'
       run: |
-        composer require --no-update "symfony/framework-bundle:${{ inputs.symfony-version }}"
-        # Symfony 8.0 has no patched release; keep testing compatibility with this series.
-        # This exception applies only to the CI installation, not to package consumers.
-        if [[ "${{ inputs.symfony-version }}" == "8.0.*" ]]; then
-          composer config --json audit.ignore '{"PKSA-jvt1-tggb-8w72": "Allow Symfony 8.0 compatibility tests in CI"}'
-        fi
+        composer require --quiet --no-update "symfony/config:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/console:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/dependency-injection:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/framework-bundle:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/http-foundation:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/http-kernel:${{ inputs.symfony-version }}"
+        composer require --quiet --no-update "symfony/event-dispatcher:${{ inputs.symfony-version }}" --dev
+        composer require --quiet --no-update "symfony/yaml:${{ inputs.symfony-version }}" --dev
         composer update --no-interaction --no-progress

@@ -11,6 +11,12 @@ use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
 use PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\NullableTypeDeclarationFixer;
+use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitSetUpTearDownVisibilityFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestAnnotationFixer;
+use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
+use PhpCsFixer\Fixer\Strict\StrictComparisonFixer;
+use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayListItemNewlineFixer;
@@ -33,11 +39,15 @@ return ECSConfig::configure()
         comments: true,
         docblocks: true,
         namespaces: true,
-        phpunit: true,
-        strict: true,
     )
     ->withRules([
+        // formerly the "phpunit" and "strict" prepared sets, removed in ECS 13.3
+        DeclareStrictTypesFixer::class,
         FinalClassFixer::class,
+        PhpUnitSetUpTearDownVisibilityFixer::class,
+        PhpUnitTestAnnotationFixer::class,
+        StrictComparisonFixer::class,
+        StrictParamFixer::class,
     ])
     ->withConfiguredRule(BlankLineBeforeStatementFixer::class, [
         'statements' => ['case', 'continue', 'declare', 'default', 'return', 'throw', 'try'],
@@ -74,6 +84,7 @@ return ECSConfig::configure()
         ArrayListItemNewlineFixer::class,
         ArrayOpenerAndCloserNewlineFixer::class,
         ExplicitStringVariableFixer::class,
+        GeneralPhpdocAnnotationRemoveFixer::class,
         SingleLineEmptyBodyFixer::class,
         StandaloneLineInMultilineArrayFixer::class,
         FinalClassFixer::class => [

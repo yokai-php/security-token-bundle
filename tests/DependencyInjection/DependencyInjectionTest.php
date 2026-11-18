@@ -91,7 +91,7 @@ final class DependencyInjectionTest extends TestCase
     {
         // for test purpose, all services are switched to public
         $this->container->addCompilerPass(new class implements CompilerPassInterface {
-            public function process(ContainerBuilder $container)
+            public function process(ContainerBuilder $container): void
             {
                 $container->findDefinition('yokai_security_token.configuration_registry')->setPublic(true);
                 $container->findDefinition('yokai_security_token.default_information_guesser')->setPublic(true);
@@ -134,7 +134,7 @@ final class DependencyInjectionTest extends TestCase
                 $loader = new Loader\YamlFileLoader($this->container, $locator);
                 break;
 
-                //todo nice to have : support more configuration format
+                // todo nice to have : support more configuration format
 
             default:
                 throw new \InvalidArgumentException('File ' . $path . ' is not supported.');

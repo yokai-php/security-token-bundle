@@ -132,6 +132,7 @@ final class DoctrineUserManagerTest extends TestCase
         $user = new class extends \stdClass implements Proxy {
             public function __load(): void
             {
+                throw new \LogicException('Resolving the user class must not initialize the proxy');
             }
 
             public function __isInitialized(): bool
@@ -148,6 +149,7 @@ final class DoctrineUserManagerTest extends TestCase
 
         self::assertSame(\stdClass::class, $manager->getClass($user));
         self::assertTrue($manager->supportsUser($user));
+        self::assertFalse($user->__isInitialized());
     }
 
     public function test_it_get_user_id(): void
