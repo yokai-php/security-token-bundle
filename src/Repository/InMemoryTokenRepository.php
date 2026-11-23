@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Yokai\SecurityTokenBundle\Tests\WithoutDoctrine;
+namespace Yokai\SecurityTokenBundle\Repository;
 
 use DateTimeInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
-use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
- * A token storage written by an application, as the documentation tells.
+ * Keeps tokens in memory, for the time of the PHP process: meant for tests.
+ *
+ * @author Yann Eugoné <eugone.yann@gmail.com>
  */
 final class InMemoryTokenRepository implements TokenRepositoryInterface
 {
     /**
-     * @var array<string, Token>
+     * @var array<string, Token> Tokens, indexed by purpose and value
      */
     private array $tokens = [];
 
@@ -82,16 +83,8 @@ final class InMemoryTokenRepository implements TokenRepositoryInterface
         return $count;
     }
 
-    /**
-     * @return list<Token>
-     */
-    public function all(): array
-    {
-        return \array_values($this->tokens);
-    }
-
     private function key(string $value, string $purpose): string
     {
-        return $purpose . '/' . $value;
+        return $purpose . "\0" . $value;
     }
 }

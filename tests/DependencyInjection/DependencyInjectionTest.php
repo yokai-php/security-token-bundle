@@ -27,6 +27,7 @@ use Yokai\SecurityTokenBundle\Generator\TokenGeneratorInterface;
 use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
 use Yokai\SecurityTokenBundle\Manager\TokenManagerInterface;
 use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
+use Yokai\SecurityTokenBundle\Repository\InMemoryTokenRepository;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 use Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle;
 
@@ -142,6 +143,18 @@ final class DependencyInjectionTest extends TestCase
             $this->mockClasses['token_repository_mock'],
             $this->container->findDefinition('yokai_security_token.token_repository')->getClass(),
         );
+    }
+
+    public function test_memory_storage_keeps_tokens_in_memory(): void
+    {
+        $this->container->loadFromExtension('yokai_security_token', ['storage' => 'memory']);
+        $this->container->compile();
+
+        self::assertSame(
+            InMemoryTokenRepository::class,
+            $this->container->findDefinition('yokai_security_token.token_repository')->getClass(),
+        );
+        self::assertSame([], $this->registeredMappingNamespaces());
     }
 
     public function test_orm_storage_is_not_registered_with_a_custom_token_repository(): void

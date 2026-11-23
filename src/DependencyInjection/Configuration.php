@@ -48,7 +48,9 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->append($this->getTokensNode())
                 ->scalarNode('storage')
-                    ->info('Token storage: "orm", or the id of a service implementing TokenRepositoryInterface')
+                    ->info(
+                        'Token storage: "orm", "memory", or the id of a service implementing TokenRepositoryInterface',
+                    )
                     ->defaultValue('orm')
                     ->cannotBeEmpty()
                 ->end()

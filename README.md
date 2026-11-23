@@ -29,6 +29,7 @@ Documentation
 - [Usage](doc/3-usage.md)
 - [Archive command](doc/4-archive-command.md)
 - [Events](doc/5-events.md)
+- [Token storage](doc/6-storage.md)
 
 
 MIT License

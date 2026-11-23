@@ -24,6 +24,11 @@ use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
  */
 final class YokaiSecurityTokenExtension extends Extension
 {
+    /**
+     * Storages provided by the bundle, any other value is a service id
+     */
+    private const BUILTIN_STORAGES = ['orm', 'memory'];
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         /** @var Config $config */
@@ -62,6 +67,10 @@ final class YokaiSecurityTokenExtension extends Extension
             $loader->load('storage/orm.php');
         }
 
+        if ($config['storage'] === 'memory') {
+            $loader->load('storage/memory.php');
+        }
+
         $this->registerTokens($config, $container);
         $this->registerAliases($config, $container);
         $this->registerAutoconfigureAliases($container);
@@ -91,8 +100,8 @@ final class YokaiSecurityTokenExtension extends Extension
     private function registerAliases(array $config, ContainerBuilder $container): void
     {
         $services = $config['services'];
-        $services['token_repository'] = $config['storage'] === 'orm'
-            ? 'yokai_security_token.orm_token_repository'
+        $services['token_repository'] = \in_array($config['storage'], self::BUILTIN_STORAGES, true)
+            ? \sprintf('yokai_security_token.%s_token_repository', $config['storage'])
             : $config['storage'];
 
         foreach ($services as $name => $service) {
