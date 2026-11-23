@@ -33,6 +33,13 @@ Prefer the `yokai_security_token.token_repository` alias, or `TokenRepositoryInt
 
 The Doctrine ORM storage can now use another entity manager than the default one, with the `orm.entity_manager` option.
 
+## Doctrine mapping
+
+The Doctrine mapping files moved from `config/doctrine/` to `config/mapping/`,
+so that DoctrineBundle `auto_mapping` does not map token entities anymore:
+the bundle registers them itself, in the configured entity manager, and only with the `orm` storage.
+If you referenced these files in your Doctrine configuration, remove that configuration.
+
 ## Token generator
 
 `Yokai\SecurityTokenBundle\Generator\OpenSslTokenGenerator` and its service

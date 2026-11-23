@@ -45,7 +45,7 @@ final class YokaiSecurityTokenBundle extends Bundle
         if (\class_exists(DoctrineOrmMappingsPass::class)) {
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver(
-                    [\realpath(__DIR__ . '/../config/doctrine') => 'Yokai\SecurityTokenBundle\Entity'],
+                    [\realpath(__DIR__ . '/../config/mapping') => 'Yokai\SecurityTokenBundle\Entity'],
                     ['yokai_security_token.orm.entity_manager'],
                     'yokai_security_token.orm_storage',
                 ),
