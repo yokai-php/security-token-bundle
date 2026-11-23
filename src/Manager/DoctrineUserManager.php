@@ -17,7 +17,7 @@ final class DoctrineUserManager implements UserManagerInterface
 {
     public function __construct(
         /**
-         * @var ManagerRegistry $doctrine The doctrine registry
+         * @var ManagerRegistry The doctrine registry
          */
         private readonly ManagerRegistry $doctrine,
     ) {
