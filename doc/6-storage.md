@@ -20,17 +20,6 @@ yokai_security_token:
 This storage requires `doctrine/orm` and `doctrine/doctrine-bundle`.
 
 
-### In memory
-
-Tokens are kept in memory, and lost at the end of the PHP process.
-This storage is meant for tests, typically in `config/packages/test/yokai_security_token.yaml`:
-
-```yaml
-yokai_security_token:
-    storage: memory
-```
-
-
 ### Your own storage
 
 Create a service that implements

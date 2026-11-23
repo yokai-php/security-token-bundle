@@ -8,10 +8,11 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Yokai\SecurityTokenBundle\Tests\Repository\InMemoryTokenRepository;
 use Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle;
 
 /**
- * An application that stores tokens without Doctrine.
+ * An application that stores tokens in its own repository, without Doctrine.
  */
 final class Kernel extends BaseKernel
 {
@@ -28,9 +29,10 @@ final class Kernel extends BaseKernel
         $loader->load(static function (ContainerBuilder $container): void {
             $container->loadFromExtension('framework', ['test' => true, 'secret' => 'test']);
             $container->loadFromExtension('yokai_security_token', [
-                'storage' => 'memory',
+                'storage' => InMemoryTokenRepository::class,
                 'tokens' => ['reset_password' => null],
             ]);
+            $container->register(InMemoryTokenRepository::class, InMemoryTokenRepository::class);
             $container->register(UserManager::class, UserManager::class)
                 ->addTag('yokai_security_token.user_manager');
         });

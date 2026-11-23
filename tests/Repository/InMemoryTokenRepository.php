@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Yokai\SecurityTokenBundle\Repository;
+namespace Yokai\SecurityTokenBundle\Tests\Repository;
 
 use DateTimeInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
+use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
- * Keeps tokens in memory, for the time of the PHP process: meant for tests.
- *
- * @author Yann Eugoné <eugone.yann@gmail.com>
+ * Keeps tokens in memory: checks the contract test case without a database,
+ * and serves as the storage of an application without Doctrine.
  */
 final class InMemoryTokenRepository implements TokenRepositoryInterface
 {
