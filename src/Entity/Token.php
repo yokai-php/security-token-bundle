@@ -14,7 +14,7 @@ use LogicException;
  */
 class Token
 {
-    private int|null $id;
+    private int|null $id = null;
 
     /**
      * @var class-string
@@ -185,7 +185,7 @@ class Token
     {
         if ($this->isConsumed()) {
             throw new LogicException(
-                \sprintf('Token "%d" is already consumed.', $this->id),
+                \sprintf('Token for purpose "%s" is already consumed.', $this->purpose),
             );
         }
 
