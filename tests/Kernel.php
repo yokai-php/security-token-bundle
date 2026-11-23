@@ -23,7 +23,9 @@ final class Kernel extends BaseKernel
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__ . '/app/config.yml');
+        // an environment may have its own configuration, replacing the default one
+        $config = __DIR__ . '/app/config_' . $this->environment . '.yml';
+        $loader->load(\is_file($config) ? $config : __DIR__ . '/app/config.yml');
     }
 
     public function getProjectDir(): string

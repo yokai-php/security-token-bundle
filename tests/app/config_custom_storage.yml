@@ -1,0 +1,17 @@
+# Tokens stored in a custom repository, while the application uses Doctrine with auto mapping
+framework:
+    test: true
+    secret: test
+
+doctrine:
+    dbal:
+        driver: pdo_sqlite
+        memory: true
+    orm:
+        auto_mapping: true
+
+yokai_security_token:
+    storage: Yokai\SecurityTokenBundle\Tests\Repository\InMemoryTokenRepository
+
+services:
+    Yokai\SecurityTokenBundle\Tests\Repository\InMemoryTokenRepository: ~
