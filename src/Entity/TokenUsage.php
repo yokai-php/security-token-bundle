@@ -8,7 +8,7 @@ use DateTime;
 
 class TokenUsage
 {
-    private int|null $id;
+    private int|null $id = null;
 
     private Token $token;
 

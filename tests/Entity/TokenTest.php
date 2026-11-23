@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Tests\Entity;
 
+use LogicException;
 use PHPUnit\Framework\TestCase;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
@@ -44,5 +45,24 @@ final class TokenTest extends TestCase
         self::assertCount(3, $token->getUsages());
         self::assertSame(3, $token->getCountUsages());
         self::assertSame([3], $token->getLastUsage()->getInformation());
+    }
+
+    public function test_it_has_no_id_until_stored_by_doctrine(): void
+    {
+        $token = new Token('string', 'jdoe', 'unique', 'reset_password', '+1 day', '+1 month');
+        $token->consume([]);
+
+        self::assertNull($token->getId());
+        self::assertNull($token->getLastUsage()?->getId());
+    }
+
+    public function test_it_cannot_be_consumed_beyond_allowed_usages(): void
+    {
+        $token = new Token('string', 'jdoe', 'unique', 'reset_password', '+1 day', '+1 month', 1);
+        $token->consume([]);
+
+        $this->expectException(LogicException::class);
+
+        $token->consume([]);
     }
 }
