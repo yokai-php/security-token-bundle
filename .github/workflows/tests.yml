@@ -34,6 +34,24 @@ jobs:
       - name: "Run tests with phpunit/phpunit"
         run: vendor/bin/phpunit
 
+  phpunit-without-doctrine:
+    name: "PHPUnit without Doctrine"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Setup env & install dependencies"
+        uses: ./.github/actions/install
+        with:
+          php-version: '8.4'
+          symfony-version: '8.0.*'
+      - name: "Remove optional Doctrine packages"
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: '1'
+        run: composer remove --dev --no-interaction --no-progress doctrine/orm doctrine/doctrine-bundle doctrine/persistence
+      - name: "Run tests of an application without Doctrine with phpunit/phpunit"
+        run: vendor/bin/phpunit tests/WithoutDoctrine
+
   phpstan:
     name: "PhpStan"
     runs-on: ubuntu-latest

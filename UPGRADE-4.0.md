@@ -4,8 +4,34 @@
 
 - PHP `>= 8.1` is now required.
 - Symfony `^6.4`, `^7.4` or `^8.0` is now required.
-- Doctrine ORM `^3.0` is now required (ORM 2.x is not supported anymore).
+- Doctrine ORM `^3.0` is required by the default `orm` storage (ORM 2.x is not supported anymore).
 - `ext-openssl` is not required anymore.
+
+## Doctrine is optional
+
+`doctrine/orm` and `doctrine/doctrine-bundle` are not required by the bundle anymore.
+The default `orm` storage still uses them: if your project does not require them already, add them:
+
+```bash
+composer require doctrine/orm doctrine/doctrine-bundle
+```
+
+## Token storage
+
+The `services.token_repository` option was replaced by `storage`, which is either `orm` (default),
+or the id of your own `TokenRepositoryInterface` service:
+
+```diff
+ yokai_security_token:
+-    services:
+-        token_repository: App\Security\Token\RedisTokenRepository
++    storage: App\Security\Token\RedisTokenRepository
+```
+
+The `yokai_security_token.default_token_repository` service was renamed `yokai_security_token.orm_token_repository`.
+Prefer the `yokai_security_token.token_repository` alias, or `TokenRepositoryInterface` for autowiring.
+
+The Doctrine ORM storage can now use another entity manager than the default one, with the `orm.entity_manager` option.
 
 ## Token generator
 
@@ -106,4 +132,4 @@ catching it still works, but it cannot be thrown directly anymore.
 ## Service definitions
 
 Services are now defined in `config/services.php` (was `config/services.xml`).
-Service ids are unchanged, apart from the token generator described above.
+Service ids are unchanged, apart from the token generator and the ORM token repository described above.
