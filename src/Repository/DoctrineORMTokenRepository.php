@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Repository;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -57,21 +58,29 @@ final class DoctrineORMTokenRepository implements TokenRepositoryInterface
 
     public function findExisting(string $userClass, string $userId, string $purpose): Token|null
     {
-        $token = $this->repository->findOneBy(
-            [
-                'userClass' => $userClass,
-                'userId' => $userId,
-                'purpose' => $purpose,
-            ],
-        );
-        if (!$token instanceof Token) {
-            return null;
-        }
-        if ($token->isConsumed() || $token->isExpired()) {
-            return null;
+        /** @var list<Token> $tokens */
+        $tokens = $this->repository->createQueryBuilder('token')
+            ->where('token.userClass = :userClass')
+            ->andWhere('token.userId = :userId')
+            ->andWhere('token.purpose = :purpose')
+            ->andWhere('token.expiresAt > :now')
+            ->orderBy('token.createdAt', 'DESC')
+            ->setParameter('userClass', $userClass)
+            ->setParameter('userId', $userId)
+            ->setParameter('purpose', $purpose)
+            ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult()
+        ;
+
+        // consumption depends on usages count, which is easier to check on the object
+        foreach ($tokens as $token) {
+            if (!$token->isConsumed()) {
+                return $token;
+            }
         }
 
-        return $token;
+        return null;
     }
 
     public function create(Token $token): void
