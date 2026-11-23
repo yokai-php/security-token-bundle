@@ -191,6 +191,23 @@ final class DependencyInjectionTest extends TestCase
         self::assertSame(['Yokai\\SecurityTokenBundle\\Entity'], $this->registeredMappingNamespaces('main'));
     }
 
+    public function test_orm_storage_tells_when_the_entity_manager_does_not_exist(): void
+    {
+        $this->container->setParameter(
+            'doctrine.entity_managers',
+            ['default' => 'doctrine.orm.default_entity_manager'],
+        );
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(
+            'The "tokens" entity manager, configured with "yokai_security_token.orm.entity_manager", does not exist. '
+            . 'Known entity managers: "default".',
+        );
+
+        $this->container->loadFromExtension('yokai_security_token', ['orm' => ['entity_manager' => 'tokens']]);
+        $this->container->compile();
+    }
+
     public function test_orm_storage_can_use_another_entity_manager(): void
     {
         // public, so that the compiler does not inline them

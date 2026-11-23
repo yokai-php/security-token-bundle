@@ -6,9 +6,11 @@ namespace Yokai\SecurityTokenBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\Console\Application;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Yokai\DependencyInjection\CompilerPass\ArgumentRegisterTaggedServicesCompilerPass;
+use Yokai\SecurityTokenBundle\DependencyInjection\Compiler\CheckOrmEntityManagerPass;
 use Yokai\SecurityTokenBundle\Manager\UserManagerInterface;
 
 /**
@@ -43,6 +45,8 @@ final class YokaiSecurityTokenBundle extends Bundle
 
         // DoctrineBundle is optional: only needed by the "orm" storage
         if (\class_exists(DoctrineOrmMappingsPass::class)) {
+            // runs before mapping registration, which fails with an obscure message on a missing entity manager
+            $container->addCompilerPass(new CheckOrmEntityManagerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver(
                     [\realpath(__DIR__ . '/../config/mapping') => 'Yokai\SecurityTokenBundle\Entity'],
