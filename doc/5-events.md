@@ -94,4 +94,4 @@ class LogSecurityTokenErrors implements EventSubscriberInterface
 
 ---
 
-« [Archive command](4-archive-command.md) • [README](../README.md) »
+« [Archive command](4-archive-command.md) • [Token storage](6-storage.md) »

@@ -20,7 +20,7 @@ final class WithoutDoctrineTest extends KernelTestCase
         \restore_exception_handler();
     }
 
-    public function testTokenLifecycleWorksWithACustomStorage(): void
+    public function testTokenLifecycleWorksWithoutDoctrine(): void
     {
         $container = self::bootKernel()->getContainer();
         $tokens = $container->get('yokai_security_token.token_manager');
@@ -34,13 +34,14 @@ final class WithoutDoctrineTest extends KernelTestCase
         $tokens->get('reset_password', $created->getValue());
     }
 
-    public function testArchivingWorksWithACustomStorage(): void
+    public function testArchivingWorksWithoutDoctrine(): void
     {
         $container = self::bootKernel()->getContainer();
-        $container->get('yokai_security_token.token_manager')->create('reset_password', new User('42'));
+        $tokens = $container->get('yokai_security_token.token_manager');
+        $created = $tokens->create('reset_password', new User('42'));
 
         // tokens are kept for a month by default: nothing to archive yet
         self::assertSame(0, $container->get('yokai_security_token.archivist')->archive());
-        self::assertCount(1, $container->get(InMemoryTokenRepository::class)->all());
+        self::assertSame($created, $tokens->get('reset_password', $created->getValue()));
     }
 }

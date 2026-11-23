@@ -16,7 +16,7 @@ Tokens are stored with Doctrine ORM by default, which is not installed along wit
 $ composer require doctrine/orm doctrine/doctrine-bundle
 ```
 
-> **Note :** You can store tokens elsewhere, see [token storage](2-configuration.md#token-storage).
+> **Note :** You can store tokens elsewhere, see [token storage](6-storage.md).
 
 
 ### Enable the bundle

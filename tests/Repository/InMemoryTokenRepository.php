@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yokai\SecurityTokenBundle\Tests\WithoutDoctrine;
+namespace Yokai\SecurityTokenBundle\Tests\Repository;
 
 use DateTimeInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
@@ -12,12 +12,13 @@ use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
- * A token storage written by an application, as the documentation tells.
+ * Keeps tokens in memory: checks the contract test case without a database,
+ * and serves as the storage of an application without Doctrine.
  */
 final class InMemoryTokenRepository implements TokenRepositoryInterface
 {
     /**
-     * @var array<string, Token>
+     * @var array<string, Token> Tokens, indexed by purpose and value
      */
     private array $tokens = [];
 
@@ -82,16 +83,8 @@ final class InMemoryTokenRepository implements TokenRepositoryInterface
         return $count;
     }
 
-    /**
-     * @return list<Token>
-     */
-    public function all(): array
-    {
-        return \array_values($this->tokens);
-    }
-
     private function key(string $value, string $purpose): string
     {
-        return $purpose . '/' . $value;
+        return $purpose . "\0" . $value;
     }
 }

@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Yokai\SecurityTokenBundle\Tests\Repository\InMemoryTokenRepository;
 use Yokai\SecurityTokenBundle\YokaiSecurityTokenBundle;
 
 /**
@@ -31,7 +32,7 @@ final class Kernel extends BaseKernel
                 'storage' => InMemoryTokenRepository::class,
                 'tokens' => ['reset_password' => null],
             ]);
-            $container->register(InMemoryTokenRepository::class, InMemoryTokenRepository::class)->setPublic(true);
+            $container->register(InMemoryTokenRepository::class, InMemoryTokenRepository::class);
             $container->register(UserManager::class, UserManager::class)
                 ->addTag('yokai_security_token.user_manager');
         });
