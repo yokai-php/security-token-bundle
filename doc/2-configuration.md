@@ -27,6 +27,35 @@ Default values fallback to :
 - `unique` : `false`
 
 
+### Token storage
+
+Tokens are stored with Doctrine ORM by default, in the default entity manager.
+You can choose another entity manager:
+
+```yaml
+# config/packages/yokai_security_token.yaml
+yokai_security_token:
+    storage: orm
+    orm:
+        entity_manager: tokens
+```
+
+You can also store tokens elsewhere, without Doctrine.
+Create a service that implements
+[`Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface`](../src/Repository/TokenRepositoryInterface.php),
+and set its id as the storage:
+
+```yaml
+# config/packages/yokai_security_token.yaml
+yokai_security_token:
+    storage: App\Security\Token\RedisTokenRepository
+```
+
+> **Note :** Without Doctrine, the bundle cannot find users from tokens:
+> register your own [`UserManagerInterface`](../src/Manager/UserManagerInterface.php) service,
+> with the `yokai_security_token.user_manager` tag.
+
+
 ---
 
 « [Installation](1-installation.md) • [Usage](3-usage.md) »

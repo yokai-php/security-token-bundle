@@ -35,17 +35,22 @@ final class YokaiSecurityTokenBundle extends Bundle
             UserManagerInterface::class,
             0,
         );
-        $registerEntityMapping = DoctrineOrmMappingsPass::createXmlMappingDriver(
-            [\realpath(__DIR__ . '/../config/doctrine') => 'Yokai\SecurityTokenBundle\Entity'],
-            ['doctrine.orm.entity_manager'],
-            false,
-        );
 
         $container
             ->addCompilerPass($registerTokenConfiguration)
             ->addCompilerPass($registerUserManager)
-            ->addCompilerPass($registerEntityMapping)
         ;
+
+        // DoctrineBundle is optional: only needed by the "orm" storage
+        if (\class_exists(DoctrineOrmMappingsPass::class)) {
+            $container->addCompilerPass(
+                DoctrineOrmMappingsPass::createXmlMappingDriver(
+                    [\realpath(__DIR__ . '/../config/doctrine') => 'Yokai\SecurityTokenBundle\Entity'],
+                    ['yokai_security_token.orm.entity_manager'],
+                    'yokai_security_token.orm_storage',
+                ),
+            );
+        }
     }
 
     public function registerCommands(Application $application): void

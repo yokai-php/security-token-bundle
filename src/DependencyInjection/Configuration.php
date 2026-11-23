@@ -12,6 +12,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * @author Yann Eugoné <eugone.yann@gmail.com>
  *
  * @phpstan-type Config array{
+ *      storage: string,
+ *      orm: array{
+ *          entity_manager: string|null,
+ *      },
  *      tokens: array<
  *          array{
  *              generator: string,
@@ -24,7 +28,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *      services: array{
  *          information_guesser: string,
  *          token_factory: string,
- *          token_repository: string,
  *          token_manager: string,
  *          archivist: string,
  *      },
@@ -44,6 +47,21 @@ final class Configuration implements ConfigurationInterface
         $root
             ->children()
                 ->append($this->getTokensNode())
+                ->scalarNode('storage')
+                    ->info('Token storage: "orm", or the id of a service implementing TokenRepositoryInterface')
+                    ->defaultValue('orm')
+                    ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('orm')
+                    ->info('Options of the "orm" storage')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('entity_manager')
+                            ->info('Name of the Doctrine entity manager holding tokens, the default one if null')
+                            ->defaultNull()
+                        ->end()
+                    ->end()
+                ->end()
                 ->append($this->getServicesNode())
             ->end()
         ;
@@ -101,9 +119,6 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('token_factory')
                     ->defaultValue('yokai_security_token.default_token_factory')
-                ->end()
-                ->scalarNode('token_repository')
-                    ->defaultValue('yokai_security_token.default_token_repository')
                 ->end()
                 ->scalarNode('token_manager')
                     ->defaultValue('yokai_security_token.default_token_manager')

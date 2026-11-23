@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Generator;
+use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -41,6 +42,11 @@ final class DependencyInjectionTest extends TestCase
      */
     private $container;
 
+    /**
+     * @var array<string, class-string>
+     */
+    private array $mockClasses = [];
+
     protected function setUp(): void
     {
         $bundle = new YokaiSecurityTokenBundle();
@@ -61,7 +67,7 @@ final class DependencyInjectionTest extends TestCase
         $this->container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
         $this->container->setDefinition(
             'doctrine.orm.default_metadata_driver',
-            new Definition(MappingDriverChain::class),
+            (new Definition(MappingDriverChain::class))->setPublic(true),
         );
         $this->container->setDefinition('doctrine.orm.default_configuration', new Definition(Configuration::class));
         $this->container->setDefinition('request_stack', new Definition(RequestStack::class));
@@ -79,7 +85,8 @@ final class DependencyInjectionTest extends TestCase
         ];
         foreach ($mocks as $id => $class) {
             $service = $this->createMock($class);
-            $this->container->setDefinition($id, new Definition(\get_class($service)));
+            $this->mockClasses[$id] = \get_class($service);
+            $this->container->setDefinition($id, new Definition($this->mockClasses[$id]));
         }
 
         $this->container->registerExtension($bundle->getContainerExtension());
@@ -96,7 +103,9 @@ final class DependencyInjectionTest extends TestCase
                 $container->findDefinition('yokai_security_token.configuration_registry')->setPublic(true);
                 $container->findDefinition('yokai_security_token.default_information_guesser')->setPublic(true);
                 $container->findDefinition('yokai_security_token.default_token_factory')->setPublic(true);
-                $container->findDefinition('yokai_security_token.default_token_repository')->setPublic(true);
+                if ($container->hasDefinition('yokai_security_token.orm_token_repository')) {
+                    $container->findDefinition('yokai_security_token.orm_token_repository')->setPublic(true);
+                }
                 $container->findDefinition('yokai_security_token.default_token_manager')->setPublic(true);
                 $container->findDefinition('yokai_security_token.user_manager')->setPublic(true);
                 $container->findDefinition('yokai_security_token.delete_archivist')->setPublic(true);
@@ -124,6 +133,99 @@ final class DependencyInjectionTest extends TestCase
         }
     }
 
+    public function test_storage_can_be_a_custom_token_repository_service(): void
+    {
+        $this->container->loadFromExtension('yokai_security_token', ['storage' => 'token_repository_mock']);
+        $this->container->compile();
+
+        self::assertSame(
+            $this->mockClasses['token_repository_mock'],
+            $this->container->findDefinition('yokai_security_token.token_repository')->getClass(),
+        );
+    }
+
+    public function test_orm_storage_is_not_registered_with_a_custom_token_repository(): void
+    {
+        $this->container->loadFromExtension('yokai_security_token', ['storage' => 'token_repository_mock']);
+        $this->container->compile();
+
+        // private services unused at compile time are removed: look into removed ids as well
+        $registered = [...$this->container->getServiceIds(), ...\array_keys($this->container->getRemovedIds())];
+        self::assertNotContains('yokai_security_token.orm_token_repository', $registered);
+        self::assertNotContains('yokai_security_token.token_entity_repository', $registered);
+        self::assertSame([], $this->registeredMappingNamespaces());
+    }
+
+    public function test_orm_storage_registers_token_entity_mapping(): void
+    {
+        $this->container->loadFromExtension('yokai_security_token', []);
+        $this->container->compile();
+
+        self::assertSame(['Yokai\SecurityTokenBundle\Entity'], $this->registeredMappingNamespaces());
+    }
+
+    public function test_orm_storage_requires_doctrine_bundle(): void
+    {
+        $bundles = $this->container->getParameter('kernel.bundles');
+        unset($bundles['DoctrineBundle']);
+        $this->container->setParameter('kernel.bundles', $bundles);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The "orm" token storage requires DoctrineBundle');
+
+        $this->container->loadFromExtension('yokai_security_token', []);
+        $this->container->compile();
+    }
+
+    public function test_orm_storage_follows_the_default_entity_manager_whatever_its_name(): void
+    {
+        $this->container->setParameter('doctrine.default_entity_manager', 'main');
+        $this->container->setDefinition(
+            'doctrine.orm.main_metadata_driver',
+            (new Definition(MappingDriverChain::class))->setPublic(true),
+        );
+
+        $this->container->loadFromExtension('yokai_security_token', []);
+        $this->container->compile();
+
+        self::assertSame(['Yokai\\SecurityTokenBundle\\Entity'], $this->registeredMappingNamespaces('main'));
+    }
+
+    public function test_orm_storage_can_use_another_entity_manager(): void
+    {
+        // public, so that the compiler does not inline them
+        $this->container->setDefinition(
+            'doctrine.orm.tokens_entity_manager',
+            (new Definition(EntityManager::class))->setPublic(true),
+        );
+        $this->container->setDefinition(
+            'doctrine.orm.tokens_metadata_driver',
+            (new Definition(MappingDriverChain::class))->setPublic(true),
+        );
+
+        $this->container->loadFromExtension('yokai_security_token', ['orm' => ['entity_manager' => 'tokens']]);
+        $this->container->compile();
+
+        self::assertSame(
+            'doctrine.orm.tokens_entity_manager',
+            (string)$this->container->findDefinition('yokai_security_token.token_repository')->getArgument(0),
+        );
+        self::assertSame(['Yokai\SecurityTokenBundle\Entity'], $this->registeredMappingNamespaces('tokens'));
+        self::assertSame([], $this->registeredMappingNamespaces('default'));
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function registeredMappingNamespaces(string $entityManager = 'default'): array
+    {
+        $calls = $this->container
+            ->getDefinition(\sprintf('doctrine.orm.%s_metadata_driver', $entityManager))
+            ->getMethodCalls();
+
+        return \array_values(\array_map(static fn(array $call): string => $call[1][1], $calls));
+    }
+
     protected function loadConfiguration(string $resource): void
     {
         $locator = new FileLocator(__DIR__ . '/configuration/');
@@ -148,7 +250,7 @@ final class DependencyInjectionTest extends TestCase
         $defaultAliases = [
             'yokai_security_token.information_guesser' => 'yokai_security_token.default_information_guesser',
             'yokai_security_token.token_factory' => 'yokai_security_token.default_token_factory',
-            'yokai_security_token.token_repository' => 'yokai_security_token.default_token_repository',
+            'yokai_security_token.token_repository' => 'yokai_security_token.orm_token_repository',
             'yokai_security_token.token_manager' => 'yokai_security_token.default_token_manager',
             'yokai_security_token.archivist' => 'yokai_security_token.delete_archivist',
         ];

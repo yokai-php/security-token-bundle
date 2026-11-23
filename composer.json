@@ -12,16 +12,25 @@
         "php": "^8.1",
         "symfony/framework-bundle": "^6.4|^7.4|^8.0",
         "doctrine/collections": "^2.0|^3.0",
-        "doctrine/persistence": "^3.0|^4.0",
-        "doctrine/orm": "^3.0",
-        "doctrine/doctrine-bundle": "^2.0|^3.0",
         "yokai/dependency-injection": "^1.0"
     },
     "require-dev": {
+        "doctrine/doctrine-bundle": "^2.0|^3.0",
+        "doctrine/orm": "^3.0",
+        "doctrine/persistence": "^3.0|^4.0",
         "phpunit/phpunit": "^10.0|12.0",
         "symfony/yaml": "^6.4|^7.4|^8.0",
         "phpstan/phpstan": "^2.1",
         "symplify/easy-coding-standard": "^13.0"
+    },
+    "suggest": {
+        "doctrine/doctrine-bundle": "To store tokens with the \"orm\" storage (default), along with doctrine/orm",
+        "doctrine/orm": "To store tokens with the \"orm\" storage (default), along with doctrine/doctrine-bundle"
+    },
+    "conflict": {
+        "doctrine/doctrine-bundle": "<2.0",
+        "doctrine/orm": "<3.0",
+        "doctrine/persistence": "<3.0"
     },
     "autoload": {
         "psr-4": { "Yokai\\SecurityTokenBundle\\": "src/" }

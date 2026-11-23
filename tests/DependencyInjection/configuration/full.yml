@@ -9,9 +9,9 @@ yokai_security_token:
             generator: generator_mock
             duration: +2 monthes
             usages: 3
+    storage: token_repository_mock
     services:
         information_guesser: information_guesser_mock
         token_factory: token_factory_mock
-        token_repository: token_repository_mock
         token_manager: token_manager_mock
         archivist: archivist_mock

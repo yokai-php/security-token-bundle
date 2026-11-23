@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\DependencyInjection;
 
+use LogicException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -30,6 +31,36 @@ final class YokaiSecurityTokenExtension extends Extension
 
         $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $loader->load('services.php');
+
+        /** @var array<string, class-string> $bundles */
+        $bundles = $container->getParameter('kernel.bundles');
+        $doctrine = isset($bundles['DoctrineBundle']);
+        if ($doctrine) {
+            $loader->load('doctrine.php');
+        }
+
+        if ($config['storage'] === 'orm') {
+            if (!$doctrine) {
+                throw new LogicException(
+                    'The "orm" token storage requires DoctrineBundle. '
+                    . 'Install doctrine/orm and doctrine/doctrine-bundle, '
+                    . 'or set "yokai_security_token.storage" to the id of your own token repository service.',
+                );
+            }
+
+            // Doctrine mapping registration is enabled by the existence of this parameter, whatever its value
+            $container->setParameter('yokai_security_token.orm_storage', true);
+            $entityManager = $config['orm']['entity_manager'];
+            if ($entityManager !== null) {
+                // without this parameter, Doctrine mapping is registered on the default entity manager
+                $container->setParameter('yokai_security_token.orm.entity_manager', $entityManager);
+            }
+            $container->setAlias(
+                'yokai_security_token.orm.entity_manager',
+                \sprintf('doctrine.orm.%s_entity_manager', $entityManager ?? 'default'),
+            );
+            $loader->load('storage/orm.php');
+        }
 
         $this->registerTokens($config, $container);
         $this->registerAliases($config, $container);
@@ -59,7 +90,12 @@ final class YokaiSecurityTokenExtension extends Extension
      */
     private function registerAliases(array $config, ContainerBuilder $container): void
     {
-        foreach ($config['services'] as $name => $service) {
+        $services = $config['services'];
+        $services['token_repository'] = $config['storage'] === 'orm'
+            ? 'yokai_security_token.orm_token_repository'
+            : $config['storage'];
+
+        foreach ($services as $name => $service) {
             $alias = $container->setAlias(\sprintf('yokai_security_token.%s', $name), $service);
             $alias->setPublic(true);
         }
