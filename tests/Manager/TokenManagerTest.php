@@ -249,7 +249,30 @@ final class TokenManagerTest extends TestCase
         self::assertTrue($token->isConsumed());
         self::assertNotNull($usage = $token->getLastUsage());
         self::assertSame(['some', 'precious', 'information'], $usage->getInformation());
-        self::assertInstanceOf(\DateTime::class, $usage->getCreatedAt());
+        self::assertInstanceOf(\DateTimeImmutable::class, $usage->getCreatedAt());
+    }
+
+    public function test_it_consume_token_at_a_given_date(): void
+    {
+        $token = new Token('string', 'jdoe', 'unique-token', 'reset-password', '+1 day', '+1 month');
+        $at = new \DateTimeImmutable('2026-01-01 10:00:00');
+
+        $this->informationGuesser->method('get')->willReturn([]);
+        $dispatchedAt = [];
+        $this->eventDispatcher->method('dispatch')->willReturnCallback(
+            function (object $event) use (&$dispatchedAt): object {
+                if ($event instanceof ConsumeTokenEvent) {
+                    $dispatchedAt[] = $event->at;
+                }
+
+                return $event;
+            },
+        );
+
+        $this->manager()->consume($token, $at);
+
+        self::assertEquals([$at], $dispatchedAt);
+        self::assertSame('2026-01-01 10:00:00', $token->getLastUsage()?->getCreatedAt()->format('Y-m-d H:i:s'));
     }
 
     public function test_it_extract_user_from_token(): void

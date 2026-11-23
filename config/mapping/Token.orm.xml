@@ -25,10 +25,10 @@
         <field name="value"              column="value"               type="string"   nullable="false" length="255"/>
         <field name="purpose"            column="purpose"             type="string"   nullable="false" length="255"/>
         <field name="payload"            column="payload"             type="json"     nullable="false"             />
-        <field name="createdAt"          column="created_at"          type="datetime" nullable="false"             />
+        <field name="createdAt"          column="created_at"          type="datetime_immutable" nullable="false"             />
         <field name="createdInformation" column="created_information" type="json"     nullable="false"             />
-        <field name="expiresAt"          column="expires_at"          type="datetime" nullable="false"             />
-        <field name="keepUntil"          column="keep_until"          type="datetime" nullable="false"             />
+        <field name="expiresAt"          column="expires_at"          type="datetime_immutable" nullable="false"             />
+        <field name="keepUntil"          column="keep_until"          type="datetime_immutable" nullable="false"             />
         <field name="allowedUsages"      column="allowed_usages"      type="integer"  nullable="false"             />
 
         <one-to-many field="usages" target-entity="Yokai\SecurityTokenBundle\Entity\TokenUsage" mapped-by="token">

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Manager;
 
-use DateTime;
+use DateTimeInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\EventDispatcher;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
@@ -64,7 +64,7 @@ final class TokenManager implements TokenManagerInterface
         return $token;
     }
 
-    public function consume(Token $token, DateTime|null $at = null): void
+    public function consume(Token $token, DateTimeInterface|null $at = null): void
     {
         $event = $this->eventDispatcher->consumeToken($token, $at, $this->informationGuesser->get());
 

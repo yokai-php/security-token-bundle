@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Test;
 
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
@@ -125,7 +125,7 @@ abstract class TokenRepositoryTestCase extends TestCase
         $repository->create($this->token('kept', 'reset_password', duration: '-2 days', keep: '+3 days'));
         $this->refresh();
 
-        self::assertSame(1, $repository->purge(new DateTime()));
+        self::assertSame(1, $repository->purge(new DateTimeImmutable()));
         $this->refresh();
 
         self::assertFalse($repository->exists('outdated', 'reset_password'));
@@ -139,7 +139,7 @@ abstract class TokenRepositoryTestCase extends TestCase
         $repository->create($this->token('outdated', 'verify_email', duration: '-2 days', keep: '+1 day'));
         $this->refresh();
 
-        self::assertSame(1, $repository->purge(new DateTime(), 'verify_email'));
+        self::assertSame(1, $repository->purge(new DateTimeImmutable(), 'verify_email'));
         $this->refresh();
 
         self::assertTrue($repository->exists('outdated', 'reset_password'));

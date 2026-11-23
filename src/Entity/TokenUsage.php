@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Entity;
 
-use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 
 class TokenUsage
 {
@@ -12,7 +13,7 @@ class TokenUsage
 
     private Token $token;
 
-    private DateTime $createdAt;
+    private DateTimeImmutable $createdAt;
 
     /**
      * @var array<string, mixed>
@@ -22,11 +23,13 @@ class TokenUsage
     /**
      * @param array<string, mixed> $information
      */
-    public function __construct(Token $token, array $information, DateTime|null $createdAt = null)
+    public function __construct(Token $token, array $information, DateTimeInterface|null $createdAt = null)
     {
         $this->token = $token;
         $this->information = $information;
-        $this->createdAt = $createdAt ?: new DateTime();
+        $this->createdAt = $createdAt !== null ? DateTimeImmutable::createFromInterface(
+            $createdAt,
+        ) : new DateTimeImmutable();
     }
 
     public function getId(): int|null
@@ -39,7 +42,7 @@ class TokenUsage
         return $this->token;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }

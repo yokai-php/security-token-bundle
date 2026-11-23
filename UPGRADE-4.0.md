@@ -81,6 +81,23 @@ Event getters were replaced by public readonly properties:
 
 `CreateTokenEvent::getPayload()`, `setPayload()` and `addPayload()` are unchanged.
 
+## Immutable dates
+
+Token and token usage dates are now `DateTimeImmutable` (they were `DateTime`):
+`Token::getCreatedAt()`, `getExpiresAt()`, `getKeepUntil()`, `TokenUsage::getCreatedAt()`, and `ConsumeTokenEvent::$at`.
+If you modified these dates in place, use the returned instance instead:
+
+```diff
+-$token->getExpiresAt()->modify('+1 day');
++$tomorrow = $token->getExpiresAt()->modify('+1 day');
+```
+
+Dates given to the bundle can be either `DateTime` or `DateTimeImmutable` (`DateTimeInterface`):
+`Token::consume()`, `TokenManagerInterface::consume()`, `TokenExpiredException::create()`.
+
+The Doctrine mapping uses the `datetime_immutable` type instead of `datetime`, deprecated by DBAL.
+With DBAL 4, the database schema does not change.
+
 ## Token configuration
 
 `Yokai\SecurityTokenBundle\Configuration\TokenConfiguration` getters were replaced by public readonly properties:
@@ -100,7 +117,7 @@ public function create(mixed $user, string $purpose, array $payload = []): Token
 
 // Yokai\SecurityTokenBundle\Manager\TokenManagerInterface
 public function create(string $purpose, mixed $user, array $payload = []): Token;
-public function consume(Token $token, DateTime|null $at = null): void;
+public function consume(Token $token, DateTimeInterface|null $at = null): void;
 public function getUser(Token $token): mixed;
 
 // Yokai\SecurityTokenBundle\Manager\UserManagerInterface

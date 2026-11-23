@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Repository;
 
-use DateTime;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -68,7 +68,7 @@ final class DoctrineORMTokenRepository implements TokenRepositoryInterface
             ->setParameter('userClass', $userClass)
             ->setParameter('userId', $userId)
             ->setParameter('purpose', $purpose)
-            ->setParameter('now', new DateTime())
+            ->setParameter('now', new DateTimeImmutable())
             ->getQuery()
             ->getResult()
         ;
@@ -113,7 +113,8 @@ final class DoctrineORMTokenRepository implements TokenRepositoryInterface
     public function purge(DateTimeInterface $before, string|null $purpose = null): int
     {
         $condition = 'token.keepUntil < :before';
-        $parameters = ['before' => $before];
+        // a mutable date would be bound with the deprecated "datetime" type
+        $parameters = ['before' => DateTimeImmutable::createFromInterface($before)];
         if ($purpose !== null) {
             $condition .= ' AND token.purpose = :purpose';
             $parameters['purpose'] = $purpose;

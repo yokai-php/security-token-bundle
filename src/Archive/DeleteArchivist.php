@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Archive;
 
-use DateTime;
+use DateTimeImmutable;
 use Yokai\SecurityTokenBundle\Repository\TokenRepositoryInterface;
 
 /**
@@ -24,6 +24,6 @@ final class DeleteArchivist implements ArchivistInterface
 
     public function archive(string|null $purpose = null): int
     {
-        return $this->repository->purge(new DateTime(), $purpose);
+        return $this->repository->purge(new DateTimeImmutable(), $purpose);
     }
 }

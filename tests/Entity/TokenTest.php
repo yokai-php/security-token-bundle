@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Tests\Entity;
 
+use DateTime;
+use DateTimeImmutable;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 use Yokai\SecurityTokenBundle\Entity\Token;
@@ -64,5 +66,26 @@ final class TokenTest extends TestCase
         $this->expectException(LogicException::class);
 
         $token->consume([]);
+    }
+
+    public function test_its_dates_are_immutable(): void
+    {
+        $token = new Token('string', 'jdoe', 'unique', 'reset_password', '+1 day', '+1 month');
+        $token->consume([]);
+
+        self::assertInstanceOf(DateTimeImmutable::class, $token->getCreatedAt());
+        self::assertInstanceOf(DateTimeImmutable::class, $token->getExpiresAt());
+        self::assertInstanceOf(DateTimeImmutable::class, $token->getKeepUntil());
+        self::assertInstanceOf(DateTimeImmutable::class, $token->getLastUsage()?->getCreatedAt());
+    }
+
+    public function test_it_can_be_consumed_at_any_kind_of_date(): void
+    {
+        $token = new Token('string', 'jdoe', 'unique', 'reset_password', '+1 day', '+1 month', 2);
+        $token->consume([], new DateTimeImmutable('2026-01-01 10:00:00'));
+        $token->consume([], new DateTime('2026-01-02 10:00:00'));
+
+        $dates = \array_map(static fn($usage) => $usage->getCreatedAt()->format('Y-m-d H:i:s'), $token->getUsages());
+        self::assertSame(['2026-01-01 10:00:00', '2026-01-02 10:00:00'], $dates);
     }
 }

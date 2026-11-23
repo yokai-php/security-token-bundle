@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Event;
 
-use DateTime;
+use DateTimeImmutable;
 use Symfony\Contracts\EventDispatcher\Event;
 use Yokai\SecurityTokenBundle\Entity\Token;
 
@@ -23,7 +23,7 @@ final class ConsumeTokenEvent extends Event
         /**
          * Date/time at which the token has been consumed
          */
-        public readonly DateTime|null $at,
+        public readonly DateTimeImmutable|null $at,
         /**
          * Some context information
          * @var array<string, mixed>
