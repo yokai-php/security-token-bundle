@@ -38,6 +38,7 @@ and restore them with the constructor, then replay their usages:
 
 ```php
 use DateTime;
+use DateTimeImmutable;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Entity\TokenUsage;
 
@@ -51,12 +52,12 @@ private function toJson(Token $token): string
         'payload' => $token->getPayload(),
         'created_information' => $token->getCreatedInformation(),
         'allowed_usages' => $token->getAllowedUsages(),
-        'expires_at' => $token->getExpiresAt()->getTimestamp(),
-        'keep_until' => $token->getKeepUntil()->getTimestamp(),
+        'expires_at' => $token->getExpiresAt()->format(\DATE_ATOM),
+        'keep_until' => $token->getKeepUntil()->format(\DATE_ATOM),
         'usages' => \array_map(
             static fn (TokenUsage $usage): array => [
                 'information' => $usage->getInformation(),
-                'created_at' => $usage->getCreatedAt()->getTimestamp(),
+                'created_at' => $usage->getCreatedAt()->format(\DATE_ATOM),
             ],
             $token->getUsages(),
         ),
@@ -66,29 +67,31 @@ private function toJson(Token $token): string
 private function fromJson(string $json): Token
 {
     $data = \json_decode($json, true, flags: \JSON_THROW_ON_ERROR);
+    $expiresAt = new DateTimeImmutable($data['expires_at']);
+    $keepUntil = new DateTimeImmutable($data['keep_until']);
 
-    // the constructor takes durations from now: "@<timestamp>" restores the stored dates
+    // the constructor takes durations: validity from now, keep from expiration
     $token = new Token(
         $data['user_class'],
         $data['user_id'],
         $data['value'],
         $data['purpose'],
-        '@' . $data['expires_at'],
-        '@' . $data['keep_until'],
+        \sprintf('%+d seconds', $expiresAt->getTimestamp() - \time()),
+        \sprintf('%+d seconds', $keepUntil->getTimestamp() - $expiresAt->getTimestamp()),
         $data['allowed_usages'],
         $data['payload'],
         $data['created_information'],
     );
     foreach ($data['usages'] as $usage) {
-        $token->consume($usage['information'], new DateTime('@' . $usage['created_at']));
+        $token->consume($usage['information'], new DateTime($usage['created_at']));
     }
 
     return $token;
 }
 ```
 
-> **Note :** Restored dates are in UTC, and the creation date of a restored token is the date it was restored:
-> store it apart if you need it.
+> **Note :** Restored dates are precise to the second,
+> and the creation date of a restored token is the date it was restored: store it apart if you need it.
 
 To check that your storage behaves as the bundle expects,
 extend [`TokenRepositoryTestCase`](../src/Test/TokenRepositoryTestCase.php) in your tests:
