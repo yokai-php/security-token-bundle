@@ -32,6 +32,64 @@ yokai_security_token:
     storage: App\Security\Token\RedisTokenRepository
 ```
 
+Your storage has to rebuild `Token` objects from what it stored.
+For instance, to store tokens as JSON, normalize them with their getters,
+and restore them with the constructor, then replay their usages:
+
+```php
+use DateTime;
+use Yokai\SecurityTokenBundle\Entity\Token;
+use Yokai\SecurityTokenBundle\Entity\TokenUsage;
+
+private function toJson(Token $token): string
+{
+    return \json_encode([
+        'user_class' => $token->getUserClass(),
+        'user_id' => $token->getUserId(),
+        'value' => $token->getValue(),
+        'purpose' => $token->getPurpose(),
+        'payload' => $token->getPayload(),
+        'created_information' => $token->getCreatedInformation(),
+        'allowed_usages' => $token->getAllowedUsages(),
+        'expires_at' => $token->getExpiresAt()->getTimestamp(),
+        'keep_until' => $token->getKeepUntil()->getTimestamp(),
+        'usages' => \array_map(
+            static fn (TokenUsage $usage): array => [
+                'information' => $usage->getInformation(),
+                'created_at' => $usage->getCreatedAt()->getTimestamp(),
+            ],
+            $token->getUsages(),
+        ),
+    ], \JSON_THROW_ON_ERROR);
+}
+
+private function fromJson(string $json): Token
+{
+    $data = \json_decode($json, true, flags: \JSON_THROW_ON_ERROR);
+
+    // the constructor takes durations from now: "@<timestamp>" restores the stored dates
+    $token = new Token(
+        $data['user_class'],
+        $data['user_id'],
+        $data['value'],
+        $data['purpose'],
+        '@' . $data['expires_at'],
+        '@' . $data['keep_until'],
+        $data['allowed_usages'],
+        $data['payload'],
+        $data['created_information'],
+    );
+    foreach ($data['usages'] as $usage) {
+        $token->consume($usage['information'], new DateTime('@' . $usage['created_at']));
+    }
+
+    return $token;
+}
+```
+
+> **Note :** Restored dates are in UTC, and the creation date of a restored token is the date it was restored:
+> store it apart if you need it.
+
 To check that your storage behaves as the bundle expects,
 extend [`TokenRepositoryTestCase`](../src/Test/TokenRepositoryTestCase.php) in your tests:
 
