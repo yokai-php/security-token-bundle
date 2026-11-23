@@ -2,96 +2,83 @@ Usage
 -----
 
 The following example is about allowing unauthenticated user to recover a lost password.
+It assumes a Doctrine entity `App\Entity\User`, with a `username` property and a `setPassword()` method.
 
 ```php
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
 use App\Entity\User;
-use Doctrine\Persistence\ObjectManager;
-use Doctrine\Persistence\ObjectRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yokai\SecurityTokenBundle\Exception as TokenExceptions;
+use Symfony\Component\Routing\Attribute\Route;
+use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
+use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
+use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Manager\TokenManagerInterface;
 
-class SecurityController extends AbstractController
+final class SecurityController extends AbstractController
 {
-    /** @var TokenManagerInterface */
-    private $tokenManager;
-    /** @var ManagerRegistry */
-    private $doctrine;
-
-    public function __construct(TokenManagerInterface $tokenManager, ManagerRegistry $doctrine)
-    {
-        $this->tokenManager = $tokenManager;
-        $this->doctrine = $doctrine;
+    public function __construct(
+        private readonly TokenManagerInterface $tokenManager,
+        private readonly EntityManagerInterface $entityManager,
+    ) {
     }
-    
-    public function requestPasswordRecoveryAction(Request $request): Response
+
+    #[Route('/password/request', name: 'password_request', methods: ['POST'])]
+    public function requestPasswordRecovery(Request $request): Response
     {
-        $user = $this->getUserRepository()->findOneBy(['username' => $request->request->get('username')]);
-        if (!$user) {
+        $user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['username' => $request->request->getString('username')]);
+        if ($user === null) {
             throw $this->createNotFoundException(); // or whatever you want
         }
 
         $token = $this->tokenManager->create('reset_password', $user);
 
-        // Probably send an email with a link to the action on which the user can recover his password (see below)
-        // the token value should be included in the link so you can verify it.
+        // Probably send an email with a link to the action on which the user can recover his password (see below).
+        // The token value must be included in the link, so you can verify it:
+        // $this->generateUrl('password_recover', ['token' => $token->getValue()], UrlGeneratorInterface::ABSOLUTE_URL)
 
         return new Response(); // or whatever you want
     }
 
-    public function recoverPasswordAction(Request $request): Response
+    #[Route('/password/recover', name: 'password_recover', methods: ['POST'])]
+    public function recoverPassword(Request $request): Response
     {
-        $token = null;
         try {
-            $token = $this->tokenManager->get('reset_password', $request->query->get('token'));
-        } catch(TokenExceptions\TokenNotFoundException $e) {
-            /* there is no token with the asked value */
-        } catch(TokenExceptions\TokenExpiredException $e) {
-            /* a token was found, but expired */
-        } catch(TokenExceptions\TokenConsumedException $e) {
-            /* a token was found, but already consumed */
+            $token = $this->tokenManager->get('reset_password', $request->query->getString('token'));
+        } catch (TokenNotFoundException) {
+            throw $this->createNotFoundException(); // there is no token with the asked value
+        } catch (TokenExpiredException) {
+            throw $this->createNotFoundException(); // a token was found, but expired
+        } catch (TokenConsumedException) {
+            throw $this->createNotFoundException(); // a token was found, but already consumed
         }
 
-        if (!$token) {
-            throw $this->createNotFoundException(); // or whatever you want
-        }
-
+        /** @var User $user */
         $user = $this->tokenManager->getUser($token);
 
-        $user->setPassword($request->request->get('password'));
-        $this->getUserManager()->flush();
+        $user->setPassword($request->request->getString('password')); // hash it in a real application
+        $this->entityManager->flush();
 
         $this->tokenManager->consume($token);
 
         return new Response(); // or whatever you want
     }
-
-    private function getUserRepository(): ObjectRepository
-    {
-        return $this->doctrine->getRepository(User::class);
-    }
-
-    private function getUserManager(): ObjectManager
-    {
-        return $this->doctrine->getManagerForClass(User::class);
-    }
 }
 ```
 
-**requestPasswordRecoveryAction** :
+**requestPasswordRecovery** :
 
 The `Token Manager` service will handle creating a security token for you,
 according to what you have configured for the purpose you asked.
 
 
-**recoverPasswordAction** :
+**recoverPassword** :
 
 The `Token Manager` service will handle retrieving security token for you,
 returning it when succeed, and throwing exceptions if something wrong :

@@ -46,14 +46,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Yokai\SecurityTokenBundle\Event as SecurityTokenEvents;
 
-class LogSecurityTokenErrors implements EventSubscriberInterface
+final class LogSecurityTokenErrors implements EventSubscriberInterface
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
