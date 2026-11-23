@@ -14,7 +14,7 @@ use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
 use Yokai\SecurityTokenBundle\Manager\TokenManagerInterface;
 
-class DoctrineTokenLifecycleTest extends KernelTestCase
+final class DoctrineTokenLifecycleTest extends KernelTestCase
 {
     private EntityManagerInterface $manager;
     private TokenManagerInterface $tokens;
@@ -28,9 +28,15 @@ class DoctrineTokenLifecycleTest extends KernelTestCase
         (new SchemaTool($this->manager))->createSchema($this->manager->getMetadataFactory()->getAllMetadata());
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        \restore_exception_handler();
+    }
+
     private function saveToken(string $purpose, string $duration = '+1 day'): string
     {
-        $value = bin2hex(random_bytes(20));
+        $value = \bin2hex(\random_bytes(20));
         $token = new Token('App\\Entity\\User', '42', $value, $purpose, $duration, '+1 month', 1, []);
         $this->manager->persist($token);
         $this->manager->flush();
