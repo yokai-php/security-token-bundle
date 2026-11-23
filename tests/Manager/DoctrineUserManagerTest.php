@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\Proxy;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yokai\SecurityTokenBundle\Manager\DoctrineUserManager;
@@ -124,6 +125,31 @@ final class DoctrineUserManagerTest extends TestCase
         $class = $this->manager()->getClass($expected);
 
         self::assertSame(\get_class($expected), $class);
+    }
+
+    public function test_it_get_proxy_user_class(): void
+    {
+        $user = new class extends \stdClass implements Proxy {
+            public function __load(): void
+            {
+                throw new \LogicException('Resolving the user class must not initialize the proxy');
+            }
+
+            public function __isInitialized(): bool
+            {
+                return false;
+            }
+        };
+
+        $this->registry->method('getManagerForClass')
+            ->with(\stdClass::class)
+            ->willReturn($this->objectManager);
+
+        $manager = $this->manager();
+
+        self::assertSame(\stdClass::class, $manager->getClass($user));
+        self::assertTrue($manager->supportsUser($user));
+        self::assertFalse($user->__isInitialized());
     }
 
     public function test_it_get_user_id(): void
