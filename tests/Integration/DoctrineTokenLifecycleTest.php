@@ -39,6 +39,18 @@ class DoctrineTokenLifecycleTest extends KernelTestCase
         return $value;
     }
 
+    public function testFindExistingReturnsActiveTokenWhenAnOutdatedOneExists(): void
+    {
+        $this->saveToken('reset_password', '-1 day');
+        $active = $this->saveToken('reset_password');
+
+        $token = self::$kernel->getContainer()->get('yokai_security_token.token_repository')
+            ->findExisting('App\\Entity\\User', '42', 'reset_password');
+
+        self::assertNotNull($token);
+        self::assertSame($active, $token->getValue());
+    }
+
     public function testConsumedTokenCannotBeUsedAgainAfterReload(): void
     {
         $value = $this->saveToken('reset_password');
