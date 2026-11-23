@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Manager;
 
-use DateTime;
+use DateTimeInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
@@ -46,9 +46,9 @@ interface TokenManagerInterface
      * Consume a token.
      *
      * @param Token         $token The token to consume
-     * @param DateTime|null $at    The date/time at which the token was consumed (defaults to now)
+     * @param DateTimeInterface|null $at    The date/time at which the token was consumed (defaults to now)
      */
-    public function consume(Token $token, DateTime|null $at = null): void;
+    public function consume(Token $token, DateTimeInterface|null $at = null): void;
 
     /**
      * Get the user associated to a token.

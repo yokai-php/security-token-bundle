@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Tests\Factory;
 
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yokai\SecurityTokenBundle\Configuration\TokenConfiguration;
@@ -152,9 +152,9 @@ final class TokenFactoryTest extends TestCase
         self::assertSame('test-1', $token1->getPurpose());
         self::assertSame([], $token1->getPayload());
         self::assertSame('uniquetoken-1', $token1->getValue());
-        self::assertInstanceOf(DateTime::class, $token1->getCreatedAt());
-        self::assertInstanceOf(DateTime::class, $token1->getExpiresAt());
-        self::assertInstanceOf(DateTime::class, $token1->getKeepUntil());
+        self::assertInstanceOf(DateTimeImmutable::class, $token1->getCreatedAt());
+        self::assertInstanceOf(DateTimeImmutable::class, $token1->getExpiresAt());
+        self::assertInstanceOf(DateTimeImmutable::class, $token1->getKeepUntil());
         self::assertCount(0, $token1->getUsages());
         self::assertSame(0, $token1->getCountUsages());
         self::assertFalse($token1->isConsumed());
@@ -168,9 +168,9 @@ final class TokenFactoryTest extends TestCase
         self::assertSame('test-2', $token2->getPurpose());
         self::assertSame(['payload', 'information'], $token2->getPayload());
         self::assertSame('uniquetoken-2', $token2->getValue());
-        self::assertInstanceOf(DateTime::class, $token2->getCreatedAt());
-        self::assertInstanceOf(DateTime::class, $token2->getExpiresAt());
-        self::assertInstanceOf(DateTime::class, $token2->getKeepUntil());
+        self::assertInstanceOf(DateTimeImmutable::class, $token2->getCreatedAt());
+        self::assertInstanceOf(DateTimeImmutable::class, $token2->getExpiresAt());
+        self::assertInstanceOf(DateTimeImmutable::class, $token2->getKeepUntil());
         self::assertCount(0, $token2->getUsages());
         self::assertSame(0, $token2->getCountUsages());
         self::assertFalse($token1->isConsumed());

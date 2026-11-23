@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Exception;
 
-use DateTime;
+use DateTimeInterface;
 
 /**
  * Exception thrown when token is fetched, but expired.
@@ -18,16 +18,16 @@ final class TokenExpiredException extends InvalidTokenException
      *
      * @param string   $value   The token value
      * @param string   $purpose The token purpose
-     * @param DateTime $date    The token expiration date
+     * @param DateTimeInterface $date    The token expiration date
      */
-    public static function create(string $value, string $purpose, DateTime $date): self
+    public static function create(string $value, string $purpose, DateTimeInterface $date): self
     {
         return new self(
             \sprintf(
                 'The "%s" token with value "%s" is expired since "%s".',
                 $purpose,
                 $value,
-                $date->format(DateTime::ISO8601),
+                $date->format(DateTimeInterface::ATOM),
             ),
         );
     }

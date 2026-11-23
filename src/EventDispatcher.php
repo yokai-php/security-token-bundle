@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle;
 
-use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Event\ConsumeTokenEvent;
@@ -51,10 +52,17 @@ final class EventDispatcher
     /**
      * @param array<string, mixed> $information
      */
-    public function consumeToken(Token $token, DateTime|null $at = null, array $information = []): ConsumeTokenEvent
-    {
+    public function consumeToken(
+        Token $token,
+        DateTimeInterface|null $at = null,
+        array $information = [],
+    ): ConsumeTokenEvent {
         $this->eventDispatcher->dispatch(
-            $event = new ConsumeTokenEvent($token, $at, $information),
+            $event = new ConsumeTokenEvent(
+                $token,
+                $at !== null ? DateTimeImmutable::createFromInterface($at) : null,
+                $information,
+            ),
         );
 
         return $event;

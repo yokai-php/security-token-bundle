@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Entity;
 
-use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use LogicException;
@@ -32,7 +33,7 @@ class Token
      */
     private array $payload;
 
-    private DateTime $createdAt;
+    private DateTimeImmutable $createdAt;
 
     /**
      * @var array<string, mixed>
@@ -41,9 +42,9 @@ class Token
 
     private int $allowedUsages;
 
-    private DateTime $expiresAt;
+    private DateTimeImmutable $expiresAt;
 
-    private DateTime $keepUntil;
+    private DateTimeImmutable $keepUntil;
 
     /**
      * @var Collection<int, TokenUsage>
@@ -70,9 +71,9 @@ class Token
         $this->userId = $userId;
         $this->value = $value;
         $this->purpose = $purpose;
-        $this->createdAt = new DateTime();
-        $this->expiresAt = (new DateTime())->modify($validDuration);
-        $this->keepUntil = (clone $this->expiresAt)->modify($keepDuration);
+        $this->createdAt = new DateTimeImmutable();
+        $this->expiresAt = $this->createdAt->modify($validDuration);
+        $this->keepUntil = $this->expiresAt->modify($keepDuration);
         $this->allowedUsages = $allowedUsages;
         $this->payload = $payload;
         $this->createdInformation = $information;
@@ -115,7 +116,7 @@ class Token
         return $this->payload;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -128,19 +129,19 @@ class Token
         return $this->createdInformation;
     }
 
-    public function getExpiresAt(): DateTime
+    public function getExpiresAt(): DateTimeImmutable
     {
         return $this->expiresAt;
     }
 
-    public function getKeepUntil(): DateTime
+    public function getKeepUntil(): DateTimeImmutable
     {
         return $this->keepUntil;
     }
 
     public function isExpired(): bool
     {
-        return $this->expiresAt < new DateTime();
+        return $this->expiresAt < new DateTimeImmutable();
     }
 
     public function isConsumed(): bool
@@ -181,7 +182,7 @@ class Token
      *
      * @throws LogicException
      */
-    public function consume(array $information, DateTime|null $date = null): void
+    public function consume(array $information, DateTimeInterface|null $date = null): void
     {
         if ($this->isConsumed()) {
             throw new LogicException(

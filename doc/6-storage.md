@@ -37,7 +37,6 @@ For instance, to store tokens as JSON, normalize them with their getters,
 and restore them with the constructor, then replay their usages:
 
 ```php
-use DateTime;
 use DateTimeImmutable;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Entity\TokenUsage;
@@ -83,7 +82,7 @@ private function fromJson(string $json): Token
         $data['created_information'],
     );
     foreach ($data['usages'] as $usage) {
-        $token->consume($usage['information'], new DateTime($usage['created_at']));
+        $token->consume($usage['information'], new DateTimeImmutable($usage['created_at']));
     }
 
     return $token;
