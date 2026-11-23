@@ -124,14 +124,42 @@ instead of querying the Doctrine entity repository: the archive command works wi
 ## Final classes
 
 All concrete classes of the bundle are now `final`, except the `Token` and `TokenUsage` entities.
-If you extended one of them, implement the matching interface instead,
-and register your service through the `services` configuration:
+If you extended one of them, implement the matching interface instead.
+To keep the default behavior, inject the default service and delegate to it:
+
+```php
+namespace App\Security\Token;
+
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Yokai\SecurityTokenBundle\InformationGuesser\InformationGuesserInterface;
+
+final class UserAgentInformationGuesser implements InformationGuesserInterface
+{
+    public function __construct(
+        #[Autowire(service: 'yokai_security_token.default_information_guesser')]
+        private readonly InformationGuesserInterface $default,
+        private readonly RequestStack $requests,
+    ) {
+    }
+
+    public function get(): array
+    {
+        return $this->default->get() + ['user_agent' => $this->requests->getMainRequest()?->headers->get('User-Agent')];
+    }
+}
+```
+
+Then register your service through the `services` configuration:
 
 ```yaml
 yokai_security_token:
     services:
-        token_manager: App\Security\TokenManager
+        information_guesser: App\Security\Token\UserAgentInformationGuesser
 ```
+
+Default services are named `yokai_security_token.default_information_guesser`, `yokai_security_token.default_token_factory`,
+`yokai_security_token.default_token_manager` and `yokai_security_token.delete_archivist`.
 
 `Yokai\SecurityTokenBundle\Exception\InvalidTokenException` is now `abstract`:
 catching it still works, but it cannot be thrown directly anymore.
