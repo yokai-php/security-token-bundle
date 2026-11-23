@@ -75,7 +75,7 @@ return static function (ContainerConfigurator $container): void {
 
         ->set('yokai_security_token.delete_archivist', DeleteArchivist::class)
             ->args([
-                service('yokai_security_token.token_entity_repository'),
+                service('yokai_security_token.token_repository'),
             ])
 
         ->set('yokai_security_token.event_dispatcher', EventDispatcher::class)

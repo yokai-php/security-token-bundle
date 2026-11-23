@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Repository;
 
+use DateTimeInterface;
 use Yokai\SecurityTokenBundle\Entity\Token;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
@@ -64,4 +65,14 @@ interface TokenRepositoryInterface
      * @param Token $token The token to update
      */
     public function update(Token $token): void;
+
+    /**
+     * Remove from storage every token that should not be kept anymore.
+     *
+     * @param DateTimeInterface $before  Tokens kept until before this date are removed
+     * @param string|null       $purpose Only remove tokens with this purpose, if provided
+     *
+     * @return int Count removed tokens
+     */
+    public function purge(DateTimeInterface $before, string|null $purpose = null): int;
 }

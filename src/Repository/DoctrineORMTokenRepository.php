@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Yokai\SecurityTokenBundle\Repository;
 
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Yokai\SecurityTokenBundle\Entity\Token;
+use Yokai\SecurityTokenBundle\Entity\TokenUsage;
 use Yokai\SecurityTokenBundle\Exception\TokenConsumedException;
 use Yokai\SecurityTokenBundle\Exception\TokenExpiredException;
 use Yokai\SecurityTokenBundle\Exception\TokenNotFoundException;
@@ -97,6 +99,35 @@ final class DoctrineORMTokenRepository implements TokenRepositoryInterface
         $result = $builder->getQuery()->getSingleScalarResult();
 
         return \intval($result) > 0;
+    }
+
+    public function purge(DateTimeInterface $before, string|null $purpose = null): int
+    {
+        $condition = 'token.keepUntil < :before';
+        $parameters = ['before' => $before];
+        if ($purpose !== null) {
+            $condition .= ' AND token.purpose = :purpose';
+            $parameters['purpose'] = $purpose;
+        }
+
+        // Usages are removed explicitly: the database may not enforce the "ON DELETE CASCADE" foreign key
+        $this->manager
+            ->createQuery(\sprintf(
+                'DELETE FROM %s usage WHERE usage.token IN (SELECT token.id FROM %s token WHERE %s)',
+                TokenUsage::class,
+                Token::class,
+                $condition,
+            ))
+            ->execute($parameters)
+        ;
+
+        /** @var int|string $result */
+        $result = $this->manager
+            ->createQuery(\sprintf('DELETE FROM %s token WHERE %s', Token::class, $condition))
+            ->execute($parameters)
+        ;
+
+        return \intval($result);
     }
 
     private function save(Token $token): void

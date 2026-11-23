@@ -79,6 +79,15 @@ public function getId(mixed $user): string;
 public function findExisting(string $userClass, string $userId, string $purpose): Token|null;
 ```
 
+`TokenRepositoryInterface` also has a new method, which removes outdated tokens (and their usages) from storage:
+
+```php
+public function purge(DateTimeInterface $before, string|null $purpose = null): int;
+```
+
+The default archivist, `Yokai\SecurityTokenBundle\Archive\DeleteArchivist`, now relies on it
+instead of querying the Doctrine entity repository: the archive command works with any token repository.
+
 ## Final classes
 
 All concrete classes of the bundle are now `final`, except the `Token` and `TokenUsage` entities.
