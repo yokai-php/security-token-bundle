@@ -6,20 +6,22 @@ Install process is very simple.
 
 ### Add the dependency with Composer
 
-```bash
-$ composer require yokai/security-token-bundle
-```
-
-Tokens are stored with Doctrine ORM by default, which is not installed along with the bundle:
+Tokens are stored with Doctrine ORM by default, which is not installed along with the bundle.
+Install them together:
 
 ```bash
-$ composer require doctrine/orm doctrine/doctrine-bundle
+$ composer require yokai/security-token-bundle doctrine/orm doctrine/doctrine-bundle
 ```
 
-> **Note :** You can store tokens elsewhere, see [token storage](6-storage.md).
+> **Note :** You can store tokens elsewhere, without Doctrine, see [token storage](6-storage.md).
+> Until the `storage` option is configured, the bundle requires Doctrine,
+> so the `cache:clear` run by Composer fails: configure it, then clear the cache.
 
 
 ### Enable the bundle
+
+With [Symfony Flex](https://symfony.com/doc/current/setup/flex.html), the bundle is enabled for you.
+Otherwise, add it to `config/bundles.php`:
 
 ```php
 <?php
@@ -38,7 +40,9 @@ You need to create these in your project:
 
 **Using a [doctrine migration](https://github.com/doctrine/DoctrineMigrationsBundle)** (recommended)
 ```bash
+$ composer require doctrine/doctrine-migrations-bundle # if not installed yet
 $ bin/console doctrine:migrations:diff
+$ bin/console doctrine:migrations:migrate
 ```
 
 You will have a migration file generated with the following tables being created:
