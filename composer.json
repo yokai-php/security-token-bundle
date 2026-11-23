@@ -29,10 +29,5 @@
     "autoload-dev": {
         "psr-4": { "Yokai\\SecurityTokenBundle\\Tests\\": "tests/" }
     },
-    "minimum-stability": "stable",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "3.x-dev"
-        }
-    }
+    "minimum-stability": "stable"
 }
